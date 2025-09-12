@@ -4,9 +4,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const { createUser } = require('../models/user.model');
+const generateAccessToken = require('../utils/generate_access_token');
+const generateRefreshToken = require('../utils/generate_refresh_token');
 
-// eslint-disable-next-line no-undef
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
 async function signup(req, res) {
   try {
@@ -57,20 +58,21 @@ async function login(req, res) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        is_provider: user.is_provider,
-        is_customer: user.is_customer,
-      },
-      JWT_SECRET,
-      { expiresIn: '1h' }
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    await pool.query(
+      `
+      INSERT INTO refresh_tokens (token, user_id, expires_at) 
+      VALUES ($1, $2, NOW() + INTERVAL '7 days')
+    `,
+      [refreshToken, user.id]
     );
 
     res.json({
       message: 'Login successful',
-      token,
+      accessToken,
+      refreshToken,
       user: {
         id: user.id,
         name: user.name,
@@ -85,4 +87,38 @@ async function login(req, res) {
   }
 }
 
-module.exports = { signup, login };
+async function refreshToken(req, res) {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({ error: 'Refresh token is required' });
+    }
+
+    const tokenQueryResult = await pool.query(`SELECT * FROM refresh_tokens WHERE token = $1`, [
+      refreshToken,
+    ]);
+
+    if (tokenQueryResult.rows.length === 0) {
+      return res.status(403).json({ error: 'Invalid refresh token' });
+    }
+
+    const payload = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+
+    const userQueryResult = await pool.query(`SELECT * FROM users WHERE id = $1`, [payload.id]);
+
+    if (userQueryResult.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = userQueryResult.rows[0];
+    const newAccessToken = generateAccessToken(user);
+
+    res.json({ accessToken: newAccessToken });
+  } catch (error) {
+    console.error('Error during token refresh:', error);
+    res.status(403).json({ error: 'Invalid or expired refresh token' });
+  }
+}
+
+module.exports = { signup, login, refreshToken };
