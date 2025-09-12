@@ -75,11 +75,12 @@ export default function SignupPage() {
 
         <div>
           <label>
-            <input 
-                type="checkbox" 
-                name="is_customer" 
-                checked={form.is_customer}
-                onChange={handleChange} />
+            <input
+              type="checkbox"
+              name="is_customer"
+              checked={form.is_customer}
+              onChange={handleChange}
+            />
             Sign up as Customer
           </label>
         </div>
