@@ -1,0 +1,14 @@
+# dependencies
+node_modules
+
+# Next.js build output
+.next
+out
+
+# build and coverage artifacts
+dist
+build
+coverage
+
+# misc
+*.log
