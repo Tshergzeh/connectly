@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
+import api from '@/lib/api';
 
 export default function SignupPage() {
   const [form, setForm] = useState({
@@ -26,7 +27,7 @@ export default function SignupPage() {
     setMessage('');
 
     try {
-      const signupResponse = await axios.post('/api/signup', form);
+      const signupResponse = await api.post('/auth/signup', form);
       setMessage('Signup successful! Please log in.');
       console.log('Response:', signupResponse.data);
     } catch (error) {
@@ -74,7 +75,11 @@ export default function SignupPage() {
 
         <div>
           <label>
-            <input type="checkbox" name="is_customer" checked onChange={handleChange} />
+            <input 
+                type="checkbox" 
+                name="is_customer" 
+                checked={form.is_customer}
+                onChange={handleChange} />
             Sign up as Customer
           </label>
         </div>
