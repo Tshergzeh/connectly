@@ -1,3 +1,4 @@
+require('dotenv').config();
 const pkg = require('pg');
 const { Pool } = pkg;
 
@@ -9,7 +10,7 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 });
 
-port.on('connect', () => {
+pool.on('connect', () => {
   console.log('Connected to the database');
 });
 

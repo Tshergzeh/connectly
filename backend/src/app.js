@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+const healthRoutes = require('./routes/health.routes');
+
+app.use(express.json());
+
+app.use('/api', healthRoutes);
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
