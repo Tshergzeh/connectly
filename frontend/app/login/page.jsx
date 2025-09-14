@@ -22,9 +22,13 @@ export default function LoginPage() {
     setMessage('');
 
     try {
-      const loginResponse = await api.post('/auth/login', form);
+      const loginResponse = await api.post('/auth/login', form, {
+        withCredentials: true,
+      });
+      const { accessToken, user } = loginResponse.data;
+      sessionStorage.setItem('accessToken', accessToken);
       setMessage('Login successful!');
-      console.log('Login Response:', loginResponse.data);
+      console.log('User:', user);
     } catch (error) {
       console.error('Login Error:', error);
       setMessage(error.response?.data?.error || 'Login failed.');
