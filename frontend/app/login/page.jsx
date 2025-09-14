@@ -38,9 +38,7 @@ export default function LoginPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-lg space-y-6">
-        <h2 className="text-2xl font-bold text-center text-gray-800">
-            Welcome Back
-        </h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">Welcome Back</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="email"
@@ -64,9 +62,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        {message && 
-            <p className="text-center text-sm text-gray-600">{message}</p>
-        }
+        {message && <p className="text-center text-sm text-gray-600">{message}</p>}
 
         <p className="text-center text-sm text-gray-500">
           Don't have an account?{' '}

@@ -3,67 +3,62 @@ const app = require('../app');
 const pool = require('../config/db');
 
 beforeAll(async () => {
-    await pool.query('DELETE FROM users'); 
-    await pool.query('DELETE FROM refresh_tokens');
+  await pool.query('DELETE FROM users');
+  await pool.query('DELETE FROM refresh_tokens');
 });
 
 afterAll(async () => {
-    await pool.end();
+  await pool.end();
 });
 
 describe('Auth API', () => {
-    const userData = {
-        name: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-        is_provider: true,
-        is_customer: false,
-    };
+  const userData = {
+    name: 'Test User',
+    email: 'test@example.com',
+    password: 'password123',
+    is_provider: true,
+    is_customer: false,
+  };
 
-    let refreshToken;
+  let refreshToken;
 
-    test('should register a new user', async () => {
-        const res = await request(app)
-            .post('/api/auth/signup')
-            .send(userData)
-            .expect(201);
+  test('should register a new user', async () => {
+    const res = await request(app).post('/api/auth/signup').send(userData).expect(201);
 
-        expect(res.body.message).toBe('User created successfully');
-        expect(res.body.user.email).toBe(userData.email);
-    });
+    expect(res.body.message).toBe('User created successfully');
+    expect(res.body.user.email).toBe(userData.email);
+  });
 
-    test('should login the user and set refresh token cookie', async () => {
-        const res = await request(app)
-            .post('/api/auth/login')
-            .send({ email: userData.email, password: userData.password })
-            .expect(200);
+  test('should login the user and set refresh token cookie', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: userData.email, password: userData.password })
+      .expect(200);
 
-        expect(res.body.accessToken).toBeDefined();
+    expect(res.body.accessToken).toBeDefined();
 
-        const cookies = res.headers['set-cookie'];
-        expect(cookies).toBeDefined();
+    const cookies = res.headers['set-cookie'];
+    expect(cookies).toBeDefined();
 
-        refreshToken = cookies.find(
-            cookie => cookie.startsWith('refreshToken=')
-        );
-        expect(refreshToken).toBeDefined();
-    });
+    refreshToken = cookies.find((cookie) => cookie.startsWith('refreshToken='));
+    expect(refreshToken).toBeDefined();
+  });
 
-    test('should refresh access token using refresh token', async () => {
-        const res = await request(app)
-            .post('/api/auth/refresh-token')
-            .set('Cookie', refreshToken)
-            .expect(200);
+  test('should refresh access token using refresh token', async () => {
+    const res = await request(app)
+      .post('/api/auth/refresh-token')
+      .set('Cookie', refreshToken)
+      .expect(200);
 
-        expect(res.body.accessToken).toBeDefined();
-    });
+    expect(res.body.accessToken).toBeDefined();
+  });
 
-    test('should reject invalid login', async () => {
-        const res = await request(app)
-            .post('/api/auth/login')
-            .send({ email: userData.email, password: 'wrongpassword' })
-            .expect(401);
+  test('should reject invalid login', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: userData.email, password: 'wrongpassword' })
+      .expect(401);
 
-        expect(res.body.error).toBe('Invalid email or password');
-    });
+    expect(res.body.error).toBe('Invalid email or password');
+  });
 });
