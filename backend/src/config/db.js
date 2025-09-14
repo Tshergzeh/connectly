@@ -1,13 +1,12 @@
 require('dotenv').config();
-const pkg = require('pg');
-const { Pool } = pkg;
+const { Pool } = require('pg');
+
+const isTest = process.env.NODE_ENV === 'test';
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT || 5432,
+  connectionString: isTest 
+    ? process.env.TEST_DATABASE_URL 
+    : process.env.DATABASE_URL,
 });
 
 pool.on('connect', () => {

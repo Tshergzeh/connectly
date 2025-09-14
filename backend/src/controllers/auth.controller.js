@@ -95,10 +95,10 @@ async function login(req, res) {
 
 async function refreshToken(req, res) {
   try {
-    const { refreshToken } = req.body;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-      return res.status(400).json({ error: 'Refresh token is required' });
+      return res.status(403).json({ error: 'Refresh token is required' });
     }
 
     const tokenQueryResult = await pool.query(`SELECT * FROM refresh_tokens WHERE token = $1`, [
