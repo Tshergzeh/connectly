@@ -1,13 +1,13 @@
 const { ApolloServer } = require('apollo-server-express');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const authenticate = require('../middleware/auth.middleware');
+const decodeUser = require('../middleware/auth.helper');
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => {
-    const user = authenticate(req, null, () => null); // tweak: authenticate should return decoded user
+    const user = decodeUser(req);
     return { user };
   },
 });
