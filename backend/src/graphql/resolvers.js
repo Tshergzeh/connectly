@@ -1,15 +1,14 @@
-const { v4: uuidv4 } = require('uuid');
-
 const UserModel = require('../models/user.model');
 const ServiceModel = require('../models/service.model');
 const AuthService = require('../services/auth.service');
+const ServiceService = require('../services/service.service');
 
 const resolvers = {
   Query: {
     me: async (_, __, { user }) => (user ? await UserModel.findUserById(user.id) : null),
     user: async (_, { id }) => await UserModel.findUserById(id),
-    services: async () => await ServiceModel.getAllServices(),
-    service: async (_, { id }) => await ServiceModel.getServiceById(id),
+    services: async () => await ServiceService.listServices(),
+    service: async (_, { id }) => await ServiceService.getService(id),
     servicesByProvider: async (_, { providerid }) =>
       await ServiceModel.getServicesByProivder(providerid),
   },
@@ -51,13 +50,10 @@ const resolvers = {
         throw new Error('Authentication required');
       }
 
-      const service = await ServiceModel.createService({
-        id: uuidv4(),
-        provider_id: user.id,
+      return await ServiceService.createService({
+        providerId: user.id,
         ...input,
       });
-
-      return service;
     },
 
     updateService: async (_, { id, input }, { user }) => {
@@ -65,11 +61,7 @@ const resolvers = {
         throw new Error('Authentication required');
       }
 
-      const service = await ServiceModel.getServiceById(id);
-      if (!service) throw new Error('Service not found');
-      if (service.provider_id !== user.id) throw new Error('Not authorized');
-
-      return await ServiceModel.updateService(id, input);
+      return await ServiceService.updateService(id, user.id, input);
     },
 
     deleteService: async (_, { id }, { user }) => {
@@ -77,12 +69,7 @@ const resolvers = {
         throw new Error('Authentication required');
       }
 
-      const service = await ServiceModel.getServiceById(id);
-      if (!service) throw new Error('Service not found');
-      if (service.provider_id !== user.id) throw new Error('Not authorized');
-
-      await ServiceModel.deleteService(id);
-      return true;
+      return await ServiceService.deleteService(id, user.id);
     },
   },
 
