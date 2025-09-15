@@ -1,18 +1,13 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 
 const UserModel = require('../models/user.model');
 const ServiceModel = require('../models/service.model');
-
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const AuthService = require('../services/auth.service');
 
 const resolvers = {
   Query: {
-    me: async (_, __, { user }) => (user ? await UserModel.getById(user.id) : null),
-    users: async () => await UserModel.getAll(),
-    user: async (_, { id }) => await UserModel.getById(id),
+    me: async (_, __, { user }) => (user ? await UserModel.findUserById(user.id) : null),
+    user: async (_, { id }) => await UserModel.findUserById(id),
     services: async () => await ServiceModel.getAllServices(),
     service: async (_, { id }) => await ServiceModel.getServiceById(id),
     servicesByProvider: async (_, { providerid }) =>
@@ -21,57 +16,34 @@ const resolvers = {
 
   Mutation: {
     signup: async (_, { input }) => {
-      const hashedPassword = await bcrypt.hash(input.password, 10);
-      const user = await UserModel.createUser({
-        ...input,
-        id: uuidv4(),
-        hashedPassword: hashedPassword,
+      const user = await AuthService.signup({
+        name: input.name,
+        email: input.email,
+        password: input.password,
+        isProvider: input.isProvider,
+        isCustomer: input.isCustomer,
       });
 
-      const accessToken = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-        expiresIn: '15m',
+      const { accessToken, refreshToken } = await AuthService.login({
+        email: input.email,
+        password: input.password,
       });
-
-      const refreshToken = jwt.sign({ id: user.id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
 
       return { accessToken, refreshToken, user };
     },
 
     login: async (_, { input }) => {
-      const user = await UserModel.getByEmail(input.email);
-
-      if (!user) {
-        throw new Error('Invalid credentials');
-      }
-
-      const isValid = await bcrypt.compare(input.password, user.hashed_password);
-
-      if (!isValid) {
-        throw new Error('Invalid credentials');
-      }
-
-      const accessToken = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-        expiresIn: '15m',
+      const { user, accessToken, refreshToken } = await AuthService.login({
+        email: input.email,
+        password: input.password,
       });
-
-      const refreshToken = jwt.sign({ id: user.id }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
 
       return { accessToken, refreshToken, user };
     },
 
     refreshToken: async (_, { refreshToken }) => {
-      try {
-        const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
-        const user = await UserModel.getById(decoded.id);
-
-        const accessToken = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-          expiresIn: '15m',
-        });
-
-        return { accessToken, refreshToken, user };
-      } catch (error) {
-        throw new Error('Invalid or expired refresh token');
-      }
+      const { accessToken, user } = await AuthService.refreshToken(refreshToken);
+      return { accessToken, refreshToken, user };
     },
 
     createService: async (_, { input }, { user }) => {
