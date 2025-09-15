@@ -29,7 +29,7 @@ exports.listServices = async (req, res) => {
 
 exports.getService = async (req, res) => {
   try {
-    const service = ServiceService.getService(req.params.id);
+    const service = await ServiceService.getService(req.params.id);
     res.json(service);
   } catch (error) {
     console.error('Error fetching service:', error);
