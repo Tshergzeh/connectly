@@ -22,7 +22,7 @@ async function signup(req, res) {
     res.status(201).json({ message: 'User created successfully', user });
   } catch (error) {
     console.error('Error during signup:', error);
-    res.status(500).json({ error: 'Failed to create user' });
+    res.status(500).json({ error: error.message });
   }
 }
 
@@ -52,7 +52,7 @@ async function login(req, res) {
     });
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(401).json({ error: 'Failed to login' });
+    res.status(401).json({ error: error.message });
   }
 }
 

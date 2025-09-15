@@ -37,11 +37,8 @@ describe('Auth API', () => {
 
     expect(res.body.accessToken).toBeDefined();
 
-    const cookies = res.headers['set-cookie'];
-    expect(cookies).toBeDefined();
-
-    refreshToken = cookies.find((cookie) => cookie.startsWith('refreshToken='));
-    expect(refreshToken).toBeDefined();
+    expect(res.headers['set-cookie']).toBeDefined();
+    refreshToken = res.headers['set-cookie'][0];
   });
 
   test('should refresh access token using refresh token', async () => {

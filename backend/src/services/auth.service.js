@@ -10,11 +10,10 @@ const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
 class AuthService {
   static async signup({ name, email, password, isProvider, isCustomer }) {
-    const hashedPassword = await bcrypt.hash(password, 10);
     return await createUser({
       name,
       email,
-      hashedPassword,
+      password,
       isProvider,
       isCustomer,
     });
