@@ -1,13 +1,5 @@
 require('dotenv').config();
-const pool = require('../config/db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
-const { createUser } = require('../models/user.model');
-const generateAccessToken = require('../utils/generate_access_token');
-const generateRefreshToken = require('../utils/generate_refresh_token');
-
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const AuthService = require('../services/auth.service');
 
 async function signup(req, res) {
   try {
@@ -19,7 +11,7 @@ async function signup(req, res) {
       });
     }
 
-    const user = await createUser({
+    const user = await AuthService.signup({
       name,
       email,
       password,
@@ -44,30 +36,7 @@ async function login(req, res) {
       });
     }
 
-    const loginQuery = 'SELECT * FROM users WHERE email = $1';
-    const loginQueryResult = await pool.query(loginQuery, [email]);
-
-    if (loginQueryResult.rows.length === 0) {
-      return res.status(401).json({ error: 'Invalid email or password' });
-    }
-
-    const user = loginQueryResult.rows[0];
-
-    const passwordMatch = await bcrypt.compare(password, user.hashed_password);
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid email or password' });
-    }
-
-    const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
-
-    await pool.query(
-      `
-      INSERT INTO refresh_tokens (token, user_id, expires_at) 
-      VALUES ($1, $2, NOW() + INTERVAL '7 days')
-    `,
-      [refreshToken, user.id]
-    );
+    const { user, accessToken, refreshToken } = await AuthService.login({ email, password });
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -79,17 +48,11 @@ async function login(req, res) {
     res.json({
       message: 'Login successful',
       accessToken,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        is_provider: user.is_provider,
-        is_customer: user.is_customer,
-      },
+      user,
     });
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).json({ error: 'Failed to login' });
+    res.status(401).json({ error: 'Failed to login' });
   }
 }
 
@@ -101,26 +64,8 @@ async function refreshToken(req, res) {
       return res.status(403).json({ error: 'Refresh token is required' });
     }
 
-    const tokenQueryResult = await pool.query(`SELECT * FROM refresh_tokens WHERE token = $1`, [
-      refreshToken,
-    ]);
-
-    if (tokenQueryResult.rows.length === 0) {
-      return res.status(403).json({ error: 'Invalid refresh token' });
-    }
-
-    const payload = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
-
-    const userQueryResult = await pool.query(`SELECT * FROM users WHERE id = $1`, [payload.id]);
-
-    if (userQueryResult.rows.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const user = userQueryResult.rows[0];
-    const newAccessToken = generateAccessToken(user);
-
-    res.json({ accessToken: newAccessToken });
+    const { accessToken } = await AuthService.refreshToken(refreshToken);
+    res.json({ accessToken });
   } catch (error) {
     console.error('Error during token refresh:', error);
     res.status(403).json({ error: 'Invalid or expired refresh token' });

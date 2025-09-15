@@ -16,4 +16,16 @@ async function createUser({ name, email, password, isProvider, isCustomer }) {
   return createUserQueryResult.rows[0];
 }
 
-module.exports = { createUser };
+async function findUserByEmail(email) {
+  const findUserByEmailQueryResult = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+    email,
+  ]);
+  return findUserByEmailQueryResult.rows[0];
+}
+
+async function findUserById(id) {
+  const findUserByIdQueryResult = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
+  return findUserByIdQueryResult.rows[0];
+}
+
+module.exports = { createUser, findUserByEmail, findUserById };
