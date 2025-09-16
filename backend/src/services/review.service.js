@@ -14,6 +14,10 @@ class ReviewService {
       throw new Error('Not authorized to review this booking');
     }
 
+    if (booking.status !== 'Completed') {
+      throw new Error('Cannot review uncompleted booking');
+    }
+
     const id = uuidv4();
     return await ReviewModel.createReview({
       id,
