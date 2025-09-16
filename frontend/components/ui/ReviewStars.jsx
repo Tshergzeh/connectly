@@ -27,7 +27,8 @@ export default function ReviewStars({ rating = 0 }) {
             <defs>
               {/* gradient with an abrupt stop at fillPercent */}
               <linearGradient id={gradId} x1="0" x2="1">
-                <stop offset={`${fillPercent}%`} stopColor="#FBBF24" /> {/* gold (tailwind yellow-400) */}
+                <stop offset={`${fillPercent}%`} stopColor="#FBBF24" />{' '}
+                {/* gold (tailwind yellow-400) */}
                 <stop offset={`${fillPercent}%`} stopColor="#D1D5DB" /> {/* gray-300 */}
               </linearGradient>
             </defs>
