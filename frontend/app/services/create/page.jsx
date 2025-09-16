@@ -70,12 +70,7 @@ export default function CreateServicePage() {
             onChange={handleChange}
           />
           <Input label="Category" name="category" value={form.category} onChange={handleChange} />
-          <Input 
-            label="Image" 
-            type="file" 
-            name="image" 
-            onChange={handleChange} 
-          />
+          <Input label="Image" type="file" name="image" onChange={handleChange} />
           <Button type="submit" className="w-full">
             Create Service
           </Button>
