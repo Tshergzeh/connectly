@@ -2,9 +2,13 @@ const ServiceService = require('../services/service.service');
 
 exports.createService = async (req, res) => {
   try {
+    console.log('BODY:', req.body);
+    console.log('FILE:', req.file);
+
     const service = await ServiceService.createService({
       providerId: req.user.id,
       ...req.body,
+      image: req.file ? `uploads/${req.file.filename}` : null,
     });
 
     res.status(201).json({
@@ -39,7 +43,12 @@ exports.getService = async (req, res) => {
 
 exports.updateService = async (req, res) => {
   try {
-    const updatedService = await ServiceService.updateService(req.params.id, req.user.id, req.body);
+    const updates = {
+      ...req.body,
+      image: req.file ? `uploads/${req.file.filename}` : undefined,
+    };
+
+    const updatedService = await ServiceService.updateService(req.params.id, req.user.id, updates);
 
     res.json({
       message: 'Service updated successfully',

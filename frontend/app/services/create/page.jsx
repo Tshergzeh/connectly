@@ -18,10 +18,10 @@ export default function CreateServicePage() {
   const router = useRouter();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type, files, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === 'file' ? files[0] : value,
     }));
   };
 
@@ -31,7 +31,15 @@ export default function CreateServicePage() {
 
     try {
       const token = sessionStorage.getItem('accessToken');
-      await api.post('/services', form, {
+
+      const formData = new FormData();
+      formData.append('title', form.title);
+      formData.append('description', form.description);
+      formData.append('price', form.price);
+      formData.append('category', form.category);
+      formData.append('image', form.image);
+
+      await api.post('/services', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage('Service created successfully!');
@@ -62,7 +70,12 @@ export default function CreateServicePage() {
             onChange={handleChange}
           />
           <Input label="Category" name="category" value={form.category} onChange={handleChange} />
-          <Input label="Image URL" name="image" value={form.image} onChange={handleChange} />
+          <Input 
+            label="Image" 
+            type="file" 
+            name="image" 
+            onChange={handleChange} 
+          />
           <Button type="submit" className="w-full">
             Create Service
           </Button>
