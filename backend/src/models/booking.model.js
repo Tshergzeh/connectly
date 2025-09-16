@@ -14,9 +14,25 @@ class BookingModel {
   static async getBookingsByCustomer({ customerId }) {
     console.log(customerId);
     const getBookingsByCustomerQueryResult = await pool.query(
-      `SELECT * FROM bookings 
-            WHERE customer_id = $1 
-            ORDER BY created_at DESC`,
+      `SELECT 
+        b.id AS booking_id,
+        b.status,
+        b.created_at,
+        b.updated_at,
+        s.id AS service_id,
+        s.title,
+        s.description,
+        s.price,
+        s.image,
+        r.id AS review_id,
+        r.rating,
+        r.comment,
+        r.created_at AS review_created_at
+      FROM bookings b
+      JOIN services s ON b.service_id = s.id
+      LEFT JOIN reviews r ON r.booking_id = b.id
+      WHERE b.customer_id = $1
+      ORDER BY b.created_at DESC;`,
       [customerId]
     );
     return getBookingsByCustomerQueryResult.rows;
