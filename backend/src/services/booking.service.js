@@ -1,10 +1,17 @@
 const { v4: uuidv4 } = require('uuid');
 const BookingModel = require('../models/booking.model');
+const ServiceModel = require('../models/service.model');
 
 class BookingService {
   static async createBooking({ serviceId, customerId }) {
     if (!serviceId || !customerId) {
       throw new Error('Missing required fields');
+    }
+
+    const service = await ServiceModel.getServiceById(serviceId);
+
+    if (service.is_active) {
+      throw new Error('Cannot book inactive service');
     }
 
     const id = uuidv4();
