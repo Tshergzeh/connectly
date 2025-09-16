@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const BookingModel = require('../models/booking.model');
 const ServiceModel = require('../models/service.model');
+const UserModel = require('../models/user.model');
 
 class BookingService {
   static async createBooking({ serviceId, customerId }) {
@@ -83,10 +84,20 @@ class BookingService {
   }
 
   static async getBookingsByProvider(providerId) {
+    const user = await UserModel.findUserById(providerId.providerId);
+    if (!user.is_provider) {
+      throw new Error('Not authorized as provider');
+    }
+
     return await BookingModel.getBookingsByProvider(providerId);
   }
 
   static async getBookingsByProviderAndStatus({ providerId, status }) {
+    const user = await UserModel.findUserById(providerId);
+    if (!user.is_provider) {
+      throw new Error('Not authorized as provider');
+    }
+
     if (
       status !== 'Pending' &&
       status !== 'Paid' &&
