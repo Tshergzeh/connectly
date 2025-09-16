@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "src/server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit --runInBand",
     "prepare": "husky",
     "migrate": "npx dotenv -e .env -- npx node-pg-migrate up",
     "migrate:test": "npx dotenv -e .env.test -- npx node-pg-migrate up"
