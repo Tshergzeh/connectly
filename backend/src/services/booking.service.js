@@ -10,7 +10,7 @@ class BookingService {
 
     const service = await ServiceModel.getServiceById(serviceId);
 
-    if (service.is_active) {
+    if (!service.is_active) {
       throw new Error('Cannot book inactive service');
     }
 
