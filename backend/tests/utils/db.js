@@ -1,4 +1,4 @@
-const { vd: uuidv4 } = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 
 const pool = require('../../src/config/db');
