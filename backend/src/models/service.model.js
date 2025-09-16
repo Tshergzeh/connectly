@@ -13,12 +13,34 @@ class ServiceModel {
   }
 
   static async getAllServices() {
-    const result = await pool.query(`SELECT * FROM services ORDER BY created_at DESC`);
+    const result = await pool.query(
+      `SELECT 
+        s.*,
+        COALESCE(AVG(r.rating), 0) AS average_rating,
+        COUNT(r.id) AS review_count
+      FROM services s
+      LEFT JOIN bookings b ON b.service_id = s.id
+      LEFT JOIN reviews r ON r.booking_id = b.id
+      GROUP BY s.id
+      ORDER BY created_at DESC;`
+    );
     return result.rows;
   }
 
   static async getServiceById(id) {
-    const result = await pool.query(`SELECT * FROM services WHERE id = $1`, [id]);
+    const result = await pool.query(
+      `SELECT 
+        s.*,
+        COALESCE(AVG(r.rating), 0) AS average_rating,
+        COUNT(r.id) AS review_count
+      FROM services s
+      LEFT JOIN bookings b ON b.service_id = s.id
+      LEFT JOIN reviews r ON r.booking_id = b.id
+      WHERE s.id = $1
+      GROUP BY s.id
+      ORDER BY created_at DESC;`,
+      [id]
+    );
     return result.rows[0];
   }
 
