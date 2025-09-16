@@ -8,6 +8,7 @@ const app = express();
 const healthRoutes = require('./routes/health.routes');
 const authRoutes = require('./routes/auth.routes');
 const serviceRoutes = require('./routes/service.routes');
+const bookingRoutes = require('./routes/booking.routes');
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/bookings', bookingRoutes);
 app.use('/api', healthRoutes);
 
 module.exports = app;
