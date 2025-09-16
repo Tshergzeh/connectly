@@ -14,7 +14,7 @@ export default function ServiceCard({ service }) {
         <p className="text-sm text-gray-600">{service.description}</p>
         <div className="flex items-center justify-between mt-3">
           <span className="text-indigo-600 font-bold">${service.price}</span>
-          <ReviewStars rating={service.rating} />
+          <ReviewStars rating={service.average_rating} />
         </div>
         <Button className="w-full mt-3">Book Now</Button>
       </div>
