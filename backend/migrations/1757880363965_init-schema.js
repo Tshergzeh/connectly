@@ -1,5 +1,3 @@
-const { hash } = require('bcrypt');
-
 /**
  * @type {import('node-pg-migrate').ColumnDefinitions | undefined}
  */
