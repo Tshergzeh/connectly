@@ -37,11 +37,7 @@ export default function ServiceCard({ service }) {
           <span className="text-indigo-600 font-bold">${service.price}</span>
           <ReviewStars rating={service.average_rating} />
         </div>
-        <Button 
-          className="w-full mt-3"
-          onClick={handleBooking}
-          disabled={loading}
-        >
+        <Button className="w-full mt-3" onClick={handleBooking} disabled={loading}>
           {loading ? 'Booking...' : 'Book Now'}
         </Button>
       </div>
