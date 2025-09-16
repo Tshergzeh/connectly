@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const ReviewModel = require('../models/review.model');
 const BookingModel = require('../models/booking.model');
+const ServiceModel = require('../models/service.model');
 
 class ReviewService {
   static async createReview({ customerId, bookingId, rating, comment }) {
@@ -9,6 +10,11 @@ class ReviewService {
     }
 
     const booking = await BookingModel.getBookingById(bookingId);
+    const service = await ServiceModel.getServiceById(booking.service_id);
+
+    if (service.provider_id === customerId) {
+      throw new Error('Cannot review your own service');
+    }
 
     if (booking.customer_id !== customerId) {
       throw new Error('Not authorized to review this booking');
