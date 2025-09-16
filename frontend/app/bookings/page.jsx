@@ -19,23 +19,7 @@ export default function BookingsPage() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const bookingsData = await Promise.all(
-          res.data.map(async (b) => {
-            const serviceRes = await api.get(`/services/${b.service_id}`, {
-              Authorization: `Bearer ${token}`,
-            });
-
-            let review = null;
-            const reviewRes = await api.get(`/reviews/booking/${b.id}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            review = reviewRes.data;
-
-            return { ...b, service: serviceRes.data, review };
-          })
-        );
-
-        setBookings(bookingsData);
+        setBookings(res.data);
       } catch (error) {
         console.error('Error fetching bookings:', error);
       } finally {
@@ -57,7 +41,7 @@ export default function BookingsPage() {
       {bookings.length === 0 && <p>You haven't booked any services yet.</p>}
 
       {bookings.map((b) => (
-        <div key={b.id} className="p-4 rounded-lg shadow flex items-start gap-4">
+        <div key={b.id} className="p-4 rounded-lg shadow flex items-start gap-4 mt-3">
           <img
             src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${b.service.image}`}
             alt={b.service.title}
