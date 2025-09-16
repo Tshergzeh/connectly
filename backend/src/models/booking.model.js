@@ -87,6 +87,7 @@ class BookingModel {
             bookings.service_id, 
             bookings.customer_id, 
             bookings.payment_id, 
+            bookings.status,
             bookings.created_at, 
             bookings.updated_at
         FROM public.bookings
