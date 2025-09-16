@@ -53,6 +53,25 @@ class BookingService {
 
     return await BookingModel.updateBookingStatus({ bookingId, status });
   }
+
+  static async getBookingsByProvider(providerId) {
+    return await BookingModel.getBookingsByProvider(providerId);
+  }
+
+  static async getBookingsByProviderAndStatus({ providerId, status }) {
+    if (
+      status !== 'Pending' &&
+      status !== 'Paid' &&
+      status !== 'Completed' &&
+      status !== 'Cancelled'
+    ) {
+      throw new Error('Invalid status');
+    }
+    return await BookingModel.getBookingsByProviderAndStatus({
+      providerId,
+      status,
+    });
+  }
 }
 
 module.exports = BookingService;

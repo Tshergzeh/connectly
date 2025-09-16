@@ -55,3 +55,28 @@ exports.updateBookingStatus = async (req, res) => {
     res.status(500).json({ error: 'Error updating booking status' });
   }
 };
+
+exports.getBookingsByProvider = async (req, res) => {
+  try {
+    const bookingsByProvider = await BookingService.getBookingsByProvider({
+      providerId: req.user.id,
+    });
+    res.json(bookingsByProvider);
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ error: 'Error fetching bookings' });
+  }
+};
+
+exports.getBookingsByProviderAndStatus = async (req, res) => {
+  try {
+    const bookingsByProviderAndStatus = await BookingService.getBookingsByProviderAndStatus({
+      providerId: req.user.id,
+      status: req.params.id,
+    });
+    res.json(bookingsByProviderAndStatus);
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ error: 'Error fetching bookings' });
+  }
+};

@@ -41,6 +41,48 @@ class BookingModel {
     );
     return updateBookingStatusQueryResult.rows[0];
   }
+
+  static async getBookingsByProvider({ providerId }) {
+    const getBookingsByProviderQueryResult = await pool.query(
+      `SELECT 
+            services.provider_id, 
+            bookings.id, 
+            bookings.service_id, 
+            bookings.customer_id, 
+            bookings.status, 
+            bookings.payment_id, 
+            bookings.created_at, 
+            bookings.updated_at
+        FROM public.bookings
+        JOIN public.services
+        ON bookings.service_id = services.id
+        WHERE provider_id = $1
+        ORDER BY created_at DESC `,
+      [providerId]
+    );
+    return getBookingsByProviderQueryResult.rows;
+  }
+
+  static async getBookingsByProviderAndStatus({ providerId, status }) {
+    const getBookingsByProviderQueryResult = await pool.query(
+      `SELECT 
+            services.provider_id, 
+            bookings.id, 
+            bookings.service_id, 
+            bookings.customer_id, 
+            bookings.payment_id, 
+            bookings.created_at, 
+            bookings.updated_at
+        FROM public.bookings
+        JOIN public.services
+        ON bookings.service_id = services.id
+        WHERE provider_id = $1
+        AND status = $2
+        ORDER BY created_at DESC `,
+      [providerId, status]
+    );
+    return getBookingsByProviderQueryResult.rows;
+  }
 }
 
 module.exports = BookingModel;
