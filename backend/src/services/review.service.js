@@ -40,6 +40,20 @@ class ReviewService {
 
     return await ReviewModel.getReviewsByService({ serviceId });
   }
+
+  static async getReviewByBookingId(bookingId) {
+    if (!bookingId) {
+      throw new Error('Missing booking ID');
+    }
+
+    const review = await ReviewModel.getReviewByBookingId(bookingId);
+
+    if (!review) {
+      return null;
+    }
+
+    return review;
+  }
 }
 
 module.exports = ReviewService;

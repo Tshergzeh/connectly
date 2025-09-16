@@ -24,3 +24,19 @@ exports.getReviewsByService = async (req, res) => {
     res.status(500).json({ error: 'Error getting reviews' });
   }
 };
+
+exports.getReviewByBookingId = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const review = await ReviewService.getReviewByBookingId(bookingId);
+
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    res.json(review);
+  } catch (error) {
+    console.error('Error fetching review:', error);
+    res.status(500).json({ error: 'Error fetching review' });
+  }
+};

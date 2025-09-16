@@ -23,6 +23,16 @@ class ReviewModel {
     );
     return getReviewsByServiceQueryResult.rows;
   }
+
+  static async getReviewByBookingId(bookingId) {
+    const result = await pool.query(
+      `SELECT id, booking_id, rating, comment, created_at
+      FROM reviews
+      WHERE booking_id = $1`,
+      [bookingId]
+    );
+    return result.rows[0];
+  }
 }
 
 module.exports = ReviewModel;
