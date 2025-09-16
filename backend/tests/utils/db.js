@@ -14,13 +14,13 @@ async function seedData() {
 
   await pool.query(
     `INSERT INTO users (id, email, hashed_password, name, is_customer, is_provider)
-        VALUES ($1, $2, $3, $4, $5)`,
+        VALUES ($1, $2, $3, $4, $5, $6)`,
     [customerId, 'customer@test.com', hashedPassword, 'Test Customer', true, false]
   );
 
   await pool.query(
     `INSERT INTO users (id, email, hashed_password, name, is_provider, is_customer)
-        VALUES ($1, $2, $3, $4, $5)`,
+        VALUES ($1, $2, $3, $4, $5, $6)`,
     [providerId, 'provider@test.com', hashedPassword, 'Test Provider', true, false]
   );
 
