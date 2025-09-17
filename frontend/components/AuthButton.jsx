@@ -19,6 +19,7 @@ export default function AuthButton() {
   }, []);
 
   const handleLogout = () => {
+    sessionStorage.removeItem('user');
     sessionStorage.removeItem('accessToken');
     window.dispatchEvent(new Event('authChange'));
     router.push('/login');

@@ -7,17 +7,19 @@ import { useState, useEffect } from 'react';
 import AuthButton from '@/components/AuthButton';
 
 export default function RootLayout({ children }) {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('accessToken');
-    setLoggedIn(!!token);
+    const loadUser = () => {
+      const storedUser = sessionStorage.getItem('user');
+      setUser(storedUser ? JSON.parse(storedUser) : null);
+    };
+
+    loadUser();
+    window.addEventListener('authChange', loadUser);
+    return () => window.removeEventListener('authChange', loadUser);
   }, []);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('accessToken');
-    window.location.href = '/login';
-  };
   return (
     <html lang="en">
       <body className="bg-gray-50 text-gray-900">
@@ -26,12 +28,23 @@ export default function RootLayout({ children }) {
             Connectly
           </Link>
           <div className="space-x-4">
-            <Link href="/services" className="text-gray-600">
-              Services
-            </Link>
-            <Link href="/bookings" className="text-gray-600">
-              My Bookings
-            </Link>
+            {user?.is_customer && (
+              <>
+                <Link href="/services" className="text-gray-600">
+                  Services
+                </Link>
+                <Link href="/bookings" className="text-gray-600">
+                  My Bookings
+                </Link>
+              </>
+            )}
+
+            {user?.is_provider && (
+              <Link href="/provider/bookings" className="text-gray-600">
+                Provider Dashboard
+              </Link>
+            )}
+
             <AuthButton />
           </div>
         </nav>

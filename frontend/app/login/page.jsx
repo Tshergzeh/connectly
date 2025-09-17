@@ -29,6 +29,7 @@ export default function LoginPage() {
       });
       const { accessToken, user } = loginResponse.data;
       sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('user', JSON.stringify(user));
       window.dispatchEvent(new Event('authChange'));
       setMessage('Login successful!');
 
