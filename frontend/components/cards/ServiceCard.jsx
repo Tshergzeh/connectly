@@ -4,6 +4,7 @@ import { useState } from 'react';
 import ReviewStars from '../ui/ReviewStars';
 import Button from '../ui/Button';
 import { createBooking } from '@/lib/bookings';
+import { initialisePayment } from '@/lib/payments';
 
 export default function ServiceCard({ service }) {
   const router = useRouter();
@@ -12,12 +13,18 @@ export default function ServiceCard({ service }) {
   const handleBooking = async () => {
     try {
       setLoading(true);
-      await createBooking(service.id);
-      alert('Booking created successfully');
-      // redirect to payments page
+
+      const booking = await createBooking(service.id);
+
+      const payment = await initialisePayment({
+        bookingId: booking.id,
+        amount: service.price,
+      });
+
+      window.location.href = payment.authorization_url;
     } catch (error) {
-      console.error('Error creating booking:', error);
-      alert(error.response?.data?.error || 'Failed to create booking');
+      console.error('Error during booking/payment:', error);
+      alert(error.response?.data?.error || 'Failed to process booking');
     } finally {
       setLoading(false);
     }
