@@ -24,6 +24,11 @@ class PaymentService {
       }
     );
 
+    await BookingModel.storePaymentId({
+      paymentId: response.data.data.reference,
+      bookingId,
+    });
+
     return response.data.data;
   }
 }

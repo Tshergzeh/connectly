@@ -53,7 +53,7 @@ exports.up = (pgm) => {
       onUpdate: 'CASCADE',
     },
     status: { type: 'text', notNull: true },
-    payment_id: { type: 'uuid' },
+    payment_id: { type: 'text' },
     created_at: {
       type: 'timestamptz',
       notNull: true,

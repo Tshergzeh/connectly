@@ -100,6 +100,14 @@ class BookingModel {
     );
     return getBookingsByProviderQueryResult.rows;
   }
+
+  static async storePaymentId({ paymentId, bookingId }) {
+    const result = await pool.query(`UPDATE bookings SET payment_id = $1 WHERE id = $2`, [
+      paymentId,
+      bookingId,
+    ]);
+    return result.rows[0];
+  }
 }
 
 module.exports = BookingModel;
