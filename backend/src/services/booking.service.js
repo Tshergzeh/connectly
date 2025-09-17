@@ -83,6 +83,21 @@ class BookingService {
     return await BookingModel.updateBookingStatus({ bookingId, status });
   }
 
+  static async updateBookingStatusByReference({ reference, status }) {
+    if (!reference || !status) {
+      throw new Error('Missing required fields');
+    }
+
+    const existingBooking = await BookingModel.getBookingByReference(reference);
+    const bookingId = existingBooking.id;
+
+    if (status !== 'Paid' && status !== 'Completed' && status !== 'Cancelled') {
+      throw new Error('Invalid status');
+    }
+
+    return await BookingModel.updateBookingStatus({ bookingId, status });
+  }
+
   static async getBookingsByProvider(providerId) {
     const user = await UserModel.findUserById(providerId.providerId);
     if (!user.is_provider) {

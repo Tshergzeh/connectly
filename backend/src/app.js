@@ -1,9 +1,19 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const app = express();
+
+app.post(
+  '/api/payments/webhook',
+  bodyParser.raw({ type: 'application/json' }),
+  (req, res, next) => {
+    req.body = JSON.parse(req.body.toString());
+    next();
+  }
+);
 
 const healthRoutes = require('./routes/health.routes');
 const authRoutes = require('./routes/auth.routes');

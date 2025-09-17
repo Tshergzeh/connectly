@@ -5,5 +5,6 @@ const paymentController = require('../controllers/payment.controller');
 const authenticate = require('../middleware/auth.middleware');
 
 router.post('/initialise', authenticate, paymentController.initialisePayment);
+router.post('/webhook', paymentController.handleWebhook);
 
 module.exports = router;

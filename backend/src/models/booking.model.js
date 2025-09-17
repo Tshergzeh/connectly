@@ -45,6 +45,11 @@ class BookingModel {
     return getBookingByIdQueryResult.rows[0];
   }
 
+  static async getBookingByReference(reference) {
+    const result = await pool.query(`SELECT * FROM bookings WHERE payment_id = $1`, [reference]);
+    return result.rows[0];
+  }
+
   static async updateBookingStatus({ bookingId, status }) {
     console.log(bookingId);
     console.log(status);

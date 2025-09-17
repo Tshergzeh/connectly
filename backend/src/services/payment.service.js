@@ -1,6 +1,8 @@
 const axios = require('axios');
+const { v4: uuidv4 } = require('uuid');
 
 const BookingModel = require('../models/booking.model');
+const PaymentModel = require('../models/payment.model');
 
 class PaymentService {
   static async initialisePayment({ bookingId, customerEmail, customerId, amount }) {
@@ -30,6 +32,11 @@ class PaymentService {
     });
 
     return response.data.data;
+  }
+
+  static async storePayment({ bookingId, amount, status }) {
+    const id = uuidv4();
+    await PaymentModel.storePayment({ id, bookingId, amount, status });
   }
 }
 
