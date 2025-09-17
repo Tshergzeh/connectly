@@ -34,7 +34,7 @@ export default function LoginPage() {
       if (user.is_provider && user.is_customer) {
         router.push('/dashboard');
       } else if (user.is_provider) {
-        router.push('/bookings/provider');
+        router.push('/provider/bookings');
       } else {
         router.push('/services');
       }

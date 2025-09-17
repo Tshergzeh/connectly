@@ -58,7 +58,7 @@ export default function ProviderBookingsPage() {
         </div>
       </div>
       {filtered.length === 0 ? (
-        <p>No bookings yet.</p>
+        <p className="text-gray-500">No bookings yet.</p>
       ) : (
         filtered.map((b) => (
           <BookingCard key={b.id} booking={b} onStatusChange={handleStatusChange} />
