@@ -60,8 +60,12 @@ export default function BookingsPage() {
                   Reviewed on {new Date(b.review.created_at).toLocaleDateString()}
                 </p>
               </div>
-            ) : (
+            ) : b.status === 'Completed' ? (
               <ReviewForm bookingId={b.id} />
+            ) : (
+              <p className="text-sm text-gray-500 mt-1">
+                You can leave a review once the booking has been completed.
+              </p>
             )}
           </div>
         </div>
