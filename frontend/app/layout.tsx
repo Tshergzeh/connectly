@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import './globals.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 
 import AuthButton from '@/components/AuthButton';
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
