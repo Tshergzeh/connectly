@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
 
             {user?.is_provider && (
               <>
-                <Link href="/services/create" className='text-gray-600'>
+                <Link href="/services/create" className="text-gray-600">
                   Create Service
                 </Link>
                 <Link href="/provider/bookings" className="text-gray-600">
