@@ -1,0 +1,30 @@
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+import api from '@/lib/api';
+
+export default function PaymentCallback({ searchParams }) {
+  const router = useRouter();
+  const { reference, bookingId } = searchParams;
+
+  useEffect(() => {
+    if (reference && bookingId) {
+      const verifyPayment = async () => {
+        try {
+          await api.post('/payments/verify', { reference, bookingId });
+          alert('Payment successfully');
+          router.push('/bookings');
+        } catch (error) {
+          console.error(error);
+          alert('Payment verification failed');
+          router.push('/services');
+        }
+      };
+
+      verifyPayment();
+    }
+  }, [reference, bookingId, router]);
+
+  return <p>Verifying payment...</p>;
+}

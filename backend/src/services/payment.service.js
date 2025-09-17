@@ -17,6 +17,7 @@ class PaymentService {
       {
         email: customerEmail,
         amount: amount * 100,
+        callback_url: `${process.env.FRONTEND_URL}/payment/callback?bookingId=${bookingId}`,
       },
       {
         headers: {

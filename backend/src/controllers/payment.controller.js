@@ -56,3 +56,24 @@ exports.handleWebhook = async (req, res) => {
     res.sendStatus(500);
   }
 };
+
+exports.verifyPayment = async (req, res) => {
+  const { reference, bookingId } = req.body;
+
+  try {
+    const paymentData = await PaymentService.verify(reference);
+
+    if (paymentData.status === 'success') {
+      await BookingService.updateBookingStatus({
+        bookingId,
+        status: 'Paid',
+        customerId: paymentData.customer.id,
+      });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: 'Payment verification failed' });
+  }
+};
