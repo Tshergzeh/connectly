@@ -11,10 +11,9 @@ class BookingModel {
     return createBookingQueryResult.rows[0];
   }
 
-  static async getBookingsByCustomer({ customerId }) {
-    console.log(customerId);
-    const getBookingsByCustomerQueryResult = await pool.query(
-      `SELECT 
+  static async getBookingsByCustomer({ customerId, limit = 10, cursor = null }) {
+    let query = `
+      SELECT 
         b.id AS booking_id,
         b.status,
         b.created_at,
@@ -32,10 +31,20 @@ class BookingModel {
       JOIN services s ON b.service_id = s.id
       LEFT JOIN reviews r ON r.booking_id = b.id
       WHERE b.customer_id = $1
-      ORDER BY b.created_at DESC;`,
-      [customerId]
-    );
-    return getBookingsByCustomerQueryResult.rows;
+    `;
+
+    const params = [customerId];
+
+    if (cursor) {
+      query += ` AND b.created_at < $2`;
+      params.push(cursor);
+    }
+
+    query += ` ORDER BY b.created_at DESC LIMIT $${params.length + 1};`;
+    params.push(limit);
+
+    const result = await pool.query(query, params);
+    return result.rows;
   }
 
   static async getBookingById(bookingId) {

@@ -26,8 +26,12 @@ class BookingService {
     });
   }
 
-  static async getBookingsByCustomer(customerId) {
-    const bookings = await BookingModel.getBookingsByCustomer(customerId);
+  static async getBookingsByCustomer({ customerId, limit, cursor }) {
+    const bookings = await BookingModel.getBookingsByCustomer({
+      customerId,
+      limit,
+      cursor,
+    });
     return bookings.map((booking) => ({
       id: booking.booking_id,
       status: booking.status,

@@ -19,10 +19,18 @@ exports.createBooking = async (req, res) => {
 
 exports.getBookingsByCustomer = async (req, res) => {
   try {
-    const bookingsByCustomer = await BookingService.getBookingsByCustomer({
+    const { limit = 10, cursor } = req.query;
+
+    const bookings = await BookingService.getBookingsByCustomer({
       customerId: req.user.id,
+      limit: parseInt(limit, 10),
+      cursor: cursor || null,
     });
-    res.json(bookingsByCustomer);
+    console.log(bookings);
+    res.json({
+      data: bookings,
+      nextCursor: bookings.length > 0 ? bookings[bookings.length - 1].created_at : null,
+    });
   } catch (error) {
     console.error('Error fetching bookings:', error);
     res.status(500).json({ error: 'Error fetching bookings' });
