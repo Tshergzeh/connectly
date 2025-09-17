@@ -6,13 +6,24 @@ import { useState, useEffect, ReactNode } from 'react';
 
 import AuthButton from '@/components/AuthButton';
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  hashed_password: string;
+  is_provider: boolean;
+  is_customer: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const loadUser = () => {
       const storedUser = sessionStorage.getItem('user');
-      setUser(storedUser ? JSON.parse(storedUser) : null);
+      setUser(storedUser ? (JSON.parse(storedUser) as User) : null);
     };
 
     loadUser();
