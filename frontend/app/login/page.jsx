@@ -28,6 +28,14 @@ export default function LoginPage() {
       const { accessToken, user } = loginResponse.data;
       sessionStorage.setItem('accessToken', accessToken);
       setMessage('Login successful!');
+
+      if (user.is_provider && user.is_customer) {
+        router.push('/dashboard');
+      } else if (user.is_provider) {
+        router.push('/bookings/provider');
+      } else {
+        router.push('/services');
+      }
       console.log('User:', user);
     } catch (error) {
       console.error('Login Error:', error);
