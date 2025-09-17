@@ -51,7 +51,7 @@ export default function ServicesPage() {
         {filtered.length > 0 ? (
           filtered.map((service) => <ServiceCard key={service.id} service={service} />)
         ) : (
-          <p>No services found.</p>
+          <p className="text-gray-500">No services found.</p>
         )}
       </div>
     </div>

@@ -38,7 +38,9 @@ export default function BookingsPage() {
     <div className="min-h-screen bg-gray-50 px-6 py-10">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">My Bookings</h1>
 
-      {bookings.length === 0 && <p>You haven't booked any services yet.</p>}
+      {bookings.length === 0 && (
+        <p className="text-gray-500">You haven't booked any services yet.</p>
+      )}
 
       {bookings.map((b) => (
         <div key={b.id} className="p-4 rounded-lg shadow flex items-start gap-4 mt-3">
