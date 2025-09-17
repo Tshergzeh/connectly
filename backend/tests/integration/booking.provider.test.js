@@ -42,7 +42,7 @@ describe('Booking API - Provider endpoints', () => {
 
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body[0].service_id).toBe(serviceId);
+    expect(res.body[0].service.id).toBe(serviceId);
   });
 
   it('should fetch bookings by provider and status', async () => {
