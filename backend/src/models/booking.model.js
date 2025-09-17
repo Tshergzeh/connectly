@@ -66,19 +66,25 @@ class BookingModel {
   static async getBookingsByProvider({ providerId }) {
     const getBookingsByProviderQueryResult = await pool.query(
       `SELECT 
-            services.provider_id, 
-            bookings.id, 
-            bookings.service_id, 
-            bookings.customer_id, 
-            bookings.status, 
-            bookings.payment_id, 
-            bookings.created_at, 
-            bookings.updated_at
-        FROM public.bookings
-        JOIN public.services
-        ON bookings.service_id = services.id
-        WHERE provider_id = $1
-        ORDER BY created_at DESC `,
+        services.provider_id, 
+        services.title,
+        services.price,
+        bookings.id, 
+        bookings.service_id, 
+        bookings.customer_id, 
+        users.name,
+        users.email,
+        bookings.status, 
+        bookings.payment_id, 
+        bookings.created_at, 
+        bookings.updated_at
+      FROM bookings
+      JOIN services
+      ON bookings.service_id = services.id
+      JOIN users
+      ON bookings.customer_id = users.id
+      WHERE provider_id = $1
+      ORDER BY created_at DESC`,
       [providerId]
     );
     return getBookingsByProviderQueryResult.rows;

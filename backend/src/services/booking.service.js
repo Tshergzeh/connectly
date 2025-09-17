@@ -104,7 +104,25 @@ class BookingService {
       throw new Error('Not authorized as provider');
     }
 
-    return await BookingModel.getBookingsByProvider(providerId);
+    const bookings = await BookingModel.getBookingsByProvider(providerId);
+    return bookings.map((booking) => ({
+      id: booking.id,
+      status: booking.status,
+      payment_id: booking.payment_id,
+      created_at: booking.created_at,
+      updated_at: booking.updated_at,
+      service: {
+        id: booking.service_id,
+        provider_id: booking.provider_id,
+        title: booking.title,
+        price: booking.price,
+      },
+      customer: {
+        id: booking.customer_id,
+        name: booking.name,
+        email: booking.email,
+      },
+    }));
   }
 
   static async getBookingsByProviderAndStatus({ providerId, status }) {
