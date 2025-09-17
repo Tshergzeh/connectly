@@ -10,6 +10,9 @@
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit --runInBand",
     "prepare": "husky",
     "migrate": "npx node-pg-migrate up",
+    "migrate:down": "npx node-pg-migrate down",
+    "migrate:create": "npx node-pg-migrate create",
+    "migrate:reset": "npx node-pg-migrate reset",
     "migrate:test": "npx dotenv -e .env.test -- npx node-pg-migrate up",
     "start": "node src/server.js"
   },
