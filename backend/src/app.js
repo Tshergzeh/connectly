@@ -10,6 +10,7 @@ const authRoutes = require('./routes/auth.routes');
 const serviceRoutes = require('./routes/service.routes');
 const bookingRoutes = require('./routes/booking.routes');
 const reviewRoutes = require('./routes/review.routes');
+const paymentRoutes = require('./routes/payment.routes');
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/payments', paymentRoutes);
 app.use('/api', healthRoutes);
 
 module.exports = app;
