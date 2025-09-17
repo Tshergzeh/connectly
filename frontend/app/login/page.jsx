@@ -31,9 +31,7 @@ export default function LoginPage() {
       sessionStorage.setItem('accessToken', accessToken);
       setMessage('Login successful!');
 
-      if (user.is_provider && user.is_customer) {
-        router.push('/dashboard');
-      } else if (user.is_provider) {
+      if (user.is_provider) {
         router.push('/provider/bookings');
       } else {
         router.push('/services');
