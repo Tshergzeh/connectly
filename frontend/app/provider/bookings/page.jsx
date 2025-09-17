@@ -29,6 +29,10 @@ export default function ProviderBookingsPage() {
     fetchProviderBookings();
   }, []);
 
+  const handleStatusChange = (id, newStatus) => {
+    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status: newStatus } : b)));
+  };
+
   const filtered = bookings.filter((b) => {
     return !statusFilter || b.status === statusFilter;
   });
@@ -56,7 +60,9 @@ export default function ProviderBookingsPage() {
       {filtered.length === 0 ? (
         <p>No bookings yet.</p>
       ) : (
-        filtered.map((b) => <BookingCard key={b.id} booking={b} />)
+        filtered.map((b) => (
+          <BookingCard key={b.id} booking={b} onStatusChange={handleStatusChange} />
+        ))
       )}
     </div>
   );

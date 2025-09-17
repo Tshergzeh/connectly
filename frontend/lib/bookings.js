@@ -7,3 +7,12 @@ export async function createBooking(serviceId) {
   });
   return res.data.booking;
 }
+
+export async function updateBookingStatus(bookingId, status) {
+  const token = sessionStorage.getItem('accessToken');
+  return await api.patch(
+    `/bookings/${bookingId}`,
+    { status },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}

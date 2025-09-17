@@ -1,4 +1,22 @@
-export default function BookingCard({ booking }) {
+import { useState } from 'react';
+
+import { updateBookingStatus } from '@/lib/bookings';
+
+export default function BookingCard({ booking, onStatusChange }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleUpdate = async (newStatus) => {
+    try {
+      setLoading(true);
+      await updateBookingStatus(booking.id, newStatus);
+      onStatusChange(booking.id, newStatus);
+    } catch (error) {
+      console.error('Error updating status:', error);
+      alert(error.response?.data?.error || 'Failed to update booking');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="p-4 rounded-lg shadow bg-white mb-4">
       <h2 className="font-semibold text-lg text-gray-800">{booking.service.title}</h2>
@@ -13,6 +31,25 @@ export default function BookingCard({ booking }) {
       <p className="text-xs text-gray-500">
         Booked on {new Date(booking.created_at).toLocaleDateString()}
       </p>
+
+      {booking.status !== 'Completed' && booking.status !== 'Cancelled' && (
+        <div className="flex gap-2 mt-3">
+          <button
+            className="px-3 py-1 bg-green-600 text-white rounded text-sm"
+            onClick={() => handleUpdate('Completed')}
+            disabled={loading}
+          >
+            {loading ? 'Updating...' : 'Mark Completed'}
+          </button>
+          <button
+            className="px-3 py-1 bg-red-600 text-white rounded text-sm"
+            onClick={() => handleUpdate('Cancelled')}
+            disabled={loading}
+          >
+            {loading ? 'Updating...' : 'Cancel'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
