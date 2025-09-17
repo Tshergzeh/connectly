@@ -4,6 +4,8 @@ import Link from 'next/link';
 import './globals.css';
 import { useState, useEffect } from 'react';
 
+import AuthButton from '@/components/AuthButton';
+
 export default function RootLayout({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -30,15 +32,7 @@ export default function RootLayout({ children }) {
             <Link href="/bookings" className="text-gray-600">
               My Bookings
             </Link>
-            {loggedIn ? (
-              <button onClick={handleLogout} className="text-red-600 hover:underline">
-                Logout
-              </button>
-            ) : (
-              <Link href="/login" className="text-gray-600">
-                Login
-              </Link>
-            )}
+            <AuthButton />
           </div>
         </nav>
         <main className="px-6 py-10">{children}</main>

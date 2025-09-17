@@ -29,6 +29,7 @@ export default function LoginPage() {
       });
       const { accessToken, user } = loginResponse.data;
       sessionStorage.setItem('accessToken', accessToken);
+      window.dispatchEvent(new Event('authChange'));
       setMessage('Login successful!');
 
       if (user.is_provider) {
