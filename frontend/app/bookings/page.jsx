@@ -9,24 +9,36 @@ import ReviewForm from '@/components/ReviewForm';
 export default function BookingsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [nextCursor, setNextCursor] = useState(null);
+
+  const fetchBookings = async (cursor = null) => {
+    try {
+      if (cursor) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
+
+      const token = sessionStorage.getItem('accessToken');
+
+      const res = await api.get('/bookings', {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { limit: 10, cursor },
+      });
+
+      setBookings((prev) => (cursor ? [...prev, ...res.data.data] : res.data.data));
+
+      setNextCursor(res.data.nextCursor);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const token = sessionStorage.getItem('accessToken');
-
-        const res = await api.get('/bookings', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setBookings(res.data);
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBookings();
   }, []);
 
@@ -72,6 +84,16 @@ export default function BookingsPage() {
           </div>
         </div>
       ))}
+
+      {nextCursor && (
+        <button
+          onClick={() => fetchBookings(nextCursor)}
+          disabled={loadingMore}
+          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
+        >
+          {loadingMore ? 'Loading...' : 'Load More'}
+        </button>
+      )}
     </div>
   );
 }
