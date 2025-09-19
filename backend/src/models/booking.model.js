@@ -72,9 +72,9 @@ class BookingModel {
     return updateBookingStatusQueryResult.rows[0];
   }
 
-  static async getBookingsByProvider({ providerId }) {
-    const getBookingsByProviderQueryResult = await pool.query(
-      `SELECT 
+  static async getBookingsByProvider({ providerId, limit = 10, cursor = null }) {
+    let query = `
+      SELECT 
         services.provider_id, 
         services.title,
         services.price,
@@ -93,10 +93,20 @@ class BookingModel {
       JOIN users
       ON bookings.customer_id = users.id
       WHERE provider_id = $1
-      ORDER BY created_at DESC`,
-      [providerId]
-    );
-    return getBookingsByProviderQueryResult.rows;
+    `;
+
+    const params = [providerId];
+
+    if (cursor) {
+      query += ` AND bookings.created_at < $2`;
+      params.push(cursor);
+    }
+
+    query += ` ORDER BY bookings.created_at DESC LIMIT $${params.length + 1};`;
+    params.push(limit);
+
+    const result = await pool.query(query, params);
+    return result.rows;
   }
 
   static async getBookingsByProviderAndStatus({ providerId, status }) {

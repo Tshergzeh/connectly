@@ -9,23 +9,37 @@ import CategoryChip from '@/components/ui/CategoryChip';
 export default function ProviderBookingsPage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [nextCursor, setNextCursor] = useState(null);
   const [statusFilter, setStatusFilter] = useState('');
 
-  useEffect(() => {
-    const fetchProviderBookings = async () => {
-      try {
-        const token = sessionStorage.getItem('accessToken');
-        const res = await api.get('/bookings/provider', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setBookings(res.data);
-      } catch (error) {
-        console.error('Error fetching provider booking:', error);
-      } finally {
-        setLoading(false);
+  const fetchProviderBookings = async (cursor = null) => {
+    try {
+      if (cursor) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
       }
-    };
 
+      const token = sessionStorage.getItem('accessToken');
+
+      const res = await api.get('/bookings/provider', {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { limit: 10, cursor },
+      });
+
+      setBookings((prev) => (cursor ? [...prev, ...res.data.data] : res.data.data));
+
+      setNextCursor(res.data.nextCursor);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProviderBookings();
   }, []);
 
@@ -63,6 +77,16 @@ export default function ProviderBookingsPage() {
         filtered.map((b) => (
           <BookingCard key={b.id} booking={b} onStatusChange={handleStatusChange} />
         ))
+      )}
+
+      {nextCursor && (
+        <button
+          onClick={() => fetchProviderBookings(nextCursor)}
+          disabled={loadingMore}
+          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
+        >
+          {loadingMore ? 'Loading...' : 'Load More'}
+        </button>
       )}
     </div>
   );

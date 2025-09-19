@@ -102,13 +102,17 @@ class BookingService {
     return await BookingModel.updateBookingStatus({ bookingId, status });
   }
 
-  static async getBookingsByProvider(providerId) {
-    const user = await UserModel.findUserById(providerId.providerId);
+  static async getBookingsByProvider({ providerId, limit, cursor }) {
+    const user = await UserModel.findUserById(providerId);
     if (!user.is_provider) {
       throw new Error('Not authorized as provider');
     }
 
-    const bookings = await BookingModel.getBookingsByProvider(providerId);
+    const bookings = await BookingModel.getBookingsByProvider({
+      providerId,
+      limit,
+      cursor,
+    });
     return bookings.map((booking) => ({
       id: booking.id,
       status: booking.status,
