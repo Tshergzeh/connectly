@@ -84,11 +84,18 @@ exports.getBookingsByProvider = async (req, res) => {
 
 exports.getBookingsByProviderAndStatus = async (req, res) => {
   try {
-    const bookingsByProviderAndStatus = await BookingService.getBookingsByProviderAndStatus({
+    const { limit = 10, cursor } = req.query;
+
+    const bookings = await BookingService.getBookingsByProviderAndStatus({
       providerId: req.user.id,
       status: req.params.id,
+      limit: parseInt(limit, 10),
+      cursor: cursor || null,
     });
-    res.json(bookingsByProviderAndStatus);
+    res.json({
+      data: bookings,
+      nextCursor: bookings.length > 0 ? bookings[bookings.length - 1].created_at : null,
+    });
   } catch (error) {
     console.error('Error fetching bookings:', error);
     res.status(500).json({ error: 'Error fetching bookings' });

@@ -109,32 +109,42 @@ class BookingModel {
     return result.rows;
   }
 
-  static async getBookingsByProviderAndStatus({ providerId, status }) {
-    const getBookingsByProviderQueryResult = await pool.query(
-      `SELECT 
-          services.provider_id, 
-          services.title,
-          services.price,
-          bookings.id, 
-          bookings.service_id, 
-          bookings.customer_id, 
-          users.name,
-          users.email,
-          bookings.status, 
-          bookings.payment_id, 
-          bookings.created_at, 
-          bookings.updated_at
-        FROM bookings
-        JOIN services
-        ON bookings.service_id = services.id
-        JOIN users
-        ON bookings.customer_id = users.id
-        WHERE provider_id = $1
-        AND status = $2
-        ORDER BY created_at DESC `,
-      [providerId, status]
-    );
-    return getBookingsByProviderQueryResult.rows;
+  static async getBookingsByProviderAndStatus({ providerId, status, limit = 10, cursor }) {
+    let query = `
+      SELECT 
+        services.provider_id, 
+        services.title,
+        services.price,
+        bookings.id, 
+        bookings.service_id, 
+        bookings.customer_id, 
+        users.name,
+        users.email,
+        bookings.status, 
+        bookings.payment_id, 
+        bookings.created_at, 
+        bookings.updated_at
+      FROM bookings
+      JOIN services
+      ON bookings.service_id = services.id
+      JOIN users
+      ON bookings.customer_id = users.id
+      WHERE provider_id = $1
+      AND status = $2
+    `;
+
+    const params = [providerId, status];
+
+    if (cursor) {
+      query += ` AND bookings.created_at < $3`;
+      params.push(cursor);
+    }
+
+    query += ` ORDER BY bookings.created_at DESC LIMIT $${params.length + 1};`;
+    params.push(limit);
+
+    const result = await pool.query(query, params);
+    return result.rows;
   }
 
   static async storePaymentId({ paymentId, bookingId }) {
