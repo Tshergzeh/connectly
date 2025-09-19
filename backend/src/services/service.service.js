@@ -18,8 +18,8 @@ class ServiceService {
     });
   }
 
-  static async listServices() {
-    return await ServiceModel.getAllServices();
+  static async listServices({ limit, cursor }) {
+    return await ServiceModel.getAllServices({ limit, cursor });
   }
 
   static async getService(id) {

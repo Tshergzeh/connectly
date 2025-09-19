@@ -10,16 +10,33 @@ export default function ServicesPage() {
   const [services, setServices] = useState([]);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [nextCursor, setNextCursor] = useState(null);
+
+  const fetchServices = async (cursor = null) => {
+    try {
+      if (cursor) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
+      const res = await api.get('/services', {
+        params: { limit: 10, cursor },
+      });
+
+      setServices((prev) => (cursor ? [...prev, ...res.data.data] : res.data.data));
+
+      setNextCursor(res.data.nextCursor);
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const res = await api.get('/services');
-        setServices(res.data);
-      } catch (error) {
-        console.error('Error fetching services:', error);
-      }
-    };
     fetchServices();
   }, []);
 
@@ -28,6 +45,10 @@ export default function ServicesPage() {
       s.title.toLowerCase().includes(query.toLowerCase()) && (!category || s.category === category)
     );
   });
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
@@ -54,6 +75,16 @@ export default function ServicesPage() {
           <p className="text-gray-500">No services found.</p>
         )}
       </div>
+
+      {nextCursor && (
+        <button
+          onClick={() => fetchServices(nextCursor)}
+          disabled={loadingMore}
+          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
+        >
+          {loadingMore ? 'Loading...' : 'Load More'}
+        </button>
+      )}
     </div>
   );
 }

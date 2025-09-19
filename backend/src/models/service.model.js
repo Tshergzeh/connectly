@@ -12,18 +12,30 @@ class ServiceModel {
     return result.rows[0];
   }
 
-  static async getAllServices() {
-    const result = await pool.query(
-      `SELECT 
+  static async getAllServices({ limit = 10, cursor = null }) {
+    let query = `
+      SELECT 
         s.*,
         COALESCE(AVG(r.rating), 0) AS average_rating,
         COUNT(r.id) AS review_count
       FROM services s
       LEFT JOIN bookings b ON b.service_id = s.id
       LEFT JOIN reviews r ON r.booking_id = b.id
-      GROUP BY s.id
-      ORDER BY created_at DESC;`
-    );
+    `;
+
+    const params = [];
+
+    if (cursor) {
+      query += `WHERE s.created_at < $1`;
+      params.push(cursor);
+    }
+
+    query += ` GROUP BY s.id`;
+
+    query += ` ORDER BY s.created_at DESC LIMIT $${params.length + 1};`;
+    params.push(limit);
+
+    const result = await pool.query(query, params);
     return result.rows;
   }
 

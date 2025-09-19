@@ -23,8 +23,16 @@ exports.createService = async (req, res) => {
 
 exports.listServices = async (req, res) => {
   try {
-    const services = await ServiceService.listServices();
-    res.json(services);
+    const { limit = 10, cursor } = req.query;
+
+    const services = await ServiceService.listServices({
+      limit: parseInt(limit, 10),
+      cursor: cursor || null,
+    });
+    res.json({
+      data: services,
+      nextCursor: services.length > 0 ? services[services.length - 1].created_at : null,
+    });
   } catch (error) {
     console.error('Error fetching services:', error);
     res.status(500).json({ error: 'Error fetching services' });
