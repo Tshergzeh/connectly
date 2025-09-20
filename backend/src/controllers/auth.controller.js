@@ -37,6 +37,7 @@ async function login(req, res) {
     }
 
     const { user, accessToken, refreshToken } = await AuthService.login({ email, password });
+    const { hashed_password, ...userWithoutPassword } = user;
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -48,7 +49,7 @@ async function login(req, res) {
     res.json({
       message: 'Login successful',
       accessToken,
-      user,
+      user: userWithoutPassword,
     });
   } catch (error) {
     console.error('Error during login:', error);
