@@ -1,5 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
+
 const ServiceModel = require('../models/service.model');
+const redis = require('../config/redis');
 
 class ServiceService {
   static async createService({ providerId, title, description, price, category, image }) {
@@ -19,7 +21,17 @@ class ServiceService {
   }
 
   static async listServices({ limit, cursor }) {
-    return await ServiceModel.getAllServices({ limit, cursor });
+    let services = [];
+    const redisKey = `servicesService:list:cursor:${cursor || 'NULL'}:limit:${limit}`;
+    let cached = await redis.get(redisKey);
+    if (cached) {
+      services = JSON.parse(cached);
+    } else {
+      services = await ServiceModel.getAllServices({ limit, cursor });
+      await redis.set(redisKey, JSON.stringify(services));
+      await redis.expire(redisKey, 60);
+    }
+    return services;
   }
 
   static async getService(id) {

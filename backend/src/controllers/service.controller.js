@@ -1,4 +1,5 @@
 const ServiceService = require('../services/service.service');
+const redis = require('../config/redis');
 
 exports.createService = async (req, res) => {
   try {
@@ -25,10 +26,21 @@ exports.listServices = async (req, res) => {
   try {
     const { limit = 10, cursor } = req.query;
 
-    const services = await ServiceService.listServices({
-      limit: parseInt(limit, 10),
-      cursor: cursor || null,
-    });
+    let services = [];
+
+    const redisKey = `servicesController:list:cursor:${cursor || 'NULL'}:limit:${limit}`;
+    let cached = await redis.get(redisKey);
+    if (cached) {
+      services = JSON.parse(cached);
+    } else {
+      services = await ServiceService.listServices({
+        limit: parseInt(limit, 10),
+        cursor: cursor || null,
+      });
+      await redis.set(redisKey, JSON.stringify(services));
+      await redis.expire(redisKey, 60);
+    }
+
     res.json({
       data: services,
       nextCursor: services.length > 0 ? services[services.length - 1].created_at : null,
