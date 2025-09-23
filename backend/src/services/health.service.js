@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const redisClient = require('../config/redis');
 const sgMail = require('@sendgrid/mail');
+const axios = require('axios');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -12,6 +13,14 @@ exports.getHealthStatus = async () => {
   } catch (error) {
     dbConnected = false;
   }
+
+  let paystackConnected = false;
+  try {
+    const response = await axios.get('https://api.paystack.co/balance', {
+      headers: { Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` },
+    });
+    paystackConnected = response.status === 200;
+  } catch (_) {}
 
   let redisConnected = false;
   try {
@@ -31,8 +40,10 @@ exports.getHealthStatus = async () => {
   } catch (_) {}
 
   return {
-    status: dbConnected && redisConnected && emailConnected ? 'ok' : 'degraded',
+    status:
+      dbConnected && paystackConnected && redisConnected && emailConnected ? 'ok' : 'degraded',
     dbConnected,
+    paystackConnected,
     redisConnected,
     emailConnected,
     timestamp: new Date().toISOString(),
