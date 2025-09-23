@@ -35,6 +35,7 @@ class AuthService {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
+    await pool.query(`DELETE FROM refresh_tokens WHERE user_id = $1`, [user.id]);
     await pool.query(
       `INSERT INTO refresh_tokens (token, user_id, expires_at)
             VALUES ($1, $2, NOW() + INTERVAL '7 days')`,
