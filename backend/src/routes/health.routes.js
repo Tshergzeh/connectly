@@ -1,34 +1,8 @@
-require('dotenv').config();
 const express = require('express');
-const pool = require('../config/db');
+const healthController = require('../controllers/health.controller');
 
 const router = express.Router();
 
-router.get('/health', async (req, res) => {
-  try {
-    const result = await pool.query(`
-            SELECT EXISTS (
-                SELECT 1
-                FROM information_schema.tables
-                WHERE table_schema = 'public'
-                AND table_name = 'users'
-            )
-        `);
-
-    res.json({
-      status: 'ok',
-      dbConnected: true,
-      usersTableExists: result.rows[0].exists,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    console.error('Health check failed:', error.message);
-    res.status(500).json({
-      status: 'error',
-      dbConnected: false,
-      error: error.message,
-    });
-  }
-});
+router.get('/health', healthController.getHealth);
 
 module.exports = router;
