@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
+const sgMail = require('@sendgrid/mail');
 
 const BookingModel = require('../models/booking.model');
 const PaymentModel = require('../models/payment.model');
@@ -38,6 +39,20 @@ class PaymentService {
   static async storePayment({ bookingId, amount, status }) {
     const id = uuidv4();
     await PaymentModel.storePayment({ id, bookingId, amount, status });
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: 'mailshegze@gmail.com',
+      from: 'oluwasegun.o.ige@gmail.com',
+      subject: 'Payment Confirmation',
+      text: `Your payment of ₦${amount} for booking ID ${bookingId} was successful.`,
+      html: `<strong>Your payment of ₦${amount} for booking ID ${bookingId} was successful.</strong>`,
+    };
+    try {
+      await sgMail.send(msg);
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
   }
 }
 
