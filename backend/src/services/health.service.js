@@ -1,5 +1,8 @@
 const pool = require('../config/db');
 const redisClient = require('../config/redis');
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.getHealthStatus = async () => {
   let dbConnected = false;
@@ -18,10 +21,20 @@ exports.getHealthStatus = async () => {
     redisConnected = false;
   }
 
+  let emailConnected = false;
+  try {
+    const [response, body] = await sgMail.client.request({
+      method: 'GET',
+      url: '/v3/user/account',
+    });
+    emailConnected = response.statusCode === 200;
+  } catch (_) {}
+
   return {
-    status: dbConnected && redisConnected ? 'ok' : 'error',
+    status: dbConnected && redisConnected && emailConnected ? 'ok' : 'degraded',
     dbConnected,
     redisConnected,
+    emailConnected,
     timestamp: new Date().toISOString(),
   };
 };
