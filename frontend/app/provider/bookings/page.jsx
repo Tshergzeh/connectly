@@ -47,9 +47,9 @@ export default function ProviderBookingsPage() {
     setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status: newStatus } : b)));
   };
 
-  const filtered = bookings.filter((b) => {
-    return !statusFilter || b.status === statusFilter;
-  });
+  const filtered = Array.isArray(bookings)
+    ? bookings.filter((b) => !statusFilter || b.status === statusFilter)
+    : [];
 
   if (loading) {
     return <p>Loading...</p>;
