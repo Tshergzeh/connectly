@@ -4,6 +4,8 @@ const sgMail = require('@sendgrid/mail');
 
 const BookingModel = require('../models/booking.model');
 const PaymentModel = require('../models/payment.model');
+const UserModel = require('../models/user.model');
+const ServiceModel = require('../models/service.model');
 
 class PaymentService {
   static async initialisePayment({ bookingId, customerEmail, customerId, amount }) {
@@ -41,17 +43,44 @@ class PaymentService {
     await PaymentModel.storePayment({ id, bookingId, amount, status });
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-      to: 'mailshegze@gmail.com',
+
+    const booking = await BookingModel.getBookingById(bookingId);
+
+    const customerId = booking.customer_id;
+    const customerEmail = (await UserModel.findUserById(customerId)).email;
+    console.log('Customer Email:', customerEmail);
+
+    const serviceId = booking.service_id;
+    const service = await ServiceModel.getServiceById(serviceId);
+    const providerId = service.provider_id;
+    const providerEmail = (await UserModel.findUserById(providerId)).email;
+    console.log('Provider Email:', providerEmail);
+
+    const customerMsg = {
+      to: customerEmail,
       from: 'oluwasegun.o.ige@gmail.com',
       subject: 'Payment Confirmation',
       text: `Your payment of ₦${amount} for booking ID ${bookingId} was successful.`,
       html: `<strong>Your payment of ₦${amount} for booking ID ${bookingId} was successful.</strong>`,
     };
-    try {
-      await sgMail.send(msg);
-    } catch (error) {
-      console.error('Error sending email:', error);
+
+    const providerMsg = {
+      to: providerEmail,
+      from: 'oluwasegun.o.ige@gmail.com',
+      subject: 'New Payment Received',
+      text: `A payment of ₦${amount} has been made for booking ID ${bookingId}.`,
+      html: `<strong>A payment of ₦${amount} has been made for booking ID ${bookingId}.</strong>`,
+    };
+
+    const msgs = [customerMsg, providerMsg];
+
+    for (const msg of msgs) {
+      try {
+        await sgMail.send(msg);
+        console.log('Email sent successfully to', msg.to);
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
     }
   }
 }
