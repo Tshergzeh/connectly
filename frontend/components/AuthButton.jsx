@@ -26,11 +26,17 @@ export default function AuthButton() {
   };
 
   return isLoggedIn ? (
-    <button onClick={handleLogout} className="text-red-600 hover-underline">
+    <button
+      onClick={handleLogout}
+      className="text-red-600 hover:text-red-800 w-full text-left md:w-auto md:text-center"
+    >
       Logout
     </button>
   ) : (
-    <button onClick={() => router.push('/login')} className="text-blue-600">
+    <button
+      onClick={() => router.push('/login')}
+      className="text-blue-600 hover:text-blue-800 w-full text-left md:w-auto md:text-center"
+    >
       Login
     </button>
   );
