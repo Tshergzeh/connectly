@@ -74,9 +74,11 @@ export default function ProviderBookingsPage() {
       {filtered.length === 0 ? (
         <p className="text-gray-500">No bookings yet.</p>
       ) : (
-        filtered.map((b) => (
-          <BookingCard key={b.id} booking={b} onStatusChange={handleStatusChange} />
-        ))
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((b) => (
+            <BookingCard key={b.id} booking={b} onStatusChange={handleStatusChange} />
+          ))}
+        </div>
       )}
 
       {nextCursor && (
