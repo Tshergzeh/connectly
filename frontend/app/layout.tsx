@@ -33,6 +33,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   return (
     <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Connectly - Service Booking Platform</title>
+      </head>
       <body className="bg-gray-50 text-gray-900">
         <nav className="bg-white shadow px-6 py-4 flex justify-between">
           <Link href="/" className="font-bold text-indigo-600">
