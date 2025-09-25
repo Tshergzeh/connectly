@@ -30,8 +30,8 @@ export default function AuthButton() {
   return isLoggedIn ? (
     <button
       onClick={handleLogout}
-      type='button'
-      aria-label='Logout from your account'
+      type="button"
+      aria-label="Logout from your account"
       className="text-red-600 hover:text-red-800 w-full text-left text-sm sm:text-base md:w-auto md:text-center"
     >
       Logout
@@ -39,8 +39,8 @@ export default function AuthButton() {
   ) : (
     <button
       onClick={() => router.push('/login')}
-      type='button'
-      aria-label='Login to your account'
+      type="button"
+      aria-label="Login to your account"
       className="text-blue-600 hover:text-blue-800 w-full text-left text-sm sm:text-base md:w-auto md:text-center"
     >
       Login

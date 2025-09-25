@@ -29,11 +29,16 @@ export default function ReviewForm({ bookingId }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-2 space-y-2 sm:space-y-0 sm:flex sm:flex-col sm:gap-3">
-      <label htmlFor='rating' className='sr-only'>Rating</label>
+    <form
+      onSubmit={handleSubmit}
+      className="mt-2 space-y-2 sm:space-y-0 sm:flex sm:flex-col sm:gap-3"
+    >
+      <label htmlFor="rating" className="sr-only">
+        Rating
+      </label>
       <select
         value={rating}
-        id='rating'
+        id="rating"
         onChange={(e) => setRating(Number(e.target.value))}
         className="w-full border rounded-lg px-3 py-2 text-sm sm:text-base text-gray-600 focus:ring-indigo-500 focus:border-indigo-500"
       >
@@ -45,9 +50,11 @@ export default function ReviewForm({ bookingId }) {
         ))}
       </select>
 
-      <label htmlFor='comment' className='sr-only'>Comment</label>
+      <label htmlFor="comment" className="sr-only">
+        Comment
+      </label>
       <textarea
-        id='comment'
+        id="comment"
         placeholder="Leave a comment..."
         value={comment}
         onChange={(e) => setComment(e.target.value)}

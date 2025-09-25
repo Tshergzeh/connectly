@@ -87,7 +87,7 @@ export default function BookingsPage() {
       </div>
 
       {nextCursor && (
-        <div className='flex justify-center mt-6'>
+        <div className="flex justify-center mt-6">
           <Button onClick={() => fetchBookings(nextCursor)} disabled={loadingMore}>
             {loadingMore ? 'Loading...' : 'Load More'}
           </Button>
