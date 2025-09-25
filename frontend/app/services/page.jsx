@@ -48,7 +48,13 @@ export default function ServicesPage() {
   });
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="h-40 bg-gray-200 rounded animate-pulse" />
+        ))}
+      </div>
+    );
   }
 
   return (
