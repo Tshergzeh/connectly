@@ -28,20 +28,20 @@ export default function ServiceDetailPage() {
   console.log(service);
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6 space-y-6">
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 py-8 sm:py-10">
+      <div className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-md p-4 sm:p-6 space-y-6">
         <img
-          src={service.image}
+          src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}
           alt={service.title}
-          className="w-full h-64 object-cover rounded-lg"
+          className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg"
         />
-        <h2 className="text-2xl font-bold">{service.title}</h2>
+        <h2 className="text-2xl text-gray-800 font-bold">{service.title}</h2>
         <p className="text-gray-600">{service.description}</p>
-        <div className="flex items-center justify-between">
-          <span className="text-indigo-600 font-bold text-xl">${service.price}</span>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <span className="text-indigo-600 font-bold text-xl">&#8358;{service.price}</span>
           <ReviewStars rating={service.rating} />
         </div>
-        <Button className="w-full">Book This Service</Button>
+        <Button className="w-full sm:w-auto sm:px-8">Book This Service</Button>
       </div>
     </div>
   );
