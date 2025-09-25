@@ -8,7 +8,9 @@ export default function Badge({ status }) {
 
   return (
     <span
-      className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[status] || 'bg-gray-100 text-gray-800'}`}
+      className={`px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap max-w-[120px] truncate ${
+        statusColors[status] || 'bg-gray-100 text-gray-800'
+      }`}
     >
       {status}
     </span>
