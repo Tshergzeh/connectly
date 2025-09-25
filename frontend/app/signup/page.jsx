@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 
@@ -10,6 +11,7 @@ import Spinner from '@/components/ui/Spinner';
 import api from '@/lib/api';
 
 export default function SignupPage() {
+  const router = useRouter();
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -32,9 +34,9 @@ export default function SignupPage() {
     setMessage('');
 
     try {
-      const signupResponse = await api.post('/auth/signup', form);
-      setMessage('Signup successful! Please log in.');
-      console.log('Response:', signupResponse.data);
+      await api.post('/auth/signup', form);
+      toast.success('Signup successful! Please log in.');
+      setTimeout(() => router.push('/login'), 1500);
     } catch (error) {
       toast.error(error.response?.data?.error || 'Signup failed.');
     }
