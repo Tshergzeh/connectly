@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
+import { toast } from 'react-hot-toast';
 
 import ReviewStars from '../ui/ReviewStars';
 import Button from '../ui/Button';
@@ -26,7 +27,7 @@ export default function ServiceCard({ service }) {
       window.location.href = payment.authorization_url;
     } catch (error) {
       console.error('Error during booking/payment:', error);
-      alert(error.response?.data?.error || 'Failed to process booking');
+      toast.error(error.response?.data?.error || 'Failed to process booking');
     } finally {
       setLoading(false);
     }
