@@ -39,7 +39,7 @@ export default function BookingCard({ booking, onStatusChange }) {
       <div className="flex-grow" />
 
       {booking.status !== 'Completed' && booking.status !== 'Cancelled' && (
-        <div className="flex flex-col sm:flex-row gap-2 mt-3">
+        <div className="flex flex-col sm:flex-row gap-2 mt-3 min-w-[120px]">
           <button
             className="flex-1 px-3 py-2 bg-green-600 text-white rounded text-sm"
             onClick={() => handleUpdate('Completed')}
