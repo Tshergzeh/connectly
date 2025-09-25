@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import ReviewStars from '../ui/ReviewStars';
 import Button from '../ui/Button';
+import Spinner from '../ui/Spinner';
 import { createBooking } from '@/lib/bookings';
 import { initialisePayment } from '@/lib/payments';
 
@@ -33,6 +34,7 @@ export default function ServiceCard({ service }) {
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+      {loading && <Spinner message="Processing your booking..." />}
       <Image
         src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}
         alt={service.title}
@@ -47,8 +49,12 @@ export default function ServiceCard({ service }) {
           <span className="text-indigo-600 font-bold">${service.price}</span>
           <ReviewStars rating={service.average_rating} />
         </div>
-        <Button className="w-full mt-3" onClick={handleBooking} disabled={loading}>
-          {loading ? 'Booking...' : 'Book Now'}
+        <Button
+          className="w-full mt-3 flex items-center justify-center"
+          onClick={handleBooking}
+          disabled={loading}
+        >
+          {loading ? 'Booking' : 'Book Now'}
         </Button>
       </div>
     </div>
