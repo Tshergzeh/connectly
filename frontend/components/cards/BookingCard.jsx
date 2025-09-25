@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import Spinner from '../ui/Spinner';
 import { updateBookingStatus } from '@/lib/bookings';
@@ -13,7 +14,7 @@ export default function BookingCard({ booking, onStatusChange }) {
       onStatusChange(booking.id, newStatus);
     } catch (error) {
       console.error('Error updating status:', error);
-      alert(error.response?.data?.error || 'Failed to update booking');
+      toast.error(error.response?.data?.error || 'Failed to process booking');
     } finally {
       setLoading(false);
     }

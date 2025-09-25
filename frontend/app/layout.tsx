@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import './globals.css';
 import { useState, useEffect, ReactNode } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import AuthButton from '@/components/AuthButton';
 
@@ -136,6 +137,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           )}
         </nav>
         <main className="px-6 py-10">{children}</main>
+        <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>
   );
