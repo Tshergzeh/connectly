@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
@@ -45,8 +46,7 @@ export default function LoginPage() {
       }
       console.log('User:', user);
     } catch (error) {
-      console.error('Login Error:', error);
-      setMessage(error.response?.data?.error || 'Login failed.');
+      toast.error(error.response?.data?.error || 'Login failed.');
     } finally {
       setLoading(false);
     }

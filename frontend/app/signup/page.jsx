@@ -1,8 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
@@ -36,8 +36,7 @@ export default function SignupPage() {
       setMessage('Signup successful! Please log in.');
       console.log('Response:', signupResponse.data);
     } catch (error) {
-      setMessage(error.response?.data?.error || 'Signup failed');
-      console.error('Error:', error);
+      toast.error(error.response?.data?.error || 'Signup failed.');
     }
   };
 
@@ -45,7 +44,9 @@ export default function SignupPage() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
       {loading && <Spinner message="Logging in..." />}
       <div className="w-full max-w-md sm:max-w-lg bg-white p-6 sm:p-8 rounded-xl shadow-lg space-y-6">
-        <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800">Create an Account</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800">
+          Create an Account
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input label="Full Name" name="name" value={form.name} onChange={handleChange} />
           <Input
