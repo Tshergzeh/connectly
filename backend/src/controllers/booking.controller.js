@@ -1,4 +1,3 @@
-const e = require('express');
 const BookingService = require('../services/booking.service');
 
 exports.createBooking = async (req, res) => {
