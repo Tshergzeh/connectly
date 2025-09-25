@@ -78,11 +78,7 @@ export default function ServicesPage() {
       </div>
 
       {nextCursor && (
-        <Button
-          className="mt-4"
-          onClick={() => fetchServices(nextCursor)}
-          disabled={loadingMore}
-        >
+        <Button className="mt-4" onClick={() => fetchServices(nextCursor)} disabled={loadingMore}>
           {loadingMore ? 'Loading...' : 'Load More'}
         </Button>
       )}

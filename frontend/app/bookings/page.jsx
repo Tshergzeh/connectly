@@ -87,11 +87,7 @@ export default function BookingsPage() {
       ))}
 
       {nextCursor && (
-        <Button
-          className="mt-4"
-          onClick={() => fetchBookings(nextCursor)}
-          disabled={loadingMore}
-        >
+        <Button className="mt-4" onClick={() => fetchBookings(nextCursor)} disabled={loadingMore}>
           {loadingMore ? 'Loading...' : 'Load More'}
         </Button>
       )}
