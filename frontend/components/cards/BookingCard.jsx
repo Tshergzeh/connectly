@@ -41,16 +41,20 @@ export default function BookingCard({ booking, onStatusChange }) {
       {booking.status !== 'Completed' && booking.status !== 'Cancelled' && (
         <div className="flex flex-col sm:flex-row gap-2 mt-3 min-w-[120px]">
           <button
-            className="flex-1 px-3 py-2 bg-green-600 text-white rounded text-sm"
+            className="flex-1 px-3 py-2 bg-green-600 text-white rounded text-sm transition active:scale-95 disabled:opacity-50"
             onClick={() => handleUpdate('Completed')}
             disabled={loading}
+            aria-busy={loading}
+            aria-disabled={loading}
           >
             {loading ? 'Updating...' : 'Mark Completed'}
           </button>
           <button
-            className="flex-1 px-3 py-2 bg-red-600 text-white rounded text-sm"
+            className="flex-1 px-3 py-2 bg-red-600 text-white rounded text-sm transition active:scale-95 disabled:opacity-50"
             onClick={() => handleUpdate('Cancelled')}
             disabled={loading}
+            aria-busy={loading}
+            aria-disabled={loading}
           >
             {loading ? 'Updating...' : 'Cancel'}
           </button>
