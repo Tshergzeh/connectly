@@ -69,15 +69,36 @@ class BookingService {
     return booking;
   }
 
-  static async updateBookingStatus({ bookingId, status, customerId }) {
+  static async updateBookingStatus({ bookingId, status, user }) {
     if (!bookingId || !status) {
       throw new Error('Missing required fields');
     }
 
     const existingBooking = await BookingModel.getBookingById(bookingId);
 
-    if (existingBooking.customer_id !== customerId) {
-      throw new Error('Not authorized to update this booking');
+    if (user.is_customer) {
+      if (existingBooking.customer_id !== user.id) {
+        throw new Error('Not authorized to update this booking');
+      }
+
+      if (status !== 'Cancelled' && status !== 'Paid') {
+        throw new Error('Customers can only cancel or mark bookings as paid');
+      }
+    }
+
+    if (user.is_provider) {
+      const service = await ServiceModel.getServiceById(existingBooking.service_id);
+      if (service.provider_id !== user.id) {
+        throw new Error('Not authorized to update this booking');
+      }
+
+      if (status !== 'Completed' && status !== 'Cancelled') {
+        throw new Error('Providers can only mark bookings as completed or cancelled');
+      }
+
+      if (existingBooking.status !== 'Paid' && status === 'Completed') {
+        throw new Error("Booking must be marked as 'Paid' before it can be completed");
+      }
     }
 
     if (status !== 'Paid' && status !== 'Completed' && status !== 'Cancelled') {

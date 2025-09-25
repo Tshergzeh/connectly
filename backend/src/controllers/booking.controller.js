@@ -1,3 +1,4 @@
+const e = require('express');
 const BookingService = require('../services/booking.service');
 
 exports.createBooking = async (req, res) => {
@@ -54,12 +55,26 @@ exports.updateBookingStatus = async (req, res) => {
     const booking = await BookingService.updateBookingStatus({
       bookingId: req.params.id,
       status: req.body.status,
-      customerId: req.user.id,
+      user: req.user,
     });
     res.json(booking);
   } catch (error) {
     console.error('Error updating booking status:', error);
-    res.status(500).json({ error: 'Error updating booking status' });
+
+    if (error.message.includes('Not authorized')) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    if (
+      error.message.includes('Missing') ||
+      error.message.includes('Invalid status') ||
+      error.message.includes('can only') ||
+      error.message.includes('Booking must be')
+    ) {
+      return res.status(400).json({ error: error.message });
+    }
+
+    return res.status(500).json({ error: 'Error updating booking status' });
   }
 };
 
