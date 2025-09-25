@@ -53,15 +53,21 @@ export default function ProviderBookingsPage() {
     : [];
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="h-40 bg-gray-200 rounded animate-pulse" />
+        ))}
+      </div>
+    );
   }
 
   return (
-    <div className="min-screen px-6 py-10 bg-gray-50">
+    <div className="min-h-screen px-4 sm:px-6 py-10 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">My Service Bookings</h1>
 
       <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-6 space-y-3 md:space-y-0">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-6">
           {['Pending', 'Paid', 'Cancelled', 'Completed'].map((status) => (
             <CategoryChip
               key={status}
@@ -75,7 +81,7 @@ export default function ProviderBookingsPage() {
       {filtered.length === 0 ? (
         <p className="text-gray-500">No bookings yet.</p>
       ) : (
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {filtered.map((b) => (
             <BookingCard key={b.id} booking={b} onStatusChange={handleStatusChange} />
           ))}
@@ -84,7 +90,7 @@ export default function ProviderBookingsPage() {
 
       {nextCursor && (
         <Button
-          className="mt-4"
+          className="mt-6 w-full sm:w-auto"
           onClick={() => fetchProviderBookings(nextCursor)}
           disabled={loadingMore}
         >
