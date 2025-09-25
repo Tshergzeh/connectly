@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import Spinner from '../ui/Spinner';
 import { updateBookingStatus } from '@/lib/bookings';
 
 export default function BookingCard({ booking, onStatusChange }) {
@@ -19,6 +20,7 @@ export default function BookingCard({ booking, onStatusChange }) {
   };
   return (
     <div className="p-4 rounded-lg shadow bg-white w-full h-full flex flex-col">
+      {loading && <Spinner message="Updating status..." />}
       <h2 className="font-semibold text-lg text-gray-800 break-words">{booking.service.title}</h2>
       <div className="mt-1 text-sm text-gray-600 flex flex-col sm:flex-row sm:flex-wrap sm:gap-2">
         <span>Customer: {booking.customer.name || 'N/A'}</span>
