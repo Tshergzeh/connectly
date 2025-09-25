@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Image from 'next/image';
 
 import ReviewStars from '../ui/ReviewStars';
 import Button from '../ui/Button';
@@ -32,9 +33,11 @@ export default function ServiceCard({ service }) {
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-      <img
+      <Image
         src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}
         alt={service.title}
+        width={400}
+        height={250}
         className="w-full h-48 object-cover"
       />
       <div className="p-4">
