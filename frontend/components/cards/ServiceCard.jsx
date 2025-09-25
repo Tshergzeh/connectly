@@ -24,7 +24,7 @@ export default function ServiceCard({ service }) {
         amount: service.price,
       });
 
-      window.location.href = payment.authorization_url;
+      router.push(payment.authorization_url);
     } catch (error) {
       console.error('Error during booking/payment:', error);
       toast.error(error.response?.data?.error || 'Failed to process booking');
