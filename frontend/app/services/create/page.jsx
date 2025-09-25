@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
+
 import api from '@/lib/api';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
@@ -42,17 +44,16 @@ export default function CreateServicePage() {
       await api.post('/services', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setMessage('Service created successfully!');
+      toast.success('Service created successfully!');
       router.push('/services');
     } catch (error) {
-      console.error('Error creating service:', error);
-      setMessage(error.response?.data?.error || 'Failed to create service.');
+      toast.error(error.response?.data?.error || 'Failed to create service.');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 space-y-6">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full max-w-lg lg:max-w-2xl bg-white rounded-xl shadow-lg p-6 sm:p-8 space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-800">Create a Service</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input label="Title" name="title" value={form.title} onChange={handleChange} />
@@ -70,8 +71,19 @@ export default function CreateServicePage() {
             onChange={handleChange}
           />
           <Input label="Category" name="category" value={form.category} onChange={handleChange} />
-          <Input label="Image" type="file" name="image" onChange={handleChange} />
-          <Button type="submit" className="w-full">
+          <div>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
+              Service Image
+            </label>
+            <Input
+              id="image"
+              type="file"
+              name="image"
+              onChange={handleChange}
+              className="block w-full text-sm text-gray-600 border rounded-lg file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+            />
+          </div>
+          <Button type="submit" className="w-full sm:w-auto sm:px-8">
             Create Service
           </Button>
         </form>
