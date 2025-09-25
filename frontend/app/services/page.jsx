@@ -57,7 +57,7 @@ export default function ServicesPage() {
 
       <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-6 space-y-3 md:space-y-0">
         <SearchBar value={query} onChange={(e) => setQuery(e.target.value)} />
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap gap-2">
           {['Home Repair', 'Cleaning', 'Tutoring', 'Technology'].map((cat) => (
             <CategoryChip
               key={cat}

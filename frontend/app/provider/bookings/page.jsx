@@ -61,7 +61,7 @@ export default function ProviderBookingsPage() {
       <h1 className="text-3xl font-bold mb-6 text-gray-800">My Service Bookings</h1>
 
       <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-6 space-y-3 md:space-y-0">
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap gap-2">
           {['Pending', 'Paid', 'Cancelled', 'Completed'].map((status) => (
             <CategoryChip
               key={status}
