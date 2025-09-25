@@ -49,45 +49,53 @@ export default function ServicesPage() {
 
   if (loading) {
     return (
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="h-40 bg-gray-200 rounded animate-pulse" />
+          <div key={i} className="h-48 bg-gray-200 rounded animate-pulse" />
         ))}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Available Services</h1>
+    <div className="min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Available Services</h1>
 
-      <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-6 space-y-3 md:space-y-0">
-        <SearchBar value={query} onChange={(e) => setQuery(e.target.value)} />
-        <div className="flex flex-wrap gap-2">
-          {['Home Repair', 'Cleaning', 'Tutoring', 'Technology'].map((cat) => (
-            <CategoryChip
-              key={cat}
-              label={cat}
-              active={category === cat}
-              onClick={() => setCategory(category === cat ? '' : cat)}
-            />
-          ))}
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
+          <SearchBar
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full md:max-w-sm"
+          />
+          <div className="flex flex-wrap gap-2">
+            {['Home Repair', 'Cleaning', 'Tutoring', 'Technology'].map((cat) => (
+              <CategoryChip
+                key={cat}
+                label={cat}
+                active={category === cat}
+                onClick={() => setCategory(category === cat ? '' : cat)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {filtered.length > 0 ? (
-          filtered.map((service) => <ServiceCard key={service.id} service={service} />)
-        ) : (
-          <p className="text-gray-500">No services found.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filtered.length > 0 ? (
+            filtered.map((service) => <ServiceCard key={service.id} service={service} />)
+          ) : (
+            <p className="text-gray-500">No services found.</p>
+          )}
+        </div>
+
+        {nextCursor && (
+          <div className="flex justify-center mt-6">
+            <Button onClick={() => fetchServices(nextCursor)} disabled={loadingMore}>
+              {loadingMore ? 'Loading...' : 'Load More'}
+            </Button>
+          </div>
         )}
       </div>
-
-      {nextCursor && (
-        <Button className="mt-4" onClick={() => fetchServices(nextCursor)} disabled={loadingMore}>
-          {loadingMore ? 'Loading...' : 'Load More'}
-        </Button>
-      )}
     </div>
   );
 }
