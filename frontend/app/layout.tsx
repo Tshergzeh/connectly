@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </Link>
 
           <button
-            className="md:hidden text-gray-600 focus:outline-none"
+            className="md:hidden text-gray-600 focus:outline-none focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
             onClick={() => setMenuOpen((prev) => !prev)}
           >
             <svg

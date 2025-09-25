@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import BookingCard from '@/components/cards/BookingCard';
 import CategoryChip from '@/components/ui/CategoryChip';
+import Button from '@/components/ui/Button';
 
 export default function ProviderBookingsPage() {
   const [bookings, setBookings] = useState([]);
@@ -82,13 +83,13 @@ export default function ProviderBookingsPage() {
       )}
 
       {nextCursor && (
-        <button
+        <Button
+          className="mt-4"
           onClick={() => fetchProviderBookings(nextCursor)}
           disabled={loadingMore}
-          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
         >
           {loadingMore ? 'Loading...' : 'Load More'}
-        </button>
+        </Button>
       )}
     </div>
   );

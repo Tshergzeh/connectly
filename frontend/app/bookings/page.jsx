@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import ReviewStars from '@/components/ui/ReviewStars';
 import ReviewForm from '@/components/ReviewForm';
+import Button from '@/components/ui/Button';
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState([]);
@@ -86,13 +87,13 @@ export default function BookingsPage() {
       ))}
 
       {nextCursor && (
-        <button
+        <Button
+          className="mt-4"
           onClick={() => fetchBookings(nextCursor)}
           disabled={loadingMore}
-          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded"
         >
           {loadingMore ? 'Loading...' : 'Load More'}
-        </button>
+        </Button>
       )}
     </div>
   );
