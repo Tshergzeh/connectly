@@ -6,17 +6,7 @@ import { useState, useEffect, ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
 
 import AuthButton from '@/components/AuthButton';
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  hashed_password: string;
-  is_provider: boolean;
-  is_customer: boolean;
-  created_at: string;
-  updated_at: string;
-};
+import type { User } from '@/types';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
