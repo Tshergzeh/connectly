@@ -9,6 +9,7 @@ import ReviewStars from '@/components/ui/ReviewStars';
 export default function ServiceDetailPage() {
   const { id } = useParams();
   const [service, setService] = useState(null);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const fetchService = async () => {
@@ -19,13 +20,25 @@ export default function ServiceDetailPage() {
         console.error('Error fetching service:', error);
       }
     };
-    if (id) fetchService();
+
+    const fetchReviews = async () => {
+      try {
+        const res = await api.get(`/reviews/service/${id}`);
+        setReviews(res.data);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+
+    if (id) {
+      fetchService();
+      fetchReviews();
+    }
   }, [id]);
 
   if (!service) {
     return <p className="p-6">Loading service details...</p>;
   }
-  console.log(service);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 py-8 sm:py-10">
@@ -42,6 +55,35 @@ export default function ServiceDetailPage() {
           <ReviewStars rating={service.rating} />
         </div>
         <Button className="w-full sm:w-auto sm:px-8">Book This Service</Button>
+
+        <div className='mt-8'>
+          <h3 className='text-lg font-semibold text-gray-800'>Reviews</h3>
+          {reviews.length > 0 ? (
+            <div
+              className='
+                mt-4 grid gap-4
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-3
+              '
+            >
+              {reviews.map((review) => (
+                <div
+                  key={reviews.id}
+                  className='border p-4 rounded-md bg-gray-50 hover:shadow-md transition-shadow'
+                >
+                  <ReviewStars rating={review.rating} />
+                  <p className='mt-2 text-gray-700'>{review.comment}</p>
+                  <small className='text-gray-500'>
+                    By User {review.customer_name}
+                  </small>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className='mt-4 text-gray-500'>No reviews yet.</p>
+          )}
+        </div>
       </div>
     </div>
   );
