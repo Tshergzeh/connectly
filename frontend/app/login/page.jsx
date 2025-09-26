@@ -91,7 +91,7 @@ export default function LoginPage() {
 
         {message && <p className="text-center text-sm text-gray-600">{message}</p>}
 
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center sm:text-left text-sm text-gray-500">
           Don&apos;t have an account?{' '}
           <Link href="/signup" className="text-indigo-600 hover:underline">
             Sign Up
