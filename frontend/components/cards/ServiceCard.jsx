@@ -34,7 +34,7 @@ export default function ServiceCard({ service }) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
       {loading && <Spinner message="Processing your booking..." />}
       <Image
         src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}

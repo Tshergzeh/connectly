@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+
 import api from '@/lib/api';
 import ServiceCard from '@/components/cards/ServiceCard';
 import SearchBar from '@/components/ui/SearchBar';
@@ -82,7 +84,11 @@ export default function ServicesPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
           {filtered.length > 0 ? (
-            filtered.map((service) => <ServiceCard key={service.id} service={service} />)
+            filtered.map((service) => (
+              <Link key={service.id} href={`/services/${service.id}`} className='block'>
+                <ServiceCard service={service} />
+              </Link>
+            ))
           ) : (
             <p className="text-gray-500">No services found.</p>
           )}
