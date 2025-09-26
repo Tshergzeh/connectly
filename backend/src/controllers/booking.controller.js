@@ -1,6 +1,6 @@
 const BookingService = require('../services/booking.service');
 
-exports.createBooking = async (req, res) => {
+exports.createBooking = async (req, res, next) => {
   try {
     const booking = await BookingService.createBooking({
       customerId: req.user.id,
@@ -12,12 +12,11 @@ exports.createBooking = async (req, res) => {
       booking,
     });
   } catch (error) {
-    console.log('Error creating booking:', error);
-    res.status(400).json({ error: 'Error creating booking' });
+    next(error);
   }
 };
 
-exports.getBookingsByCustomer = async (req, res) => {
+exports.getBookingsByCustomer = async (req, res, next) => {
   try {
     const { limit = 10, cursor } = req.query;
 
@@ -31,12 +30,11 @@ exports.getBookingsByCustomer = async (req, res) => {
       nextCursor: bookings.length > 0 ? bookings[bookings.length - 1].created_at : null,
     });
   } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({ error: 'Error fetching bookings' });
+    next(error);
   }
 };
 
-exports.getBookingById = async (req, res) => {
+exports.getBookingById = async (req, res, next) => {
   try {
     const bookingById = await BookingService.getBookingById({
       bookingId: req.params.id,
@@ -44,12 +42,11 @@ exports.getBookingById = async (req, res) => {
     });
     res.json(bookingById);
   } catch (error) {
-    console.error('Error fetching booking:', error);
-    res.status(500).json({ error: 'Error fetching booking' });
+    next(error);
   }
 };
 
-exports.updateBookingStatus = async (req, res) => {
+exports.updateBookingStatus = async (req, res, next) => {
   try {
     const booking = await BookingService.updateBookingStatus({
       bookingId: req.params.id,
@@ -58,26 +55,11 @@ exports.updateBookingStatus = async (req, res) => {
     });
     res.json(booking);
   } catch (error) {
-    console.error('Error updating booking status:', error);
-
-    if (error.message.includes('Not authorized')) {
-      return res.status(500).json({ error: error.message });
-    }
-
-    if (
-      error.message.includes('Missing') ||
-      error.message.includes('Invalid status') ||
-      error.message.includes('can only') ||
-      error.message.includes('Booking must be')
-    ) {
-      return res.status(400).json({ error: error.message });
-    }
-
-    return res.status(500).json({ error: 'Error updating booking status' });
+    next(error);
   }
 };
 
-exports.getBookingsByProvider = async (req, res) => {
+exports.getBookingsByProvider = async (req, res, next) => {
   try {
     const { limit = 10, cursor } = req.query;
 
@@ -91,12 +73,11 @@ exports.getBookingsByProvider = async (req, res) => {
       nextCursor: bookings.length > 0 ? bookings[bookings.length - 1].created_at : null,
     });
   } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({ error: 'Error fetching bookings' });
+    next(error);
   }
 };
 
-exports.getBookingsByProviderAndStatus = async (req, res) => {
+exports.getBookingsByProviderAndStatus = async (req, res, next) => {
   try {
     const { limit = 10, cursor } = req.query;
 
@@ -111,7 +92,6 @@ exports.getBookingsByProviderAndStatus = async (req, res) => {
       nextCursor: bookings.length > 0 ? bookings[bookings.length - 1].created_at : null,
     });
   } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({ error: 'Error fetching bookings' });
+    next(error);
   }
 };

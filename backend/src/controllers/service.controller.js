@@ -1,11 +1,8 @@
 const ServiceService = require('../services/service.service');
 const redis = require('../config/redis');
 
-exports.createService = async (req, res) => {
+exports.createService = async (req, res, next) => {
   try {
-    console.log('BODY:', req.body);
-    console.log('FILE:', req.file);
-
     const service = await ServiceService.createService({
       providerId: req.user.id,
       ...req.body,
@@ -17,12 +14,11 @@ exports.createService = async (req, res) => {
       service,
     });
   } catch (error) {
-    console.error('Error creating service', error);
-    res.status(400).json({ error: 'Error creating service' });
+    next(error);
   }
 };
 
-exports.listServices = async (req, res) => {
+exports.listServices = async (req, res, next) => {
   try {
     const { limit = 10, cursor } = req.query;
 
@@ -46,22 +42,20 @@ exports.listServices = async (req, res) => {
       nextCursor: services.length > 0 ? services[services.length - 1].created_at : null,
     });
   } catch (error) {
-    console.error('Error fetching services:', error);
-    res.status(500).json({ error: 'Error fetching services' });
+    next(error);
   }
 };
 
-exports.getService = async (req, res) => {
+exports.getService = async (req, res, next) => {
   try {
     const service = await ServiceService.getService(req.params.id);
     res.json(service);
   } catch (error) {
-    console.error('Error fetching service:', error);
-    res.status(404).json({ error: 'Error fetching service' });
+    next(error);
   }
 };
 
-exports.updateService = async (req, res) => {
+exports.updateService = async (req, res, next) => {
   try {
     const updates = {
       ...req.body,
@@ -75,17 +69,15 @@ exports.updateService = async (req, res) => {
       service: updatedService,
     });
   } catch (error) {
-    console.error('Error updating service:', error);
-    res.status(403).json({ error: 'Error updating service' });
+    next(error);
   }
 };
 
-exports.deleteService = async (req, res) => {
+exports.deleteService = async (req, res, next) => {
   try {
     await ServiceService.deleteService(req.params.id, req.user.id);
     res.json({ message: 'Service deleted successfully' });
   } catch (error) {
-    console.error('Error deleting service:', error);
-    res.status(403).json({ error: 'Error deleting service' });
+    next(error);
   }
 };

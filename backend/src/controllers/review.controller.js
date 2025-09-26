@@ -1,42 +1,34 @@
 const ReviewService = require('../services/review.service');
 
-exports.createReview = async (req, res) => {
+exports.createReview = async (req, res, next) => {
   try {
     const review = await ReviewService.createReview({
       customerId: req.user.id,
       ...req.body,
     });
-    res.json(review);
+    res.status(201).json(review);
   } catch (error) {
-    console.error('Error creating review:', error);
-    res.status(500).json({ error: 'Error creating review' });
+    next(error);
   }
 };
 
-exports.getReviewsByService = async (req, res) => {
+exports.getReviewsByService = async (req, res, next) => {
   try {
     const reviews = await ReviewService.getReviewsByService({
       serviceId: req.params.id,
     });
     res.json(reviews);
   } catch (error) {
-    console.error('Error getting reviews:', error);
-    res.status(500).json({ error: 'Error getting reviews' });
+    next(error);
   }
 };
 
-exports.getReviewByBookingId = async (req, res) => {
+exports.getReviewByBookingId = async (req, res, next) => {
   try {
     const { bookingId } = req.params;
     const review = await ReviewService.getReviewByBookingId(bookingId);
-
-    if (!review) {
-      return res.status(404).json({ error: 'Review not found' });
-    }
-
     res.json(review);
   } catch (error) {
-    console.error('Error fetching review:', error);
-    res.status(500).json({ error: 'Error fetching review' });
+    next(error);
   }
 };

@@ -26,15 +26,9 @@ async function signup(req, res) {
   }
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({
-        error: 'Email and password are required',
-      });
-    }
 
     const { user, accessToken, refreshToken } = await AuthService.login({ email, password });
     const { hashed_password, ...userWithoutPassword } = user;
@@ -52,24 +46,17 @@ async function login(req, res) {
       user: userWithoutPassword,
     });
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(401).json({ error: error.message });
+    next(error);
   }
 }
 
-async function refreshToken(req, res) {
+async function refreshToken(req, res, next) {
   try {
     const refreshToken = req.cookies.refreshToken;
-
-    if (!refreshToken) {
-      return res.status(403).json({ error: 'Refresh token is required' });
-    }
-
     const { accessToken } = await AuthService.refreshToken(refreshToken);
     res.json({ accessToken });
   } catch (error) {
-    console.error('Error during token refresh:', error);
-    res.status(403).json({ error: 'Invalid or expired refresh token' });
+    next(error);
   }
 }
 

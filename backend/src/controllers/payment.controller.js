@@ -1,9 +1,7 @@
-const crypto = require('crypto');
-
 const PaymentService = require('../services/payment.service');
 const BookingService = require('../services/booking.service');
 
-exports.initialisePayment = async (req, res) => {
+exports.initialisePayment = async (req, res, next) => {
   try {
     const { bookingId, amount } = req.body;
     const customerEmail = req.user.email;
@@ -16,20 +14,12 @@ exports.initialisePayment = async (req, res) => {
     });
     res.json(response);
   } catch (error) {
-    console.error('Error initialising payment:', error);
-    res.status(500).json({ error: 'Error initialising payment' });
+    next(error);
   }
 };
 
-exports.handleWebhook = async (req, res) => {
+exports.handleWebhook = async (req, res, next) => {
   try {
-    const secret = process.env.PAYSTACK_SECRET_KEY;
-    const hash = crypto.createHmac('sha512', secret).update(JSON.stringify(req.body)).digest('hex');
-
-    // if (hash !== req.headers['x-paystack-signature']) {
-    //   return res.status(401).json({ error: 'Invalid signature' });
-    // }
-
     const event = req.body;
 
     if (event.event === 'charge.success') {
@@ -52,12 +42,11 @@ exports.handleWebhook = async (req, res) => {
     }
     res.sendStatus(200);
   } catch (error) {
-    console.error('Error handling Paystack webhook:', error);
-    res.sendStatus(500);
+    next(error);
   }
 };
 
-exports.verifyPayment = async (req, res) => {
+exports.verifyPayment = async (req, res, next) => {
   const { reference, bookingId } = req.body;
 
   try {
@@ -73,7 +62,6 @@ exports.verifyPayment = async (req, res) => {
 
     res.json({ success: true });
   } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: 'Payment verification failed' });
+    next(error);
   }
 };

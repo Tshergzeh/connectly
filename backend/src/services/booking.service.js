@@ -1,4 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
+
+const AppError = require('../utils/AppError');
 const BookingModel = require('../models/booking.model');
 const ServiceModel = require('../models/service.model');
 const UserModel = require('../models/user.model');
@@ -6,13 +8,17 @@ const UserModel = require('../models/user.model');
 class BookingService {
   static async createBooking({ serviceId, customerId }) {
     if (!serviceId || !customerId) {
-      throw new Error('Missing required fields');
+      throw new AppError('Missing required fields', 400);
     }
 
     const service = await ServiceModel.getServiceById(serviceId);
 
+    if (!service) {
+      throw new AppError('Service not found', 404);
+    }
+
     if (!service.is_active) {
-      throw new Error('Cannot book inactive service');
+      throw new AppError('Cannot book inactive service', 400);
     }
 
     const id = uuidv4();
@@ -27,11 +33,20 @@ class BookingService {
   }
 
   static async getBookingsByCustomer({ customerId, limit, cursor }) {
+    if (!customerId) {
+      throw new AppError('Missing customer ID', 400);
+    }
+
     const bookings = await BookingModel.getBookingsByCustomer({
       customerId,
       limit,
       cursor,
     });
+
+    if (bookings.length === 0) {
+      throw new AppError('No bookings found', 404);
+    }
+
     return bookings.map((booking) => ({
       id: booking.booking_id,
       status: booking.status,
@@ -62,8 +77,12 @@ class BookingService {
 
     const booking = await BookingModel.getBookingById(bookingId);
 
+    if (!booking) {
+      throw new AppError('Booking not found', 404);
+    }
+
     if (booking.customer_id !== customerId) {
-      throw new Error('Not authorized to view this booking');
+      throw new AppError('Not authorized to view this booking', 403);
     }
 
     return booking;
@@ -71,38 +90,47 @@ class BookingService {
 
   static async updateBookingStatus({ bookingId, status, user }) {
     if (!bookingId || !status) {
-      throw new Error('Missing required fields');
+      throw new AppError('Missing required fields', 400);
     }
 
     const existingBooking = await BookingModel.getBookingById(bookingId);
 
+    if (!existingBooking) {
+      throw new AppError('Booking not found', 404);
+    }
+
     if (user.is_customer) {
       if (existingBooking.customer_id !== user.id) {
-        throw new Error('Not authorized to update this booking');
+        throw new AppError('Not authorized to update this booking', 403);
       }
 
       if (status !== 'Cancelled' && status !== 'Paid') {
-        throw new Error('Customers can only cancel or mark bookings as paid');
+        throw new AppError('Customers can only cancel or mark bookings as paid', 403);
       }
     }
 
     if (user.is_provider) {
       const service = await ServiceModel.getServiceById(existingBooking.service_id);
+
+      if (!service) {
+        throw new AppError('Service not found', 404);
+      }
+
       if (service.provider_id !== user.id) {
-        throw new Error('Not authorized to update this booking');
+        throw new AppError('Not authorized to update this booking', 403);
       }
 
       if (status !== 'Completed' && status !== 'Cancelled') {
-        throw new Error('Providers can only mark bookings as completed or cancelled');
+        throw new AppError('Providers can only mark bookings as completed or cancelled', 403);
       }
 
       if (existingBooking.status !== 'Paid' && status === 'Completed') {
-        throw new Error("Booking must be marked as 'Paid' before it can be completed");
+        throw new AppError("Booking must be marked as 'Paid' before it can be completed", 400);
       }
     }
 
     if (status !== 'Paid' && status !== 'Completed' && status !== 'Cancelled') {
-      throw new Error('Invalid status');
+      throw new AppError('Invalid status', 400);
     }
 
     return await BookingModel.updateBookingStatus({ bookingId, status });
@@ -110,23 +138,32 @@ class BookingService {
 
   static async updateBookingStatusByReference({ reference, status }) {
     if (!reference || !status) {
-      throw new Error('Missing required fields');
+      throw new AppError('Missing required fields', 400);
     }
 
     const existingBooking = await BookingModel.getBookingByReference(reference);
+
+    if (!existingBooking) {
+      throw new AppError('Booking not found', 404);
+    }
+
     const bookingId = existingBooking.id;
 
     if (status !== 'Paid' && status !== 'Completed' && status !== 'Cancelled') {
-      throw new Error('Invalid status');
+      throw new AppError('Invalid status', 400);
     }
 
     return await BookingModel.updateBookingStatus({ bookingId, status });
   }
 
   static async getBookingsByProvider({ providerId, limit, cursor }) {
+    if (!providerId) {
+      throw new AppError('Missing provider ID', 400);
+    }
+
     const user = await UserModel.findUserById(providerId);
     if (!user.is_provider) {
-      throw new Error('Not authorized as provider');
+      throw new AppError('Not authorized as provider', 403);
     }
 
     const bookings = await BookingModel.getBookingsByProvider({
@@ -134,6 +171,11 @@ class BookingService {
       limit,
       cursor,
     });
+
+    if (bookings.length === 0) {
+      throw new AppError('No bookings found', 404);
+    }
+
     return bookings.map((booking) => ({
       id: booking.id,
       status: booking.status,
@@ -155,9 +197,13 @@ class BookingService {
   }
 
   static async getBookingsByProviderAndStatus({ providerId, status, limit, cursor }) {
+    if (!providerId || !status) {
+      throw new AppError('Missing required fields', 400);
+    }
+
     const user = await UserModel.findUserById(providerId);
     if (!user.is_provider) {
-      throw new Error('Not authorized as provider');
+      throw new AppError('Not authorized as provider', 403);
     }
 
     if (
@@ -166,7 +212,7 @@ class BookingService {
       status !== 'Completed' &&
       status !== 'Cancelled'
     ) {
-      throw new Error('Invalid status');
+      throw new AppError('Invalid status', 400);
     }
 
     const bookings = await BookingModel.getBookingsByProviderAndStatus({
@@ -175,6 +221,10 @@ class BookingService {
       limit,
       cursor,
     });
+
+    if (bookings.length === 0) {
+      throw new AppError('No bookings found', 404);
+    }
 
     return bookings.map((booking) => ({
       id: booking.id,

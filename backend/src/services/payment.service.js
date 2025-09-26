@@ -2,6 +2,7 @@ const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 const sgMail = require('@sendgrid/mail');
 
+const AppError = require('../utils/AppError');
 const BookingModel = require('../models/booking.model');
 const PaymentModel = require('../models/payment.model');
 const UserModel = require('../models/user.model');
@@ -11,8 +12,12 @@ class PaymentService {
   static async initialisePayment({ bookingId, customerEmail, customerId, amount }) {
     const booking = await BookingModel.getBookingById(bookingId);
 
+    if (!booking) {
+      throw new AppError('Booking not found', 404);
+    }
+
     if (booking.customer_id !== customerId) {
-      throw new Error('Not authorized to pay for this booking');
+      throw new AppError('Not authorized to pay for this booking', 403);
     }
 
     const response = await axios.post(
@@ -45,6 +50,10 @@ class PaymentService {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
     const booking = await BookingModel.getBookingById(bookingId);
+
+    if (!booking) {
+      throw new AppError('Booking not found', 404);
+    }
 
     const customerId = booking.customer_id;
     const customerEmail = (await UserModel.findUserById(customerId)).email;

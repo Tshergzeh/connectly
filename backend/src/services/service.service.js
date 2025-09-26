@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 
+const AppError = require('../utils/AppError');
 const ServiceModel = require('../models/service.model');
 const redis = require('../config/redis');
 
@@ -35,38 +36,57 @@ class ServiceService {
   }
 
   static async getService(id) {
+    if (!id) {
+      throw new AppError('Missing service ID', 400);
+    }
+
     const service = await ServiceModel.getServiceById(id);
 
     if (!service) {
-      throw new Error('Service not found');
+      throw new AppError('Service not found', 404);
     }
 
     return service;
   }
 
   static async updateService(id, providerId, updates) {
+    if (!id) {
+      throw new AppError('Missing service ID', 400);
+    }
+
+    if (Object.keys(updates).length === 0) {
+      throw new AppError('No updates provided', 400);
+    }
     const existingService = await ServiceModel.getServiceById(id);
 
     if (!existingService) {
-      throw new Error('Service not found');
+      throw new AppError('Service not found', 404);
     }
 
     if (existingService.provider_id !== providerId) {
-      throw new Error('Not authorized to update this service');
+      throw new AppError('Not authorized to update this service', 403);
     }
 
     return await ServiceModel.updateService(id, updates);
   }
 
   static async deleteService(id, providerId) {
+    if (!id) {
+      throw new AppError('Missing service ID', 400);
+    }
+
+    if (!providerId) {
+      throw new AppError('Missing provider ID', 400);
+    }
+
     const existingService = await ServiceModel.getServiceById(id);
 
     if (!existingService) {
-      throw new Error('Service not found');
+      throw new AppError('Service not found', 404);
     }
 
     if (existingService.provider_id !== providerId) {
-      throw new Error('Not authorized to delete this service');
+      throw new AppError('Not authorized to delete this service', 403);
     }
 
     await ServiceModel.deleteService(id);

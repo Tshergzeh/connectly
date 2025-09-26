@@ -56,32 +56,30 @@ export default function ServiceDetailPage() {
         </div>
         <Button className="w-full sm:w-auto sm:px-8">Book This Service</Button>
 
-        <div className='mt-8'>
-          <h3 className='text-lg font-semibold text-gray-800'>Reviews</h3>
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold text-gray-800">Reviews</h3>
           {reviews.length > 0 ? (
             <div
-              className='
+              className="
                 mt-4 grid gap-4
                 grid-cols-1
                 sm:grid-cols-2
                 lg:grid-cols-3
-              '
+              "
             >
               {reviews.map((review) => (
                 <div
                   key={reviews.id}
-                  className='border p-4 rounded-md bg-gray-50 hover:shadow-md transition-shadow'
+                  className="border p-4 rounded-md bg-gray-50 hover:shadow-md transition-shadow"
                 >
                   <ReviewStars rating={review.rating} />
-                  <p className='mt-2 text-gray-700'>{review.comment}</p>
-                  <small className='text-gray-500'>
-                    By User {review.customer_name}
-                  </small>
+                  <p className="mt-2 text-gray-700">{review.comment}</p>
+                  <small className="text-gray-500">By User {review.customer_name}</small>
                 </div>
               ))}
             </div>
           ) : (
-            <p className='mt-4 text-gray-500'>No reviews yet.</p>
+            <p className="mt-4 text-gray-500">No reviews yet.</p>
           )}
         </div>
       </div>
