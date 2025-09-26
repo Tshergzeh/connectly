@@ -12,6 +12,7 @@ import api from '@/lib/api';
 
 export default function SignupPage() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -34,11 +35,14 @@ export default function SignupPage() {
     setMessage('');
 
     try {
+      setLoading(true);
       await api.post('/auth/signup', form);
       toast.success('Signup successful! Please log in.');
       setTimeout(() => router.push('/login'), 1500);
     } catch (error) {
       toast.error(error.response?.data?.error || 'Signup failed.');
+    } finally {
+      setLoading(false);
     }
   };
 
