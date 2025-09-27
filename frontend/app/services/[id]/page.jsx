@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import api from '@/lib/api';
 import Button from '@/components/ui/Button';
 import ReviewStars from '@/components/ui/ReviewStars';
+import Spinner from '@/components/ui/Spinner';
 import { createBooking } from '@/lib/bookings';
 import { initialisePayment } from '@/lib/payments';
 
