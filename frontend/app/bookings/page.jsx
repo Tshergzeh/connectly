@@ -32,7 +32,7 @@ export default function BookingsPage() {
 
       setNextCursor(res.data.nextCursor);
     } catch (error) {
-      console.error('Error fetching bookings:', error);
+      throw new Error('Error fetching bookings:', error);
     } finally {
       setLoading(false);
       setLoadingMore(false);

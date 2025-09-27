@@ -31,8 +31,8 @@ export default function ServiceDetailPage() {
 
       router.push(payment.authorization_url);
     } catch (error) {
-      console.error('Error during booking/payment:', error);
       toast.error(error.response?.data?.error || 'Failed to process booking');
+      throw new Error('Error during booking/payment:', error);
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,7 @@ export default function ServiceDetailPage() {
         const res = await api.get(`/services/${id}`);
         setService(res.data);
       } catch (error) {
-        console.error('Error fetching service:', error);
+        throw new Error('Error fetching service:', error);
       }
     };
 
@@ -53,7 +53,7 @@ export default function ServiceDetailPage() {
         const res = await api.get(`/reviews/service/${id}`);
         setReviews(res.data);
       } catch (error) {
-        console.error('Error fetching reviews:', error);
+        throw new Error('Error fetching reviews:', error);
       }
     };
 

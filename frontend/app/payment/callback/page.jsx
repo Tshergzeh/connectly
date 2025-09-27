@@ -16,9 +16,9 @@ export default function PaymentCallback({ searchParams }) {
           alert('Payment successfully verified');
           router.push('/bookings');
         } catch (error) {
-          console.error(error);
           alert('Payment verification failed');
           router.push('/services');
+          throw new Error(error);
         }
       };
 

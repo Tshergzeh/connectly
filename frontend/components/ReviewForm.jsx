@@ -22,7 +22,7 @@ export default function ReviewForm({ bookingId }) {
       );
       window.location.reload();
     } catch (error) {
-      console.error('Error creating review:', error);
+      throw new Error('Error creating review:', error);
     } finally {
       setSubmitting(false);
     }

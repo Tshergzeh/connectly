@@ -57,8 +57,8 @@ api.interceptors.response.use(
         onRefreshed(newAccessToken);
         return api(originalRequest);
       } catch (error) {
-        console.error('Token refresh failed:', error);
         window.location.href = '/login';
+        throw new Error('Token refresh failed:', error);
       } finally {
         isRefreshing = false;
       }

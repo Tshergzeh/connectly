@@ -45,7 +45,6 @@ export default function LoginPage() {
       } else {
         router.push('/services');
       }
-      console.log('User:', user);
     } catch (error) {
       toast.error(error.response?.data?.error || 'Login failed.');
     } finally {

@@ -32,7 +32,7 @@ export default function ServicesPage() {
 
       setNextCursor(res.data.nextCursor);
     } catch (error) {
-      console.error('Error fetching services:', error);
+      throw new Error('Error fetching services:', error);
     } finally {
       setLoading(false);
       setLoadingMore(false);

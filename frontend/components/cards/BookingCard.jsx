@@ -13,7 +13,6 @@ export default function BookingCard({ booking, onStatusChange }) {
       await updateBookingStatus(booking.id, newStatus);
       onStatusChange(booking.id, newStatus);
     } catch (error) {
-      console.error('Error updating status:', error);
       toast.error(error.response?.data?.error || 'Failed to process booking');
     } finally {
       setLoading(false);
