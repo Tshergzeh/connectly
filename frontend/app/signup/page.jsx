@@ -21,6 +21,7 @@ export default function SignupPage() {
     is_customer: false,
   });
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -54,21 +55,52 @@ export default function SignupPage() {
           Create an Account
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input label="Full Name" name="name" value={form.name} onChange={handleChange} />
+          <label htmlFor="fullName" className="sr-only">
+            Full Name
+          </label>
+          <Input 
+            id="fullName"
+            name="name" 
+            value={form.name} 
+            placeholder="Full Name"
+            onChange={handleChange} 
+          />
+          
+          <label htmlFor="email" className="sr-only">
+            Email
+          </label>
           <Input
-            label="Email"
+            id="email"
+            placeholder="Email"
             type="email"
             name="email"
             value={form.email}
             onChange={handleChange}
+            required
           />
-          <Input
-            label="Password"
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-          />
+
+          <div className='relative'>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <Input
+              id="password"
+              placeholder="Password"
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </button>
+          </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
             <label className="flex items-center space-x-2">
