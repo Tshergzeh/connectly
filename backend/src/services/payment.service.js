@@ -7,6 +7,7 @@ const BookingModel = require('../models/booking.model');
 const PaymentModel = require('../models/payment.model');
 const UserModel = require('../models/user.model');
 const ServiceModel = require('../models/service.model');
+const logger = require('../utils/logger');
 
 class PaymentService {
   static async initialisePayment({ bookingId, customerEmail, customerId, amount }) {
@@ -57,13 +58,11 @@ class PaymentService {
 
     const customerId = booking.customer_id;
     const customerEmail = (await UserModel.findUserById(customerId)).email;
-    console.log('Customer Email:', customerEmail);
 
     const serviceId = booking.service_id;
     const service = await ServiceModel.getServiceById(serviceId);
     const providerId = service.provider_id;
     const providerEmail = (await UserModel.findUserById(providerId)).email;
-    console.log('Provider Email:', providerEmail);
 
     const customerMsg = {
       to: customerEmail,
@@ -86,9 +85,9 @@ class PaymentService {
     for (const msg of msgs) {
       try {
         await sgMail.send(msg);
-        console.log('Email sent successfully to', msg.to);
+        logger.info('Email sent successfully to', msg.to);
       } catch (error) {
-        console.error('Error sending email:', error);
+        logger.error('Error sending email:', error);
       }
     }
   }
@@ -103,7 +102,7 @@ class PaymentService {
 
       return response.data.data;
     } catch (error) {
-      console.error('Error verifying payment:', error?.response?.data || error.message);
+      logger.error('Error verifying payment:', error?.response?.data || error.message);
       throw new AppError('Failed to verify payment', 500);
     }
   }

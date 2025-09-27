@@ -1,4 +1,6 @@
 require('dotenv').config();
+
+const logger = require('../utils/logger');
 const AuthService = require('../services/auth.service');
 
 async function signup(req, res) {
@@ -19,9 +21,13 @@ async function signup(req, res) {
       isCustomer: is_customer,
     });
 
+    logger.info('User signed up successfully:', {
+      userId: user.id,
+      email: user.email,
+    });
     res.status(201).json({ message: 'User created successfully', user });
   } catch (error) {
-    console.error('Error during signup:', error);
+    logger.error('Error during signup:', error);
     res.status(500).json({ error: error.message });
   }
 }
@@ -40,6 +46,7 @@ async function login(req, res, next) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
+    logger.info('User logged in successfully:', { userId: user.id, email: user.email });
     res.json({
       message: 'Login successful',
       accessToken,

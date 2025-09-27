@@ -1,5 +1,6 @@
 const ServiceService = require('../services/service.service');
 const redis = require('../config/redis');
+const logger = require('../utils/logger');
 
 exports.createService = async (req, res, next) => {
   try {
@@ -9,6 +10,10 @@ exports.createService = async (req, res, next) => {
       image: req.file ? `uploads/${req.file.filename}` : null,
     });
 
+    logger.info('Service created successfully:', {
+      serviceId: service.id,
+      providerId: req.user.id,
+    });
     res.status(201).json({
       message: 'Service created successfully',
       service,
@@ -64,6 +69,10 @@ exports.updateService = async (req, res, next) => {
 
     const updatedService = await ServiceService.updateService(req.params.id, req.user.id, updates);
 
+    logger.info('Service updated successfully:', {
+      serviceId: updatedService.id,
+      providerId: req.user.id,
+    });
     res.json({
       message: 'Service updated successfully',
       service: updatedService,
@@ -76,6 +85,10 @@ exports.updateService = async (req, res, next) => {
 exports.deleteService = async (req, res, next) => {
   try {
     await ServiceService.deleteService(req.params.id, req.user.id);
+    logger.info('Service deleted successfully:', {
+      serviceId: req.params.id,
+      providerId: req.user.id,
+    });
     res.json({ message: 'Service deleted successfully' });
   } catch (error) {
     next(error);

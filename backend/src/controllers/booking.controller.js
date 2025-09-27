@@ -1,4 +1,5 @@
 const BookingService = require('../services/booking.service');
+const logger = require('../utils/logger');
 
 exports.createBooking = async (req, res, next) => {
   try {
@@ -7,6 +8,10 @@ exports.createBooking = async (req, res, next) => {
       serviceId: req.params.id,
     });
 
+    logger.info('Booking created successfully:', {
+      bookingId: booking.id,
+      customerId: req.user.id,
+    });
     res.status(201).json({
       message: 'Booking created successfully',
       booking,
@@ -52,6 +57,10 @@ exports.updateBookingStatus = async (req, res, next) => {
       bookingId: req.params.id,
       status: req.body.status,
       user: req.user,
+    });
+    logger.info('Booking status updated successfully:', {
+      bookingId: booking.id,
+      newStatus: booking.status,
     });
     res.json(booking);
   } catch (error) {

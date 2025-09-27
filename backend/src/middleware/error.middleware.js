@@ -1,7 +1,8 @@
 const AppError = require('../utils/AppError');
+const logger = require('../utils/logger');
 
 function errorHandler(err, req, res, next) {
-  console.error('Error:', err);
+  logger.error('Error:', err);
 
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({ error: err.message });

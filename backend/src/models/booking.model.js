@@ -60,8 +60,6 @@ class BookingModel {
   }
 
   static async updateBookingStatus({ bookingId, status }) {
-    console.log(bookingId);
-    console.log(status);
     const updateBookingStatusQueryResult = await pool.query(
       `UPDATE bookings
         SET status = $2, updated_at = now()

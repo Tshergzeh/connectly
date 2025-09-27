@@ -1,5 +1,6 @@
 const PaymentService = require('../services/payment.service');
 const BookingService = require('../services/booking.service');
+const logger = require('../utils/logger');
 
 exports.initialisePayment = async (req, res, next) => {
   try {
@@ -38,7 +39,7 @@ exports.handleWebhook = async (req, res, next) => {
         status: true,
       });
 
-      console.log(`Payment successful: ${reference} - ${email} - ₦${amount}`);
+      logger.info(`Payment successful: ${reference} - ${email} - ₦${amount}`);
     }
     res.sendStatus(200);
   } catch (error) {
@@ -60,6 +61,9 @@ exports.verifyPayment = async (req, res, next) => {
       });
     }
 
+    logger.info(`
+      Payment verified: ${reference} - Status: ${paymentData.status}
+    `);
     res.json({ success: true });
   } catch (error) {
     next(error);

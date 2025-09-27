@@ -1,10 +1,15 @@
 const ReviewService = require('../services/review.service');
+const logger = require('../utils/logger');
 
 exports.createReview = async (req, res, next) => {
   try {
     const review = await ReviewService.createReview({
       customerId: req.user.id,
       ...req.body,
+    });
+    logger.info('Review created successfully:', {
+      reviewId: review.id,
+      customerId: req.user.id,
     });
     res.status(201).json(review);
   } catch (error) {

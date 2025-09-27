@@ -1,5 +1,7 @@
 const { createClient } = require('redis');
 
+const logger = require('../utils/logger');
+
 const client = createClient({
   username: process.env.REDIS_USERNAME,
   password: process.env.REDIS_PASSWORD,
@@ -9,11 +11,11 @@ const client = createClient({
   },
 });
 
-client.on('error', (err) => console.log('Redis Client Error', err));
+client.on('error', (err) => logger.error('Redis Client Error', err));
 
 client
   .connect()
-  .then(() => console.log('Redis connected'))
-  .catch((err) => console.error('Redis connection error:', err));
+  .then(() => logger.info('Redis connected'))
+  .catch((err) => logger.error('Redis connection error:', err));
 
 module.exports = client;
