@@ -2,14 +2,40 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 import api from '@/lib/api';
 import Button from '@/components/ui/Button';
 import ReviewStars from '@/components/ui/ReviewStars';
+import { createBooking } from '@/lib/bookings';
+import { initialisePayment } from '@/lib/payments';
 
 export default function ServiceDetailPage() {
+  const router = useRouter();
   const { id } = useParams();
   const [service, setService] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleBooking = async () => {
+    try {
+      setLoading(true);
+
+      const booking = await createBooking(service.id);
+
+      const payment = await initialisePayment({
+        bookingId: booking.id,
+        amount: service.price,
+      });
+
+      router.push(payment.authorization_url);
+    } catch (error) {
+      console.error('Error during booking/payment:', error);
+      toast.error(error.response?.data?.error || 'Failed to process booking');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchService = async () => {
@@ -42,6 +68,7 @@ export default function ServiceDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 py-8 sm:py-10">
+      {loading && <Spinner message="Processing your booking..." />}
       <div className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-md p-4 sm:p-6 space-y-6">
         <img
           src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}
@@ -54,7 +81,9 @@ export default function ServiceDetailPage() {
           <span className="text-indigo-600 font-bold text-xl">&#8358;{service.price}</span>
           <ReviewStars rating={service.rating} />
         </div>
-        <Button className="w-full sm:w-auto sm:px-8">Book This Service</Button>
+        <Button className="w-full sm:w-auto sm:px-8" onClick={handleBooking} disabled={loading}>
+          Book This Service
+        </Button>
 
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-gray-800">Reviews</h3>

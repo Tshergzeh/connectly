@@ -1,41 +1,12 @@
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import Image from 'next/image';
-import { toast } from 'react-hot-toast';
 
 import ReviewStars from '../ui/ReviewStars';
 import Button from '../ui/Button';
 import Spinner from '../ui/Spinner';
-import { createBooking } from '@/lib/bookings';
-import { initialisePayment } from '@/lib/payments';
 
 export default function ServiceCard({ service }) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
-  const handleBooking = async () => {
-    try {
-      setLoading(true);
-
-      const booking = await createBooking(service.id);
-
-      const payment = await initialisePayment({
-        bookingId: booking.id,
-        amount: service.price,
-      });
-
-      router.push(payment.authorization_url);
-    } catch (error) {
-      console.error('Error during booking/payment:', error);
-      toast.error(error.response?.data?.error || 'Failed to process booking');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
-      {loading && <Spinner message="Processing your booking..." />}
       <Image
         src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}
         alt={service.title}
@@ -50,13 +21,7 @@ export default function ServiceCard({ service }) {
           <span className="text-indigo-600 font-bold">${service.price}</span>
           <ReviewStars rating={service.average_rating} />
         </div>
-        <Button
-          className="w-full mt-3 flex items-center justify-center"
-          onClick={handleBooking}
-          disabled={loading}
-        >
-          {loading ? 'Booking' : 'Book Now'}
-        </Button>
+        <Button className="w-full mt-3 flex items-center justify-center">More Info</Button>
       </div>
     </div>
   );
