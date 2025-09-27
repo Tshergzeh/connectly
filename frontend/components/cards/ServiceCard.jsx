@@ -13,6 +13,7 @@ export default function ServiceCard({ service }) {
         width={400}
         height={250}
         className="w-full h-48 object-cover"
+        unoptimized
       />
       <div className="p-4">
         <h3 className="text-lg font-semibold">{service.title}</h3>
