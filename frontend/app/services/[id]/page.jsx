@@ -103,7 +103,7 @@ export default function ServiceDetailPage() {
                 >
                   <ReviewStars rating={review.rating} />
                   <p className="mt-2 text-gray-700">{review.comment}</p>
-                  <small className="text-gray-500">By User {review.customer_name}</small>
+                  <small className="text-gray-500">{review.customer_name}</small>
                 </div>
               ))}
             </div>

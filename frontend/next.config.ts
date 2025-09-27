@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: process.env.NEXT_PUBLIC_ASSET_URL || 'localhost',
+        pathname: '/uploads/**',
       },
     ],
   },
