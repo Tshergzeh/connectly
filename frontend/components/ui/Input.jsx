@@ -1,9 +1,4 @@
-export default function Input({ 
-  label, 
-  type = 'text', 
-  className = '', 
-  ...props 
-}) {
+export default function Input({ label, type = 'text', className = '', ...props }) {
   return (
     <div className="flex flex-col space-y-1">
       {label && <label className="text-xs sm:text-sm font-medium text-gray-800">{label}</label>}

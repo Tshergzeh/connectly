@@ -58,14 +58,14 @@ export default function SignupPage() {
           <label htmlFor="fullName" className="sr-only">
             Full Name
           </label>
-          <Input 
+          <Input
             id="fullName"
-            name="name" 
-            value={form.name} 
+            name="name"
+            value={form.name}
             placeholder="Full Name"
-            onChange={handleChange} 
+            onChange={handleChange}
           />
-          
+
           <label htmlFor="email" className="sr-only">
             Email
           </label>
@@ -79,7 +79,7 @@ export default function SignupPage() {
             required
           />
 
-          <div className='relative'>
+          <div className="relative">
             <label htmlFor="password" className="sr-only">
               Password
             </label>
