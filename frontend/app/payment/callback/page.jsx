@@ -13,7 +13,7 @@ export default function PaymentCallback({ searchParams }) {
       const verifyPayment = async () => {
         try {
           await api.post('/payments/verify', { reference, bookingId });
-          alert('Payment successfully');
+          alert('Payment successfully verified');
           router.push('/bookings');
         } catch (error) {
           console.error(error);

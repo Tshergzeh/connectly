@@ -71,7 +71,7 @@ export default function BookingsPage() {
             />
             <h2 className="font-semibold text-gray-800 mt-3">{b.service.title}</h2>
             <p className="text-sm text-gray-600">Status: {b.status}</p>
-            <p className="text-indigo-600 font-bold">${b.service.price}</p>
+            <p className="text-indigo-600 font-bold">&#8358;{b.service.price}</p>
 
             {b.review ? (
               <div className="mt-2">

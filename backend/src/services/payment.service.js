@@ -92,6 +92,21 @@ class PaymentService {
       }
     }
   }
+
+  static async verify(reference) {
+    try {
+      const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+        },
+      });
+
+      return response.data.data;
+    } catch (error) {
+      console.error('Error verifying payment:', error?.response?.data || error.message);
+      throw new AppError('Failed to verify payment', 500);
+    }
+  }
 }
 
 module.exports = PaymentService;

@@ -56,7 +56,7 @@ exports.verifyPayment = async (req, res, next) => {
       await BookingService.updateBookingStatus({
         bookingId,
         status: 'Paid',
-        customerId: paymentData.customer.id,
+        user: req.user,
       });
     }
 
