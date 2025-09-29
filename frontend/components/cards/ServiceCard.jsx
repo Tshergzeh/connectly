@@ -8,7 +8,7 @@ export default function ServiceCard({ service }) {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
       <Image
-        src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}
+        src={service.image}
         alt={service.title}
         width={400}
         height={250}
@@ -16,7 +16,7 @@ export default function ServiceCard({ service }) {
         unoptimized
       />
       <div className="p-4">
-        <h3 className="text-lg font-semibold">{service.title}</h3>
+        <h3 className="text-lg text-gray-800 font-semibold">{service.title}</h3>
         <p className="text-sm text-gray-600">{service.description}</p>
         <div className="flex items-center justify-between mt-3">
           <span className="text-indigo-600 font-bold">&#8358;{service.price}</span>

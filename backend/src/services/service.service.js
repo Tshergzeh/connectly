@@ -3,12 +3,19 @@ const { v4: uuidv4 } = require('uuid');
 const AppError = require('../utils/AppError');
 const ServiceModel = require('../models/service.model');
 const redis = require('../config/redis');
+const cloudinary = require('../config/cloudinary');
 
 class ServiceService {
   static async createService({ providerId, title, description, price, category, image }) {
     if (!title || !description || !price || !category || !image) {
       throw new Error('Missing required fields');
     }
+
+    const uploadResult = await cloudinary.uploader.upload(image, {
+      folder: 'services',
+      use_filename: true,
+      unique_filename: false,
+    });
 
     return await ServiceModel.createService({
       id: uuidv4(),
@@ -17,7 +24,7 @@ class ServiceService {
       description,
       price,
       category,
-      image,
+      image: uploadResult.secure_url,
     });
   }
 

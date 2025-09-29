@@ -72,7 +72,7 @@ export default function ServiceDetailView() {
       {loading && <Spinner message="Processing your booking..." />}
       <div className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-md p-4 sm:p-6 space-y-6">
         <img
-          src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${service.image}`}
+          src={service.image}
           alt={service.title}
           className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg"
         />

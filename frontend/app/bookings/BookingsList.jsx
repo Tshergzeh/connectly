@@ -79,7 +79,7 @@ export default function BookingsList() {
         {bookings.map((b) => (
           <div key={b.id} className="p-4 rounded-lg shadow flex flex-col bg-white">
             <img
-              src={`${process.env.NEXT_PUBLIC_ASSET_URL}/${b.service.image}`}
+              src={b.service.image}
               alt={b.service.title}
               className="w-full h-40 object-cover rounded-md"
             />
