@@ -2,6 +2,7 @@ const pool = require('../config/db');
 const redisClient = require('../config/redis');
 const sgMail = require('@sendgrid/mail');
 const axios = require('axios');
+const cloudinary = require('cloudinary').v2;
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -10,9 +11,7 @@ exports.getHealthStatus = async () => {
   try {
     await pool.query('SELECT 1');
     dbConnected = true;
-  } catch (error) {
-    dbConnected = false;
-  }
+  } catch (_) {}
 
   let paystackConnected = false;
   try {
@@ -26,9 +25,7 @@ exports.getHealthStatus = async () => {
   try {
     const pong = await redisClient.ping();
     redisConnected = pong === 'PONG';
-  } catch (error) {
-    redisConnected = false;
-  }
+  } catch (_) {}
 
   let emailConnected = false;
   try {
@@ -39,13 +36,22 @@ exports.getHealthStatus = async () => {
     emailConnected = response.statusCode === 200;
   } catch (_) {}
 
+  let cloudinaryConnected = false;
+  try {
+    const result = await cloudinary.api.ping();
+    cloudinaryConnected = result.status === 'ok';
+  } catch (_) {}
+
   return {
     status:
-      dbConnected && paystackConnected && redisConnected && emailConnected ? 'ok' : 'degraded',
+      dbConnected && paystackConnected && redisConnected && emailConnected && cloudinaryConnected
+        ? 'ok'
+        : 'degraded',
     dbConnected,
     paystackConnected,
     redisConnected,
     emailConnected,
+    cloudinaryConnected,
     timestamp: new Date().toISOString(),
   };
 };
