@@ -8,7 +8,7 @@ import api from '@/lib/api';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 
-export default function CreateServicePage() {
+export default function CreateServiceView() {
   const [form, setForm] = useState({
     title: '',
     description: '',

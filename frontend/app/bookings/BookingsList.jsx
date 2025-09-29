@@ -7,7 +7,7 @@ import ReviewStars from '@/components/ui/ReviewStars';
 import ReviewForm from '@/components/ReviewForm';
 import Button from '@/components/ui/Button';
 
-export default function BookingsPage() {
+export default function BookingsList() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);

@@ -9,7 +9,7 @@ import SearchBar from '@/components/ui/SearchBar';
 import CategoryChip from '@/components/ui/CategoryChip';
 import Button from '@/components/ui/Button';
 
-export default function ServicesPage() {
+export default function ServicesList() {
   const [services, setServices] = useState([]);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
