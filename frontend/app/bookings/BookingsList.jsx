@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 import api from '@/lib/api';
 import ReviewStars from '@/components/ui/ReviewStars';
@@ -78,10 +79,15 @@ export default function BookingsList() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {bookings.map((b) => (
           <div key={b.id} className="p-4 rounded-lg shadow flex flex-col bg-white">
-            <img
+            <Image
               src={b.service.image}
               alt={b.service.title}
-              className="w-full h-40 object-cover rounded-md"
+              width={400}
+              height={160}
+              className="object-cover rounded-md"
+              sizes="(max-width: 768px) 100vw,
+                (max-width: 1200px) 50vw,
+                25vw"
             />
             <h2 className="font-semibold text-gray-800 mt-3">{b.service.title}</h2>
             <p className="text-sm text-gray-600">Status: {b.status}</p>

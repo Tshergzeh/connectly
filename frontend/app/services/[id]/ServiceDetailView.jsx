@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
+
 import api from '@/lib/api';
 import Button from '@/components/ui/Button';
 import ReviewStars from '@/components/ui/ReviewStars';
@@ -71,9 +73,14 @@ export default function ServiceDetailView() {
     <div className="min-h-screen bg-gray-50 px-4 sm:px-6 py-8 sm:py-10">
       {loading && <Spinner message="Processing your booking..." />}
       <div className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-md p-4 sm:p-6 space-y-6">
-        <img
+        <Image
           src={service.image}
           alt={service.title}
+          width={1200}
+          height={600}
+          sizes="(max-width: 640px) 100vw, 
+                (max-width: 1024px) 50vw, 
+                33vw"
           className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg"
         />
         <h2 className="text-2xl text-gray-800 font-bold">{service.title}</h2>

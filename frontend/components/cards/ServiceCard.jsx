@@ -11,7 +11,7 @@ export default function ServiceCard({ service }) {
         src={service.image}
         alt={service.title}
         width={400}
-        height={250}
+        height={160}
         className="w-full h-48 object-cover"
         unoptimized
       />
