@@ -10,5 +10,6 @@ router.post('/:id', authenticate, bookingController.createBooking);
 router.get('/', authenticate, bookingController.getBookingsByCustomer);
 router.get('/:id', authenticate, bookingController.getBookingById);
 router.patch('/:id', authenticate, bookingController.updateBookingStatus);
+router.delete('/:id', authenticate, bookingController.deletePendingBookingById);
 
 module.exports = router;

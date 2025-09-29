@@ -145,6 +145,14 @@ class BookingModel {
     return result.rows;
   }
 
+  static async deletePendingBookingById(bookingId) {
+    const deletePendingBookingByIdQueryResult = await pool.query(
+      `DELETE FROM bookings WHERE id = $1 AND status = 'Pending' RETURNING *`,
+      [bookingId]
+    );
+    return deletePendingBookingByIdQueryResult.rows[0];
+  }
+
   static async storePaymentId({ paymentId, bookingId }) {
     const result = await pool.query(`UPDATE bookings SET payment_id = $1 WHERE id = $2`, [
       paymentId,

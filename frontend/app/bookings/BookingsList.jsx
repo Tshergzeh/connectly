@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import api from '@/lib/api';
 import ReviewStars from '@/components/ui/ReviewStars';
@@ -36,6 +37,19 @@ export default function BookingsList() {
     } finally {
       setLoading(false);
       setLoadingMore(false);
+    }
+  };
+
+  const handleDelete = async (bookingId) => {
+    try {
+      const token = sessionStorage.getItem('accessToken');
+      await api.delete(`/bookings/${bookingId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      toast.success('Booking deleted successfully');
+      setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+    } catch (error) {
+      toast.error(error.response?.data?.error || 'Error deleting booking');
     }
   };
 
@@ -87,6 +101,15 @@ export default function BookingsList() {
               <p className="text-sm text-gray-500 mt-1">
                 You can leave a review once the booking has been completed.
               </p>
+            )}
+
+            {b.status === 'Pending' && (
+              <Button
+                className="mt-2 bg-red-500 text-white hover:bg-red-600"
+                onClick={() => handleDelete(b.id)}
+              >
+                Delete Booking
+              </Button>
             )}
           </div>
         ))}

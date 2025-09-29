@@ -104,3 +104,22 @@ exports.getBookingsByProviderAndStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.deletePendingBookingById = async (req, res, next) => {
+  try {
+    const deletedBooking = await BookingService.deletePendingBookingById({
+      bookingId: req.params.id,
+      user: req.user,
+    });
+    logger.info('Pending booking deleted successfully:', {
+      bookingId: deletedBooking.id,
+      customerId: req.user.id,
+    });
+    res.json({
+      message: 'Pending booking deleted successfully',
+      booking: deletedBooking,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

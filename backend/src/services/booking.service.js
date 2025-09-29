@@ -245,6 +245,28 @@ class BookingService {
       },
     }));
   }
+
+  static async deletePendingBookingById({ bookingId, user }) {
+    if (!bookingId) {
+      throw new AppError('Missing booking ID', 400);
+    }
+
+    const existingBooking = await BookingModel.getBookingById(bookingId);
+
+    if (!existingBooking) {
+      throw new AppError('Booking not found', 404);
+    }
+
+    if (existingBooking.customer_id !== user.id) {
+      throw new AppError('Not authorized to update this booking', 403);
+    }
+
+    if (existingBooking.status !== 'Pending') {
+      throw new AppError('Only pending bookings can be deleted', 400);
+    }
+
+    return await BookingModel.deletePendingBookingById(bookingId);
+  }
 }
 
 module.exports = BookingService;
