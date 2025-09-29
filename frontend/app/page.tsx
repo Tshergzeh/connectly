@@ -29,7 +29,7 @@ export default function HomePage() {
           </button>
           <button
             onClick={() => router.push('/signup')}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-700 transition"
+            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
           >
             Sign Up
           </button>
@@ -48,7 +48,7 @@ export default function HomePage() {
           </button>
           <button
             onClick={() => router.push('/services/create')}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-700 transition"
+            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
           >
             Create Service
           </button>
@@ -67,7 +67,7 @@ export default function HomePage() {
           </button>
           <button
             onClick={() => router.push('/bookings')}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-700 transition"
+            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
           >
             My Bookings
           </button>
