@@ -8,6 +8,11 @@ function onRefreshed(token) {
   refreshSubscribers = [];
 }
 
+function onRefreshFailed(error) {
+  refreshSubscribers.forEach((callback) => callback(null, error));
+  refreshSubscribers = [];
+}
+
 function addRefreshSubscriber(callback) {
   refreshSubscribers.push(callback);
 }
@@ -18,10 +23,12 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem('accessToken');
+  if (typeof window !== 'undefined') {
+    const token = sessionStorage.getItem('accessToken');
 
-  if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
   }
 
   return config;
@@ -57,8 +64,13 @@ api.interceptors.response.use(
         onRefreshed(newAccessToken);
         return api(originalRequest);
       } catch (error) {
-        window.location.href = '/login';
-        throw new Error('Token refresh failed:', error);
+        onRefreshFailed(error);
+        
+        if (typeof window !== 'undefined') {
+          window.location.assign('/login');
+        }
+
+        throw new Error(`Token refresh failed: ${error.message}`);
       } finally {
         isRefreshing = false;
       }
