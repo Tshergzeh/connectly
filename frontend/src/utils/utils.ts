@@ -14,6 +14,8 @@ export const getSuffixNumber = (number: number, digits: number = 1): string => {
   const lookupItem = lookup
     .slice()
     .reverse()
-    .find((item) => number >= item.value);
-  return lookupItem ? (number / lookupItem.value).toFixed(digits).replace(rx, '$1') + lookupItem.symbol : '0';
+    .find(item => number >= item.value);
+  return lookupItem
+    ? (number / lookupItem.value).toFixed(digits).replace(rx, '$1') + lookupItem.symbol
+    : '0';
 };

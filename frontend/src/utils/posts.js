@@ -9,8 +9,8 @@ const load = () => {
 
   const posts = Promise.all(
     files
-      .filter((filename) => filename.endsWith('.md'))
-      .map(async (filename) => {
+      .filter(filename => filename.endsWith('.md'))
+      .map(async filename => {
         const slug = filename.replace('.md', '');
         return await findPostBySlug(slug);
       }),
@@ -37,7 +37,7 @@ export const findLatestPosts = async ({ count } = {}) => {
 };
 
 /** */
-export const findPostBySlug = async (slug) => {
+export const findPostBySlug = async slug => {
   if (!slug) return null;
 
   try {
@@ -54,7 +54,7 @@ export const findPostBySlug = async (slug) => {
 };
 
 /** */
-export const findPostsByIds = async (ids) => {
+export const findPostsByIds = async ids => {
   if (!Array.isArray(ids)) return [];
 
   const posts = await fetchPosts();

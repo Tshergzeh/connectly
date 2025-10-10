@@ -1,6 +1,6 @@
 import { StaticImageData } from 'next/image';
 import { ReactElement } from 'react';
-import type { TablerIcon } from "@tabler/icons-react"
+import type { TablerIcon } from '@tabler/icons-react';
 
 type Widget = {
   id?: string;

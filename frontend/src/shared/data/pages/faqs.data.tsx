@@ -52,7 +52,8 @@ export const faqs4Faqs: FAQsProps = {
           description: `Duis in maximus mauris, id eleifend mauris. Nam a fringilla arcu. Curabitur convallis, tellus non aliquet rhoncus, lacus massa auctor eros, in interdum lectus augue sed augue. Fusce tempor ex id faucibus efficitur.`,
         },
         {
-          title: 'If you could only ask one question to each person you meet, what would that question be?',
+          title:
+            'If you could only ask one question to each person you meet, what would that question be?',
           description: `Nullam imperdiet sapien tincidunt erat dapibus faucibus. Vestibulum a sem nec lorem imperdiet scelerisque non sed lacus. Ut pulvinar id diam vitae auctor. Nam tempus, neque et elementum consectetur, ex ipsum pulvinar risus, vel sodales ligula tortor eu eros.`,
         },
       ],

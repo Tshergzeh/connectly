@@ -41,8 +41,8 @@ import gasImg from '~/assets/images/gas.jpg';
 export const heroHome: HeroProps = {
   title: (
     <>
-      Free template for <span className="hidden md:inline">starts a website using</span> <span>Next.js</span> +{' '}
-      <span className="sm:whitespace-nowrap">Tailwind CSS</span>
+      Free template for <span className="hidden md:inline">starts a website using</span>{' '}
+      <span>Next.js</span> + <span className="sm:whitespace-nowrap">Tailwind CSS</span>
     </>
   ),
   subtitle: (
@@ -51,10 +51,11 @@ export const heroHome: HeroProps = {
         <span className="font-semibold underline decoration-primary-600 decoration-wavy decoration-1 underline-offset-2">
           TailNext
         </span>{' '}
-        is a production ready template to start your new website using <em>Next.js</em> + <em>Tailwind CSS</em>.
+        is a production ready template to start your new website using <em>Next.js</em> +{' '}
+        <em>Tailwind CSS</em>.
       </span>{' '}
-      It has been designed following Best Practices, SEO, Accessibility, Dark Mode, great Page Speed, image
-      optimization.
+      It has been designed following Best Practices, SEO, Accessibility, Dark Mode, great Page
+      Speed, image optimization.
     </>
   ),
   callToAction: {
@@ -393,7 +394,8 @@ export const faqs2Home: FAQsProps = {
       description: `Duis in maximus mauris, id eleifend mauris. Nam a fringilla arcu. Curabitur convallis, tellus non aliquet rhoncus, lacus massa auctor eros, in interdum lectus augue sed augue. Fusce tempor ex id faucibus efficitur.`,
     },
     {
-      title: 'If you could only ask one question to each person you meet, what would that question be?',
+      title:
+        'If you could only ask one question to each person you meet, what would that question be?',
       description: `Nullam imperdiet sapien tincidunt erat dapibus faucibus. Vestibulum a sem nec lorem imperdiet scelerisque non sed lacus. Ut pulvinar id diam vitae auctor. Nam tempus, neque et elementum consectetur, ex ipsum pulvinar risus, vel sodales ligula tortor eu eros.`,
     },
   ],

@@ -22,7 +22,9 @@ const Steps = ({
     >
       <div
         className={`md:py-4 ${
-          isImageDisplayed ? 'md:pr-16 md:rtl:pr-0 md:rtl:pl-16 md:basis-1/2' : 'max-w-4xl mx-auto md:self-center'
+          isImageDisplayed
+            ? 'md:pr-16 md:rtl:pr-0 md:rtl:pl-16 md:basis-1/2'
+            : 'max-w-4xl mx-auto md:self-center'
         }`}
       >
         {header && (
@@ -33,7 +35,11 @@ const Steps = ({
             subtitleClass={isImageDisplayed ? 'text-left rtl:text-right' : ''}
           />
         )}
-        <Timeline items={items} defaultIcon={IconCheck} iconClass="text-primary border-primary-900" />
+        <Timeline
+          items={items}
+          defaultIcon={IconCheck}
+          iconClass="text-primary border-primary-900"
+        />
       </div>
       {isImageDisplayed && (
         <div className="relative md:basis-1/2">

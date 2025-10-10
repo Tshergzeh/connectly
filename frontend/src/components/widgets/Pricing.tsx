@@ -7,12 +7,26 @@ import { IconCheck } from '@tabler/icons-react';
 
 const Pricing = ({ header, prices, id, hasBackground = false }: PricingProps) => (
   <WidgetWrapper id={id ? id : ''} hasBackground={hasBackground} containerClass="">
-    {header && <Headline header={header} containerClass="max-w-5xl" titleClass="text-2xl sm:text-3xl" />}
+    {header && (
+      <Headline header={header} containerClass="max-w-5xl" titleClass="text-2xl sm:text-3xl" />
+    )}
     <div className="flex items-stretch justify-center">
       <div className="grid grid-cols-3 gap-3 dark:text-white sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
         {prices &&
           prices.map(
-            ({ title, subtitle, price, period, items, callToAction, hasRibbon = false, ribbonTitle }, index) => (
+            (
+              {
+                title,
+                subtitle,
+                price,
+                period,
+                items,
+                callToAction,
+                hasRibbon = false,
+                ribbonTitle,
+              },
+              index,
+            ) => (
               <div
                 className="col-span-3 mx-auto flex w-full sm:col-span-1 md:col-span-1 lg:col-span-1 xl:col-span-1"
                 key={`pricing-${index}`}
@@ -33,7 +47,9 @@ const Pricing = ({ header, prices, id, hasBackground = false }: PricingProps) =>
                         </h3>
                       )}
                       {subtitle && (
-                        <p className="font-light sm:text-lg text-gray-600 dark:text-slate-400">{subtitle}</p>
+                        <p className="font-light sm:text-lg text-gray-600 dark:text-slate-400">
+                          {subtitle}
+                        </p>
                       )}
                       <div className="my-8">
                         <div className="flex items-center justify-center text-center mb-1">

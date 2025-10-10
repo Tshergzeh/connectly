@@ -46,7 +46,8 @@ export const features2Services: FeaturesProps = {
   items: [
     {
       title: 'Next.Js + Tailwind CSS Integration',
-      description: 'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
+      description:
+        'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
       icon: IconBrandTailwind,
     },
     {
@@ -56,7 +57,8 @@ export const features2Services: FeaturesProps = {
     },
     {
       title: 'Best Practices',
-      description: 'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
+      description:
+        'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
       icon: IconListCheck,
     },
     {
@@ -161,7 +163,8 @@ export const features4Services: FeaturesProps = {
   items: [
     {
       title: 'Next.Js + Tailwind CSS Integration',
-      description: 'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
+      description:
+        'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
       icon: IconBrandTailwind,
     },
     {
@@ -171,7 +174,8 @@ export const features4Services: FeaturesProps = {
     },
     {
       title: 'Best Practices',
-      description: 'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
+      description:
+        'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
       icon: IconListCheck,
     },
     {

@@ -48,7 +48,11 @@ const FAQs4 = ({ header, tabs, id, hasBackground = false }: FAQsProps) => {
               </div>
             </div>
           ) : (
-            <Dropdown options={tabs as Tab[]} activeTab={activeTab} onActiveTabSelected={activeTabSelectedHandler} />
+            <Dropdown
+              options={tabs as Tab[]}
+              activeTab={activeTab}
+              onActiveTabSelected={activeTabSelectedHandler}
+            />
           )}
           <div className="mt-4 h-fit md:col-span-2 md:mx-4 md:mt-0 md:px-4">
             {(tabs as Tab[]).map((tab, index) => (

@@ -22,11 +22,13 @@ const Header = () => {
       return false;
     });
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean[]>(updatedIsDropdownOpen as boolean[]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean[]>(
+    updatedIsDropdownOpen as boolean[],
+  );
   const [isToggleMenuOpen, setIsToggleMenuOpen] = useState<boolean>(false);
 
   const handleDropdownOnClick = (index: number) => {
-    setIsDropdownOpen((prevValues) => {
+    setIsDropdownOpen(prevValues => {
       const newValues = [...(prevValues as boolean[])];
       newValues.forEach((value, i) => {
         if (value === true) {
@@ -40,7 +42,7 @@ const Header = () => {
   };
 
   const handleCloseDropdownOnClick = (index: number) => {
-    setIsDropdownOpen((prevValues) => {
+    setIsDropdownOpen(prevValues => {
       const newValues = [...(prevValues as boolean[])];
       newValues[index] = false;
       return newValues;
@@ -74,18 +76,27 @@ const Header = () => {
             className="flex items-center"
             href="/"
             onClick={() =>
-              isToggleMenuOpen ? handleToggleMenuOnClick() : setIsDropdownOpen(updatedIsDropdownOpen as boolean[])
+              isToggleMenuOpen
+                ? handleToggleMenuOnClick()
+                : setIsDropdownOpen(updatedIsDropdownOpen as boolean[])
             }
           >
             <Logo />
           </Link>
           <div className="flex items-center md:hidden">
-            <ToggleMenu handleToggleMenuOnClick={handleToggleMenuOnClick} isToggleMenuOpen={isToggleMenuOpen} />
+            <ToggleMenu
+              handleToggleMenuOnClick={handleToggleMenuOnClick}
+              isToggleMenuOpen={isToggleMenuOpen}
+            />
           </div>
         </div>
         <nav
           className={`${isToggleMenuOpen ? 'block px-3' : 'hidden'} h-screen md:w-full ${
-            position === 'right' ? 'justify-end' : position === 'left' ? 'justify-start' : 'justify-center'
+            position === 'right'
+              ? 'justify-end'
+              : position === 'left'
+                ? 'justify-start'
+                : 'justify-center'
           } w-auto overflow-y-auto dark:text-slate-200 md:mx-5 md:flex md:h-auto md:items-center md:overflow-visible`}
           aria-label="Main navigation"
         >
@@ -122,7 +133,9 @@ const Header = () => {
                               className="whitespace-no-wrap block py-2 px-5 first:rounded-t last:rounded-b dark:hover:bg-gray-700 md:hover:bg-gray-200"
                               href={href2 as string}
                               onClick={() =>
-                                isToggleMenuOpen ? handleToggleMenuOnClick() : handleCloseDropdownOnClick(index)
+                                isToggleMenuOpen
+                                  ? handleToggleMenuOnClick()
+                                  : handleCloseDropdownOnClick(index)
                               }
                             >
                               {label2}
@@ -135,7 +148,9 @@ const Header = () => {
                     <Link
                       className="flex items-center px-4 py-3 font-medium transition duration-150 ease-in-out hover:text-gray-900 dark:hover:text-white"
                       href={href as string}
-                      onClick={() => (isToggleMenuOpen ? handleToggleMenuOnClick() : handleDropdownOnClick(index))}
+                      onClick={() =>
+                        isToggleMenuOpen ? handleToggleMenuOnClick() : handleDropdownOnClick(index)
+                      }
                     >
                       {label}
                     </Link>

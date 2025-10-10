@@ -26,7 +26,9 @@ const Footer = () => {
                       >
                         {label}
                       </a>
-                      {links.length - 1 !== index && <span className="mr-1 rtl:mr-0 rtl:ml-1"> · </span>}
+                      {links.length - 1 !== index && (
+                        <span className="mr-1 rtl:mr-0 rtl:ml-1"> · </span>
+                      )}
                     </li>
                   ))}
               </ul>

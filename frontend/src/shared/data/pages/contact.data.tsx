@@ -1,4 +1,11 @@
-import { IconClock, IconHeadset, IconHelp, IconMapPin, IconMessages, IconPhoneCall } from '@tabler/icons-react';
+import {
+  IconClock,
+  IconHeadset,
+  IconHelp,
+  IconMapPin,
+  IconMessages,
+  IconPhoneCall,
+} from '@tabler/icons-react';
 import { ContactProps, FeaturesProps } from '~/shared/types';
 import { HeroProps } from '~/shared/types';
 

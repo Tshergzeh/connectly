@@ -46,7 +46,8 @@ export const pricingPricing: PricingProps = {
           description: 'Adequate storage space for small to medium-sized websites.',
         },
         {
-          description: 'Core features for a functional online presence, such as SEO tools and contact forms.',
+          description:
+            'Core features for a functional online presence, such as SEO tools and contact forms.',
         },
       ],
       callToAction: {
@@ -99,7 +100,8 @@ export const pricingPricing: PricingProps = {
           description: 'No limits on storage, ideal for extensive websites and media.',
         },
         {
-          description: 'Advanced SEO, analytics, and marketing tools for optimal performance and growth.',
+          description:
+            'Advanced SEO, analytics, and marketing tools for optimal performance and growth.',
         },
       ],
       callToAction: {

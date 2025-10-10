@@ -106,7 +106,8 @@ export const featuresFourAboutTwo: FeaturesProps = {
   items: [
     {
       title: 'Customer-centricity',
-      description: 'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
+      description:
+        'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
       icon: IconUser,
     },
     {
@@ -117,7 +118,8 @@ export const featuresFourAboutTwo: FeaturesProps = {
     },
     {
       title: 'Quality assurance',
-      description: 'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
+      description:
+        'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
       icon: IconThumbUp,
     },
     {
@@ -198,7 +200,8 @@ export const features3About: FeaturesProps = {
   items: [
     {
       title: 'Customer engagement',
-      description: 'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
+      description:
+        'Nullam non sodales massa. Ut justo neque, elementum et vehicula vel, pellentesque non orci.',
       icon: IconCirclesRelation,
     },
     {
@@ -208,7 +211,8 @@ export const features3About: FeaturesProps = {
     },
     {
       title: 'Continuous learning',
-      description: 'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
+      description:
+        'Morbi sit amet arcu vitae metus molestie auctor sit amet in risus. Sed vel lacinia purus.',
       icon: IconBook,
     },
     {
@@ -218,7 +222,8 @@ export const features3About: FeaturesProps = {
     },
     {
       title: 'Entrepreneurial spirit',
-      description: 'Phasellus interdum placerat enim sed vehicula. Ut tincidunt, magna in iaculis maximus.',
+      description:
+        'Phasellus interdum placerat enim sed vehicula. Ut tincidunt, magna in iaculis maximus.',
       icon: IconFlame,
     },
     {

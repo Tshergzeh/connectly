@@ -23,7 +23,9 @@ const ItemTestimonial = ({
 }: Testimonial) => {
   return (
     <div className={twMerge(`select-none`, containerClass)}>
-      <div className={twMerge(`flex ${isTestimonialUp ? 'flex-col-reverse' : 'flex-col'}`, panelClass)}>
+      <div
+        className={twMerge(`flex ${isTestimonialUp ? 'flex-col-reverse' : 'flex-col'}`, panelClass)}
+      >
         {((image && name) || (name && job)) && (
           <>
             <div className={twMerge('flex items-center', dataClass)}>
@@ -33,7 +35,10 @@ const ItemTestimonial = ({
                   width={248}
                   height={248}
                   alt={image.alt}
-                  className={twMerge('object-cover shadow-lg bg-gray-500 dark:bg-slate-700', imageClass)}
+                  className={twMerge(
+                    'object-cover shadow-lg bg-gray-500 dark:bg-slate-700',
+                    imageClass,
+                  )}
                 />
               )}
 

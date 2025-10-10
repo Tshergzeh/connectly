@@ -6,7 +6,9 @@ import { Dropdown as DropdownType, Tab } from '~/shared/types';
 
 const Dropdown = ({ options, activeTab, onActiveTabSelected, iconUp, iconDown }: DropdownType) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string>(options[activeTab].link?.label as string);
+  const [selectedOption, setSelectedOption] = useState<string>(
+    options[activeTab].link?.label as string,
+  );
 
   const dropdownHandler = (e: React.SyntheticEvent) => {
     e.stopPropagation();
@@ -32,7 +34,10 @@ const Dropdown = ({ options, activeTab, onActiveTabSelected, iconUp, iconDown }:
 
   return (
     <div className="relative mt-4 rounded-md border border-gray-400 text-left">
-      <div onClick={dropdownHandler} className="flex select-none items-center justify-between rounded-md p-3">
+      <div
+        onClick={dropdownHandler}
+        className="flex select-none items-center justify-between rounded-md p-3"
+      >
         <div className="text-lg">{selectedOption}</div>
         {iconDown && iconUp ? (
           isDropdownOpen === false ? (

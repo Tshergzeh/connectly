@@ -18,7 +18,9 @@ const Form = ({
   const [inputValues, setInputValues] = useState([]);
   const [radioBtnValue, setRadioBtnValue] = useState('');
   const [textareaValues, setTextareaValues] = useState('');
-  const [checkedState, setCheckedState] = useState<boolean[]>(new Array(checkboxes && checkboxes.length).fill(false));
+  const [checkedState, setCheckedState] = useState<boolean[]>(
+    new Array(checkboxes && checkboxes.length).fill(false),
+  );
 
   // Update the value of the entry fields
   const changeInputValueHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +44,7 @@ const Form = ({
 
   // Update checkbox radio buttons
   const changeCheckboxHandler = (index: number) => {
-    setCheckedState((prevValues) => {
+    setCheckedState(prevValues => {
       const newValues = [...(prevValues as boolean[])];
       newValues.map(() => {
         newValues[index] = !checkedState[index];
@@ -113,7 +115,7 @@ const Form = ({
               cols={textarea.cols}
               rows={textarea.rows}
               value={textareaValues}
-              onChange={(e) => changeTextareaHandler(e)}
+              onChange={e => changeTextareaHandler(e)}
               placeholder={textarea.placeholder}
               className="mb-2 w-full rounded-md border border-gray-400 py-2 pl-2 pr-4 shadow-md dark:text-gray-300 sm:mb-0"
             />

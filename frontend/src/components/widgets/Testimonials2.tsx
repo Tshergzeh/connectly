@@ -7,7 +7,13 @@ import ItemTestimonial from '../common/ItemTestimonial';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';
 
-const Testimonials2 = ({ header, testimonials, isTestimonialUp, id, hasBackground = false }: TestimonialsProps) => {
+const Testimonials2 = ({
+  header,
+  testimonials,
+  isTestimonialUp,
+  id,
+  hasBackground = false,
+}: TestimonialsProps) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const firstIndex = 0;
