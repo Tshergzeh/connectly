@@ -23,12 +23,13 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
 
     try {
       if (type === 'login') {
-        onSubmit({ email, password });
+        await onSubmit({ email, password });
       } else {
-        onSubmit({ name, email, password, isCustomer, isProvider });
+        await onSubmit({ name, email, password, isCustomer, isProvider });
       }
     } catch (error: any) {
       setError(error.message || 'Something went wrong');
+      setPassword("");
     } finally {
       setLoading(false);
     }
@@ -95,7 +96,13 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 dark:bg-gray-700 dark:text-gray-100 focus:border-indigo-500 focus:outline-none"
         />
       </div>
-      {error && <p className="text-sm text-red-500">{error}</p>}
+
+      {error && 
+        <p className="text-sm font-medium text-red-500 bg-red-50 border border-red-200 p-2 rounded">
+          {error}
+        </p>
+      }
+
       <button 
         type="submit" 
         disabled={loading} 

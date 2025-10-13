@@ -5,11 +5,20 @@ export async function loginUser(email: string, password: string) {
     body: JSON.stringify({ email, password }),
   });
 
-  if (!res.ok) {
-    throw new Error('Login failed');
+  let data;
+
+  try {
+    data = await res.json();
+  } catch (error) {
+    data = {};
   }
 
-  return res.json();
+  if (!res.ok) {
+    const message = data?.message || data?.error || 'Invalid credentials';
+    throw new Error(message);
+  }
+
+  return data;
 }
 
 export async function signupUser(

@@ -8,9 +8,14 @@ export default function LoginPage() {
     const router = useRouter();
 
     const handleLogin = async ({ email, password }: any) => {
-        const { accessToken } = await loginUser(email, password);
-        localStorage.setItem("token", accessToken);
-        router.push("/");
+        try {
+            const { accessToken } = await loginUser(email, password);
+            localStorage.setItem("token", accessToken);
+            router.push("/");
+        } catch (error: any) {
+            console.error("Login failed", error.message);
+            throw error;
+        }
     };
 
     return (
