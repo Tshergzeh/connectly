@@ -56,13 +56,13 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 dark:bg-gray-700 dark:text-gray-100 focus:border-indigo-500 focus:outline-none"
             />
 
-            <div className="flex flex-col space-y-2 mt-2">
+            <div className="flex flex-col gap-3 mt-4">
               <label className="flex items-center space-x-2">
                 <input
                   type="checkbox"
                   checked={isCustomer}
                   onChange={e => setIsCustomer(e.target.checked)}
-                  className="form-checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
                 />
                 <span>I want to be a Customer</span>
               </label>
@@ -72,7 +72,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
                   type="checkbox"
                   checked={isProvider}
                   onChange={e => setIsProvider(e.target.checked)}
-                  className="form-checkbox"
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700"
                 />
                 <span>I want to be a Service Provider</span>
               </label>
