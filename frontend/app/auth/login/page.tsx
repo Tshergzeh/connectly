@@ -9,8 +9,9 @@ export default function LoginPage() {
 
     const handleLogin = async ({ email, password }: any) => {
         try {
-            const { accessToken } = await loginUser(email, password);
-            localStorage.setItem("token", accessToken);
+            const { accessToken, user } = await loginUser(email, password);
+            sessionStorage.setItem("token", accessToken);
+            sessionStorage.setItem("user", JSON.stringify(user));
             router.push("/");
         } catch (error: any) {
             console.error("Login failed", error.message);
