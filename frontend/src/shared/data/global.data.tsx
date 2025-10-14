@@ -167,3 +167,5 @@ export const footerData2: FooterProps = {
     </div>
   ),
 };
+
+export const headerData = getHeaderData();
