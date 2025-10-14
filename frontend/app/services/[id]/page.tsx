@@ -22,8 +22,17 @@ export default async function ServicePage({ params }: ServicePageProps) {
     );
   }
 
-  const { id, title, description, price, image, category, average_rating, review_count, created_at } =
-    service;
+  const {
+    id,
+    title,
+    description,
+    price,
+    image,
+    category,
+    average_rating,
+    review_count,
+    created_at,
+  } = service;
 
   return (
     <section className="py-12 sm:py-16 lg:py-20">

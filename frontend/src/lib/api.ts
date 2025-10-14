@@ -101,7 +101,7 @@ export async function createBooking(serviceId: string, token: string) {
   return res.json();
 }
 
-export async function initialisePayment(bookingId: string, amount:number, token: string) {
+export async function initialisePayment(bookingId: string, amount: number, token: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/initialise`, {
     method: 'POST',
     headers: {
@@ -125,6 +125,6 @@ export async function fetchBookings(token: string) {
   });
 
   if (!res.ok) throw new Error('Failed to fetch bookings');
-  
+
   return res.json();
 }
