@@ -360,3 +360,18 @@ type HeaderProps = {
   showRssFeed?: boolean;
   position?: 'center' | 'right' | 'left';
 };
+
+type Service = {
+  id: string;
+  provider_id: string;
+  title: string;
+  description: string;
+  price: string;
+  category: string;
+  image: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  average_rating: string;
+  review_count: string;
+};
