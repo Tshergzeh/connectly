@@ -1,11 +1,11 @@
 module.exports.SITE = {
-  name: 'TailNext',
+  name: 'Connectly',
 
-  origin: 'https://tailnext.vercel.app',
+  origin: 'https://connectly-alpha.vercel.app',
   basePathname: '/',
   trailingSlash: false,
 
-  title: 'TailNext — Your website with Next.js + Tailwind CSS',
+  title: 'Connectly — Service Marketplace Platform',
   description:
-    'TailNext is a free and ready to start template to make your website using Next.js and Tailwind CSS.',
+    'Connectly is a modern web application that connects service providers with customers looking to book their services.',
 };
