@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 import { Service, ServicesResponse } from '~/shared/types';
 import ServiceCard from '~/components/services/ServiceCard';
@@ -42,7 +43,9 @@ export default function ServicesList({ initialData }: { initialData: ServicesRes
           <>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {services.map((service: any) => (
-                <ServiceCard key={service.id} service={service} />
+                <Link href={`/services/${service.id}`}>
+                  <ServiceCard key={service.id} service={service} />
+                </Link>
               ))}
             </div>
 
