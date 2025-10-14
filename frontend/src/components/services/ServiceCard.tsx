@@ -8,11 +8,7 @@ export default function ServiceCard({ service }: { service: Service }) {
     <div className="group relative rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 shadow hover:shadow-lg transition">
       <div className="aspect-w-16 aspect-h-9 relative overflow-hidden rounded-t-lg">
         <Image
-          src={
-            service.image.startsWith('http')
-              ? service.image
-              : `${process.env.NEXT_PUBLIC_API_URL}/${service.image}`
-          }
+          src={service.image}
           alt={service.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
