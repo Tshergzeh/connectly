@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { fetchServiceById } from '~/lib/api';
 import { ServicePageProps } from '~/shared/types';
+import ReviewsSection from './ReviewsSection';
 
 export default async function ServicePage({ params }: ServicePageProps) {
   const service = await fetchServiceById(params.id);
@@ -62,6 +63,8 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </div>
           </div>
         </div>
+
+        <ReviewsSection serviceId={params.id} />
       </div>
     </section>
   );
