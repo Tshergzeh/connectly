@@ -51,7 +51,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                 &#8358;{price}
               </span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                ({average_rating} ⭐ from {review_count} reviews)
+                ({Number(average_rating).toFixed(2)} ⭐ from {review_count} reviews)
               </span>
             </div>
 
