@@ -12,6 +12,7 @@ export default function LoginPage() {
             const { accessToken, user } = await loginUser(email, password);
             sessionStorage.setItem("token", accessToken);
             sessionStorage.setItem("user", JSON.stringify(user));
+            window.dispatchEvent(new Event("auth-change"));
             router.push("/");
         } catch (error: any) {
             console.error("Login failed", error.message);

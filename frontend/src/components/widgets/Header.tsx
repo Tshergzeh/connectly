@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { IconRss } from '@tabler/icons-react';
 import { useOnClickOutside } from '~/hooks/useOnClickOutside';
+import { useUser } from '~/context/UserContext';
 import ToggleDarkMode from '~/components/atoms/ToggleDarkMode';
 import Link from 'next/link';
 import Logo from '~/components/atoms/Logo';
@@ -12,24 +13,9 @@ import CTA from '../common/CTA';
 import { CallToActionType } from '~/shared/types';
 
 const Header = () => {
-  const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState("");
 
-  useEffect(() => {
-    const t = sessionStorage.getItem("token");
-    setToken(t || "");
-
-    if (t) {
-      console.log("profile");
-      const profile = JSON.parse(sessionStorage.getItem("user") || "{}");
-      setUser({
-        loggedIn: true,
-        isCustomer: profile?.is_customer,
-        isProvider: profile?.is_provider,
-      });
-    }
-  }, []);
-
+  const { user } = useUser();
   const { links, actions, isSticky, showToggleTheme, showRssFeed, position } = getHeaderData(user);
 
   const ref = useRef(null);

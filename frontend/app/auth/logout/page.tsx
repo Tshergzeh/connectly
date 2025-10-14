@@ -8,6 +8,7 @@ export default function LogoutPage() {
   useEffect(() => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
+    window.dispatchEvent(new Event("auth-change"));
     router.push("/auth/login");
   }, [router]);
 
