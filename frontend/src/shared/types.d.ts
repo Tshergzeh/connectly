@@ -380,3 +380,7 @@ type ServicesResponse = {
   data: Service[];
   nextCursor: string | null;
 };
+
+type ServicePageProps = {
+  params: { id: string };
+};
