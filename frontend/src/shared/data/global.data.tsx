@@ -22,63 +22,68 @@ export const announcementData: AnnouncementProps = {
 };
 
 // Header data
-export const headerData: HeaderProps = {
-  links: [
+export function getHeaderData(user?: {
+  isCustomer: boolean;
+  isProvider: boolean;
+  loggedIn: boolean;
+}): HeaderProps {
+  const links = [
     {
-      label: 'Pages',
-      icon: IconChevronDown,
-      links: [
-        {
-          label: 'Services',
-          href: '/services',
-        },
-        {
-          label: 'Pricing',
-          href: '/pricing',
-        },
-        {
-          label: 'About us',
-          href: '/about',
-        },
-        {
-          label: 'Contact us',
-          href: '/contact',
-        },
-        {
-          label: 'FAQs',
-          href: '/faqs',
-        },
-        {
-          label: 'Terms & Conditions',
-          href: '/terms',
-        },
-        {
-          label: 'Privacy Policy',
-          href: '/privacy',
-        },
-      ],
+      label: 'Home',
+      href: '/',
     },
-    {
-      label: 'Blog',
-      href: '/blog',
-    },
-    {
-      label: 'Contact',
-      href: '/contact',
-    },
-  ],
-  actions: [
-    {
-      text: 'Download',
-      href: 'https://github.com/onwidget/tailnext',
-      targetBlank: true,
-    },
-  ],
-  isSticky: true,
-  showToggleTheme: true,
-  showRssFeed: false,
-  position: 'right',
-};
+  ];
+
+  if (user?.isCustomer) {
+    links.push({
+      label: 'Services',
+      href: '/services',
+    });
+    links.push({
+      label: 'My Bookings',
+      href: '/bookings',
+    });
+  }
+
+  if (user?.isProvider) {
+    links.push({
+      label: 'Create Service',
+      href: '/services/create',
+    });
+    links.push({
+      label: 'Provider Dashboard',
+      href: '/provider/bookings',
+    });
+  }
+
+  links.push({
+    label: 'Contact',
+    href: '/contact',
+  });
+
+  const actions = user?.loggedIn
+    ? [
+        {
+          text: 'Logout',
+          href: '/auth/logout',
+        },
+      ]
+    : [
+        {
+          text: 'Login',
+          href: '/auth/login',
+        },
+      ];
+
+  return {
+    links,
+    actions,
+    isSticky: true,
+    showToggleTheme: true,
+    showRssFeed: false,
+    position: 'right',
+  };
+}
 
 // Footer data
 export const footerData: FooterProps = {

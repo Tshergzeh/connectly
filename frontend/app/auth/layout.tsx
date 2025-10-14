@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Login",
+  title: 'Login',
 };
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

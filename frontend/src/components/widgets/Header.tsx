@@ -1,18 +1,22 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { IconRss } from '@tabler/icons-react';
 import { useOnClickOutside } from '~/hooks/useOnClickOutside';
+import { useUser } from '~/context/UserContext';
 import ToggleDarkMode from '~/components/atoms/ToggleDarkMode';
 import Link from 'next/link';
 import Logo from '~/components/atoms/Logo';
 import ToggleMenu from '../atoms/ToggleMenu';
-import { headerData } from '~/shared/data/global.data';
+import { getHeaderData } from '~/shared/data/global.data';
 import CTA from '../common/CTA';
 import { CallToActionType } from '~/shared/types';
 
 const Header = () => {
-  const { links, actions, isSticky, showToggleTheme, showRssFeed, position } = headerData;
+  const [token, setToken] = useState('');
+
+  const { user } = useUser();
+  const { links, actions, isSticky, showToggleTheme, showRssFeed, position } = getHeaderData(user);
 
   const ref = useRef(null);
 
@@ -178,11 +182,17 @@ const Header = () => {
             {actions && actions.length > 0 && (
               <div className="ml-4 rtl:ml-0 rtl:mr-4 flex w-max flex-wrap justify-end">
                 {actions.map((callToAction, index) => (
-                  <CTA
+                  <div
                     key={`item-action-${index}`}
-                    callToAction={callToAction as CallToActionType}
-                    linkClass="btn btn-primary m-1 py-2 px-5 text-sm font-semibold shadow-none md:px-6"
-                  />
+                    onClick={() => {
+                      if (isToggleMenuOpen) handleToggleMenuOnClick();
+                    }}
+                  >
+                    <CTA
+                      callToAction={callToAction as CallToActionType}
+                      linkClass="btn btn-primary m-1 py-2 px-5 text-sm font-semibold shadow-none md:px-6"
+                    />
+                  </div>
                 ))}
               </div>
             )}
