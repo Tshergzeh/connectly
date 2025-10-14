@@ -1,15 +1,15 @@
-"use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function LogoutPage() {
   const router = useRouter();
 
   useEffect(() => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
-    window.dispatchEvent(new Event("auth-change"));
-    router.push("/auth/login");
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    window.dispatchEvent(new Event('auth-change'));
+    router.push('/auth/login');
   }, [router]);
 
   return (

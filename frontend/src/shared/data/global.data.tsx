@@ -60,7 +60,7 @@ export function getHeaderData(user?: {
     label: 'Contact',
     href: '/contact',
   });
-  
+
   const actions = user?.loggedIn
     ? [
         {

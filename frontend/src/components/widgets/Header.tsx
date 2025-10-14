@@ -13,7 +13,7 @@ import CTA from '../common/CTA';
 import { CallToActionType } from '~/shared/types';
 
 const Header = () => {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState('');
 
   const { user } = useUser();
   const { links, actions, isSticky, showToggleTheme, showRssFeed, position } = getHeaderData(user);

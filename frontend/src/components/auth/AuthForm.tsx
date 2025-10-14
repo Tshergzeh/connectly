@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 
@@ -29,22 +29,22 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
       }
     } catch (error: any) {
       setError(error.message || 'Something went wrong');
-      setPassword("");
+      setPassword('');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-md dark:bg-gray-800">
-        <h2 className='text-2xl font-semibold text-gray-800 dark:text-gray-100'
-      >
-        {type === "login" ? "Welcome back" : "Create an account"}
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-md dark:bg-gray-800"
+    >
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+        {type === 'login' ? 'Welcome back' : 'Create an account'}
       </h2>
 
-      <div className='space-y-4'>
+      <div className="space-y-4">
         {type === 'signup' && (
           <>
             <input
@@ -97,15 +97,15 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
         />
       </div>
 
-      {error && 
+      {error && (
         <p className="text-sm font-medium text-red-500 bg-red-50 border border-red-200 p-2 rounded">
           {error}
         </p>
-      }
+      )}
 
-      <button 
-        type="submit" 
-        disabled={loading} 
+      <button
+        type="submit"
+        disabled={loading}
         className="w-full rounded-md bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
       >
         {loading ? 'Processing...' : type === 'login' ? 'Login' : 'Sign Up'}
