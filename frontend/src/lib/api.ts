@@ -87,3 +87,44 @@ export async function fetchServiceReviews(serviceId: string) {
     return [];
   }
 }
+
+export async function createBooking(serviceId: string, token: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${serviceId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error('Failed to create booking');
+  return res.json();
+}
+
+export async function initialisePayment(bookingId: string, amount:number, token: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/initialise`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ bookingId, amount }),
+  });
+
+  if (!res.ok) throw new Error('Failed to initialise payment');
+
+  return res.json();
+}
+
+export async function fetchBookings(token: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
+    headers: {
+      Authorization: `Bearer {token}`,
+    },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) throw new Error('Failed to fetch bookings');
+  
+  return res.json();
+}
