@@ -85,20 +85,47 @@ cd connectly
 ```bash
 cd backend
 cp dev.env .env
+```
+- Setup backend secrets in .env
+```
+JWT_SECRET=
+JWT_REFRESH_SECRET=
+PAYSTACK_SECRET_KEY=
+REDIS_USERNAME=
+REDIS_PASSWORD=
+REDIS_HOST=
+REDIS_PORT=
+SENDGRID_API_KEY=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_API_KEY=
+```
+- Install and run backend server
+```bash
 npm install
 nodemon
 ```
-- Frontend setup
-```bash
-cd frontend
-cp dev.env.example .env.local
-npm install
-npm run dev
-```
-- Run with Docker
+- Run with Docker (optional)
 ```bash
 cd ..
-docker-compose up build
+cp dev.env .env (setup paystack keys)
+docker-compose build
+docker-compose up
+```
+- Frontend setup
+```bash
+cd ..
+cd frontend
+cp dev.env.example .env.local
+```
+- Setup frontend secrets in .env.local
+```bash
+NEXT_PUBLIC_SENTRY_DSN=
+```
+- Install and run frontend server
+```
+npm install
+npm run dev
 ```
 
 ## Contributing
