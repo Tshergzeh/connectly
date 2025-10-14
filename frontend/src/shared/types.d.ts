@@ -384,3 +384,15 @@ type ServicesResponse = {
 type ServicePageProps = {
   params: { id: string };
 };
+
+type Review = {
+  id: string;
+  rating: number;
+  comment: string;
+  customer_name: string;
+  created_at: string;
+};
+
+type ReviewsSectionProps = {
+  serviceId: string;
+};
