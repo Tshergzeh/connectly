@@ -57,3 +57,18 @@ export async function fetchServices(cursor?: string) {
     return { data: [] };
   }
 }
+
+export async function fetchServiceById(id: string) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/${id}`, {
+      cache: 'no-store',
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch service');
+
+    return await res.json();
+  } catch (error) {
+    console.log('Error fetching service:', error);
+    return null;
+  }
+}
