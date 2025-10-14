@@ -1,46 +1,70 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
+  "name": "@onwidget/tailnext",
+  "description": "A template to make your website using Next.js + Tailwind CSS.",
+  "version": "1.0.0-beta.4",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write src",
-    "prepare": "husky"
-  },
-  "dependencies": {
-    "@sentry/nextjs": "^10.15.0",
-    "axios": "^1.12.1",
-    "next": "15.5.3",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-hot-toast": "^2.6.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.35.0",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9.35.0",
-    "eslint-config-next": "^15.5.3",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-react": "^7.37.5",
-    "globals": "^16.4.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.6",
-    "prettier": "^3.6.2",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "typescript-eslint": "^8.43.0"
+    "lint": "next lint",
+    "prepare": "husky install",
+    "postbuild": "next-sitemap",
+    "prettier": "prettier --write --ignore-unknown .",
+    "prettier:check": "prettier --check --ignore-unknown .",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
+    "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^3.12.0",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.0",
+    "next": "^14.2.6",
+    "next-themes": "^0.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.6.0",
+    "sharp": "^0.33.5",
+    "tailwind-merge": "^2.5.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^7.6.10",
+    "@storybook/addon-essentials": "^7.6.10",
+    "@storybook/addon-interactions": "^7.6.10",
+    "@storybook/addon-links": "^7.6.10",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/addon-themes": "^7.6.10",
+    "@storybook/addon-viewport": "^7.6.10",
+    "@storybook/blocks": "^7.6.10",
+    "@storybook/nextjs": "^7.6.10",
+    "@storybook/react": "^7.6.10",
+    "@storybook/test": "^7.6.10",
+    "@tailwindcss/typography": "^0.5.14",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "22.5.0",
+    "@types/react": "18.3.4",
+    "@types/react-dom": "18.3.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.2.6",
+    "eslint-plugin-storybook": "^0.8.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^16.2.3",
+    "next-sitemap": "^4.2.3",
+    "postcss": "^8.4.41",
+    "prettier": "3.3.3",
+    "prettier-plugin-tailwindcss": "0.6.6",
+    "storybook": "^7.6.10",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=18.17.0"
   }
 }

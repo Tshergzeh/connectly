@@ -1,14 +1,8 @@
-# dependencies
-node_modules
-
-# Next.js build output
 .next
 out
-
-# build and coverage artifacts
+node_modules
+.github
+.changeset
+package-lock.json
 dist
 build
-coverage
-
-# misc
-*.log

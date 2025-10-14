@@ -1,94 +1,52 @@
-'use client';
+import type { Metadata } from 'next';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { SITE } from '~/config.js';
 
-import type { User } from '@/types';
+import Hero from '~/components/widgets/Hero';
+import SocialProof from '../src/components/widgets/SocialProof';
+import Features from '~/components/widgets/Features';
+import Content from '~/components/widgets/Content';
+import Steps from '~/components/widgets/Steps';
+import Testimonials from '~/components/widgets/Testimonials';
+import FAQs2 from '~/components/widgets/FAQs2';
+import Pricing from '~/components/widgets/Pricing';
+import Team from '~/components/widgets/Team';
+import CallToAction2 from '~/components/widgets/CallToAction2';
+import Contact from '~/components/widgets/Contact';
+import {
+  callToAction2Home,
+  contactHome,
+  contentHomeOne,
+  contentHomeTwo,
+  faqs2Home,
+  featuresHome,
+  heroHome,
+  pricingHome,
+  socialProofHome,
+  stepsHome,
+  teamHome,
+  testimonialsHome,
+} from '~/shared/data/pages/home.data';
 
-export default function HomePage() {
-  const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
+export const metadata: Metadata = {
+  title: SITE.title,
+};
 
-  useEffect(() => {
-    const storedUser = sessionStorage.getItem('user');
-
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
-  const renderCTA = () => {
-    if (!user) {
-      return (
-        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={() => router.push('/login')}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-          >
-            Login
-          </button>
-          <button
-            onClick={() => router.push('/signup')}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
-          >
-            Sign Up
-          </button>
-        </div>
-      );
-    }
-
-    if (user.is_provider) {
-      return (
-        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={() => router.push('/provider/bookings')}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-          >
-            Provider Dashboard
-          </button>
-          <button
-            onClick={() => router.push('/services/create')}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
-          >
-            Create Service
-          </button>
-        </div>
-      );
-    }
-
-    if (user.is_customer) {
-      return (
-        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={() => router.push('/services')}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-          >
-            Browse Services
-          </button>
-          <button
-            onClick={() => router.push('/bookings')}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition"
-          >
-            My Bookings
-          </button>
-        </div>
-      );
-    }
-
-    return null;
-  };
+export default function Page() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
-      <div className="text-center max-w-2xl">
-        <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-gray-800 text-center">
-          Welcome to Connectly
-        </h1>
-        <p className="mt-4 text-gray-600 text-center max-w-xl px-4 sm:px-0">
-          Book services, leave reviews, and manage your bookings.
-        </p>
-
-        {renderCTA()}
-      </div>
-    </div>
+    <>
+      <Hero {...heroHome} />
+      <SocialProof {...socialProofHome} />
+      <Features {...featuresHome} />
+      <Content {...contentHomeOne} />
+      <Content {...contentHomeTwo} />
+      <Steps {...stepsHome} />
+      <Testimonials {...testimonialsHome} />
+      <FAQs2 {...faqs2Home} />
+      <Pricing {...pricingHome} />
+      <Team {...teamHome} />
+      <Contact {...contactHome} />
+      <CallToAction2 {...callToAction2Home} />
+    </>
   );
 }
