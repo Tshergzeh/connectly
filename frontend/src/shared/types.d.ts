@@ -375,3 +375,8 @@ type Service = {
   average_rating: string;
   review_count: string;
 };
+
+type ServicesResponse = {
+  data: Service[];
+  nextCursor: string | null;
+};
