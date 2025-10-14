@@ -5,7 +5,7 @@ import { fetchServiceReviews } from '~/lib/api';
 import { Review, ReviewsSectionProps } from '~/shared/types';
 
 export default function ReviewsSection({ serviceId }: ReviewsSectionProps) {
-  const [reviews, setReviews] = useState<Review>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
