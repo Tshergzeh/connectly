@@ -48,7 +48,7 @@ export function getHeaderData(user?: {
   if (user?.isProvider) {
     links.push({
       label: 'Create Service',
-      href: '/services/create',
+      href: '/provider/services/new',
     });
     links.push({
       label: 'Provider Dashboard',
