@@ -117,7 +117,7 @@ export async function initialisePayment(bookingId: string, amount: number, token
 }
 
 export async function fetchBookings(token: string, cursor?: string) {
-  const url = cursor 
+  const url = cursor
     ? `${process.env.NEXT_PUBLIC_API_URL}/bookings?cursor=${cursor}`
     : `${process.env.NEXT_PUBLIC_API_URL}/bookings`;
 
@@ -142,7 +142,7 @@ export async function deleteBooking(bookingId: string, token: string) {
   });
 
   if (!res.ok) throw new Error('Failed to delete booking');
-  
+
   return res.json();
 }
 
@@ -150,7 +150,7 @@ export async function createReview(
   bookingId: string,
   rating: number,
   comment: string,
-  token: string
+  token: string,
 ) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
     method: 'POST',
