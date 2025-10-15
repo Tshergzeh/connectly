@@ -1,8 +1,11 @@
+import { fetchWithAuth } from './fetchWithAuth';
+
 export async function loginUser(email: string, password: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
+    credentials: 'include',
   });
 
   let data;
@@ -19,6 +22,21 @@ export async function loginUser(email: string, password: string) {
   }
 
   return data;
+}
+
+export async function refreshToken() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+
+  if (!res.ok) throw new Error('Failed to refresh token');
+
+  const data = await res.json();
+
+  sessionStorage.setItem('token', data.accessToken);
+
+  return data.accessToken;
 }
 
 export async function signupUser(
@@ -89,7 +107,7 @@ export async function fetchServiceReviews(serviceId: string) {
 }
 
 export async function createBooking(serviceId: string, token: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${serviceId}`, {
+  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${serviceId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -102,7 +120,7 @@ export async function createBooking(serviceId: string, token: string) {
 }
 
 export async function initialisePayment(bookingId: string, amount: number, token: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/initialise`, {
+  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/payments/initialise`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -122,7 +140,7 @@ export async function fetchBookings(token: string, cursor?: string) {
       ? `${process.env.NEXT_PUBLIC_API_URL}/bookings?cursor=${cursor}`
       : `${process.env.NEXT_PUBLIC_API_URL}/bookings`;
 
-    const res = await fetch(url, {
+    const res = await fetchWithAuth(url, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -139,7 +157,7 @@ export async function fetchBookings(token: string, cursor?: string) {
 }
 
 export async function deleteBooking(bookingId: string, token: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${bookingId}`, {
+  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${bookingId}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -157,7 +175,7 @@ export async function createReview(
   comment: string,
   token: string,
 ) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
+  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
