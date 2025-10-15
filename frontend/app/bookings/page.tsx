@@ -113,6 +113,15 @@ export default function BookingsPage() {
                     &#8358;{booking.service.price}
                   </p>
                   <StatusBadge status={booking.status} />
+
+                  {booking.status === 'Pending' && (
+                    <button
+                      onClick={() => handleDelete(booking.id)}
+                      className="mt-3 w-full text-sm text-red-600 border border-red-600 hover:bg-red-600 hover:text-white transition py-1 rounded"
+                    >
+                      Delete Booking
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
