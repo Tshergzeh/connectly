@@ -132,3 +132,16 @@ export async function fetchBookings(token: string, cursor?: string) {
 
   return res.json();
 }
+
+export async function deleteBooking(bookingId: string, token: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${bookingId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error('Failed to delete booking');
+  
+  return res.json();
+}
