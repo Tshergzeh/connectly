@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import { fetchBookings, deleteBooking, createReview } from '~/lib/api';
+import StatusBadge from '~/components/bookings/StatusBadge';
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -91,15 +92,7 @@ export default function BookingsPage() {
                   <p className="font-medium text-indigo-600 dark:text-indigo-400 mb-2">
                     &#8358;{booking.service.price}
                   </p>
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                      booking.status === 'Paid'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
-                    }`}
-                  >
-                    {booking.status}
-                  </span>
+                  <StatusBadge status={booking.status} />
                 </div>
               ))}
             </div>

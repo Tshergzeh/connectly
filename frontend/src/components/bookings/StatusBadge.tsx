@@ -1,6 +1,6 @@
 import { BookingStatus } from '~/shared/types';
 
-function StatusBadge({ status }: { status: BookingStatus }) {
+export default function StatusBadge({ status }: { status: BookingStatus }) {
   const colors: Record<BookingStatus, string> = {
     Paid: 'bg-green-100 text-green-700',
     Completed: 'bg-blue-100 text-blue-700',
