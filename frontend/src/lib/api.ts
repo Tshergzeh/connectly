@@ -119,7 +119,7 @@ export async function initialisePayment(bookingId: string, amount: number, token
 export async function fetchBookings(token: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
     headers: {
-      Authorization: `Bearer {token}`,
+      Authorization: `Bearer ${token}`,
     },
     cache: 'no-store',
   });
