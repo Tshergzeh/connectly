@@ -13,3 +13,14 @@ export async function fetchProviderBookings(cursor?: string, status?: string) {
 
   return res.json();
 }
+
+export async function updateBookingStatus(bookingId: string, status: 'Completed' | 'Cancelled') {
+  const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${bookingId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  });
+
+  if (!res.ok) throw new Error('Failed to update booking status');
+
+  return res.json();
+}
