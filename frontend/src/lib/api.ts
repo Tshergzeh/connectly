@@ -117,20 +117,25 @@ export async function initialisePayment(bookingId: string, amount: number, token
 }
 
 export async function fetchBookings(token: string, cursor?: string) {
-  const url = cursor
-    ? `${process.env.NEXT_PUBLIC_API_URL}/bookings?cursor=${cursor}`
-    : `${process.env.NEXT_PUBLIC_API_URL}/bookings`;
+  try {
+    const url = cursor
+      ? `${process.env.NEXT_PUBLIC_API_URL}/bookings?cursor=${cursor}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/bookings`;
 
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store',
-  });
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
 
-  if (!res.ok) throw new Error('Failed to fetch bookings');
+    if (!res.ok) throw new Error('Failed to fetch bookings');
 
-  return res.json();
+    return res.json();
+  } catch (error) {
+    console.error('Failed to fetch bookings:', error);
+    return { data: [] };
+  }
 }
 
 export async function deleteBooking(bookingId: string, token: string) {
