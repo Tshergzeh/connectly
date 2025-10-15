@@ -12,6 +12,9 @@ export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [showReviewForm, setShowReviewForm] = useState<string | null>(null);
+  const [rating, setRating] = useState<number>(0);
+  const [comment, setComment] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -67,6 +70,26 @@ export default function BookingsPage() {
     } catch (error) {
       console.error('Error deleting booking:', error);
       toast.error('Failed to delete booking.');
+    }
+  };
+
+  const handleReviewSubmit = async (bookingId: string) => {
+    const token = sessionStorage.getItem('token');
+
+    if (!token) {
+      router.push('/auth/login');
+      return;
+    }
+
+    try {
+      await createReview(bookingId, rating, comment, token);
+      toast.success('Review submitted successfully');
+      setShowReviewForm(null);
+      setRating(0);
+      setComment('');
+    } catch (error) {
+      console.error('Failed to submit review:', error);
+      toast.error('Failed to submit review.');
     }
   };
 
