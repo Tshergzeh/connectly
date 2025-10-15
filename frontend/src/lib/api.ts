@@ -47,7 +47,7 @@ export async function fetchServices(cursor?: string) {
       ? `${process.env.NEXT_PUBLIC_API_URL}/services?cursor=${cursor}`
       : `${process.env.NEXT_PUBLIC_API_URL}/services`;
 
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(url, { next: { revalidate: 60 } });
 
     if (!res.ok) throw new Error('Failed to fetch services');
 
@@ -86,4 +86,87 @@ export async function fetchServiceReviews(serviceId: string) {
     console.error('Error fetching reviews:', error);
     return [];
   }
+}
+
+export async function createBooking(serviceId: string, token: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${serviceId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error('Failed to create booking');
+  return res.json();
+}
+
+export async function initialisePayment(bookingId: string, amount: number, token: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/initialise`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ bookingId, amount }),
+  });
+
+  if (!res.ok) throw new Error('Failed to initialise payment');
+
+  return res.json();
+}
+
+export async function fetchBookings(token: string, cursor?: string) {
+  try {
+    const url = cursor
+      ? `${process.env.NEXT_PUBLIC_API_URL}/bookings?cursor=${cursor}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/bookings`;
+
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch bookings');
+
+    return res.json();
+  } catch (error) {
+    console.error('Failed to fetch bookings:', error);
+    return { data: [] };
+  }
+}
+
+export async function deleteBooking(bookingId: string, token: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${bookingId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error('Failed to delete booking');
+
+  return res.json();
+}
+
+export async function createReview(
+  bookingId: string,
+  rating: number,
+  comment: string,
+  token: string,
+) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ bookingId, rating, comment }),
+  });
+
+  if (!res.ok) throw new Error('Failed to submit review');
+
+  return res.json();
 }

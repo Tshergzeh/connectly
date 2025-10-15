@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { fetchServiceById } from '~/lib/api';
 import { ServicePageProps } from '~/shared/types';
 import ReviewsSection from './ReviewsSection';
+import BookServiceButton from '~/components/services/BookServiceButton';
 
 export default async function ServicePage({ params }: ServicePageProps) {
   const service = await fetchServiceById(params.id);
@@ -21,8 +22,17 @@ export default async function ServicePage({ params }: ServicePageProps) {
     );
   }
 
-  const { title, description, price, image, category, average_rating, review_count, created_at } =
-    service;
+  const {
+    id,
+    title,
+    description,
+    price,
+    image,
+    category,
+    average_rating,
+    review_count,
+    created_at,
+  } = service;
 
   return (
     <section className="py-12 sm:py-16 lg:py-20">
@@ -56,7 +66,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <button className="btn btn-primary">Book Service</button>
+              <BookServiceButton serviceId={id} price={Number(price)} />
               <Link className="btn btn-outline" href="/services">
                 Back to Services
               </Link>
