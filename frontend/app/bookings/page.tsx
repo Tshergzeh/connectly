@@ -154,6 +154,43 @@ export default function BookingsPage() {
                       Add Review
                     </button>
                   )}
+
+                  {showReviewForm === booking.id && (
+                    <div className="mt-3 space-y-2">
+                      <select
+                        value={rating}
+                        onChange={e => setRating(Number(e.target.value))}
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm"
+                      >
+                        <option value={0}>Select Rating</option>
+                        {[1, 2, 3, 4, 5].map(r => (
+                          <option key={r} value={r}>
+                            {r} Star{r > 1 && 's'}
+                          </option>
+                        ))}
+                      </select>
+                      <textarea
+                        value={comment}
+                        onChange={e => setComment(e.target.value)}
+                        placeholder="Write your review..."
+                        className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-sm"
+                      />
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleReviewSubmit(booking.id)}
+                          className="flex-1 bg-indigo-600 text-white rounded py-1 hover:bg-indigo-700 transition text-sm"
+                        >
+                          Submit
+                        </button>
+                        <button
+                          onClick={() => setShowReviewForm(null)}
+                          className="flex-1 border border-gray-400 rounded py-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
