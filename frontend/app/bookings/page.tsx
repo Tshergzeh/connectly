@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
 
 import { fetchBookings, deleteBooking, createReview } from '~/lib/api';
 import StatusBadge from '~/components/bookings/StatusBadge';
@@ -47,6 +48,25 @@ export default function BookingsPage() {
       setNextCursor(res.nextCursor || null);
     } catch (error) {
       console.error('Error loading more bookings:', error);
+    }
+  };
+
+  const handleDelete = async (bookingId: string) => {
+    const token = sessionStorage.getItem('token');
+
+    if (!token) {
+      router.push('/auth/login');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this booking?')) return;
+
+    try {
+      await deleteBooking(bookingId, token);
+      setBookings(prev => prev.filter(booking => booking.id !== bookingId));
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+      toast.error('Failed to delete booking.');
     }
   };
 
