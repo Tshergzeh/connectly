@@ -47,7 +47,7 @@ export async function fetchServices(cursor?: string) {
       ? `${process.env.NEXT_PUBLIC_API_URL}/services?cursor=${cursor}`
       : `${process.env.NEXT_PUBLIC_API_URL}/services`;
 
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(url, { next: { revalidate: 60 } });
 
     if (!res.ok) throw new Error('Failed to fetch services');
 
