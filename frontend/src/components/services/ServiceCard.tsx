@@ -6,7 +6,7 @@ import { Service } from '~/shared/types';
 export default function ServiceCard({ service }: { service: Service }) {
   return (
     <div className="group relative rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 shadow hover:shadow-lg transition">
-      <div className="aspect-w-16 aspect-h-9 relative overflow-hidden rounded-t-lg">
+      <div className="aspect-[16/9] relative overflow-hidden rounded-t-lg">
         <Image
           src={service.image}
           alt={service.title}
