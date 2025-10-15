@@ -3,13 +3,21 @@ import { refreshToken } from './api';
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const token = sessionStorage.getItem('token');
 
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    ...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
+    ...options.headers,
+  };
+
   const res = await fetch(url, {
     ...options,
-    headers: {
-      ...(options.headers || {}),
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
+    body:
+      options.body instanceof FormData
+        ? options.body
+        : options.body
+        ? JSON.stringify(options.body)
+        : undefined,
     credentials: 'include',
   });
 
