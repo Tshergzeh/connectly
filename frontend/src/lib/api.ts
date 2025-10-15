@@ -22,6 +22,21 @@ export async function loginUser(email: string, password: string) {
   return data;
 }
 
+export async function refreshToken() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+
+  if (!res.ok) throw new Error('Failed to refresh token');
+
+  const data = await res.json();
+
+  sessionStorage.setItem('token', data.accessToken);
+
+  return data.accessToken;
+}
+
 export async function signupUser(
   name: string,
   email: string,
