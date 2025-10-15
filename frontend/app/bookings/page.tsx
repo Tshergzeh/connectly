@@ -78,7 +78,7 @@ export default function BookingsPage() {
                   className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
                     booking.status === 'Paid'
                       ? 'bg-green-100 text-green-700'
-                      : 'bg-yellow-100 text-green-100'
+                      : 'bg-yellow-100 text-yellow-700'
                   }`}
                 >
                   {booking.status}
