@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-import { fetchBookings } from '~/lib/api';
+import { 
+    fetchBookings,
+    deleteBooking,
+    createReview,
+ } from '~/lib/api';
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
