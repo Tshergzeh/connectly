@@ -145,3 +145,23 @@ export async function deleteBooking(bookingId: string, token: string) {
   
   return res.json();
 }
+
+export async function createReview(
+  bookingId: string,
+  rating: number,
+  comment: string,
+  token: string
+) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ bookingId, rating, comment }),
+  });
+
+  if (!res.ok) throw new Error('Failed to submit review');
+
+  return res.json();
+}
