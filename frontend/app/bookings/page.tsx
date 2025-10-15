@@ -145,6 +145,15 @@ export default function BookingsPage() {
                       Delete Booking
                     </button>
                   )}
+
+                  {booking.status === 'Completed' && !booking.review && (
+                    <button
+                      onClick={() => setShowReviewForm(booking.id)}
+                      className="mt-3 w-full text-sm text-indigo-600 border border-indigo-600 hover:bg-indigo-600 hover:text-white transition py-1 rounded"
+                    >
+                      Add Review
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
