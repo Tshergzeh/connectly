@@ -16,8 +16,8 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
       options.body instanceof FormData
         ? options.body
         : options.body
-        ? JSON.stringify(options.body)
-        : undefined,
+          ? JSON.stringify(options.body)
+          : undefined,
     credentials: 'include',
   });
 
@@ -38,6 +38,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
       return retryRes;
     } catch (error) {
       sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
       window.location.href = '/auth/login';
       throw error;
     }
