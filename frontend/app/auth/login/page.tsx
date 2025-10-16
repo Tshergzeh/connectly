@@ -1,8 +1,10 @@
 'use client';
 
+import { Suspense } from 'react';
+import { useRouter } from 'next/navigation';
+
 import AuthForm from '~/components/auth/AuthForm';
 import { loginUser } from '~/lib/api';
-import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,8 +23,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-grey-50">
-      <AuthForm type="login" onSubmit={handleLogin} />
-    </div>
+    <Suspense fallback={<div className="text-center py-20">Loading form...</div>}>
+      <div className="min-h-screen flex items-center justify-center bg-grey-50">
+        <AuthForm type="login" onSubmit={handleLogin} />
+      </div>
+    </Suspense>
   );
 }

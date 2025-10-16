@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import toast from 'react-hot-toast';
 
 import AuthForm from '~/components/auth/AuthForm';
@@ -21,8 +22,10 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-grey-50">
-      <AuthForm type="signup" onSubmit={handleSignup} />
-    </div>
+    <Suspense fallback={<div className="text-center py-20">Loading form...</div>}>
+      <div className="min-h-screen flex items-center justify-center bg-grey-50">
+        <AuthForm type="signup" onSubmit={handleSignup} />
+      </div>
+    </Suspense>
   );
 }
