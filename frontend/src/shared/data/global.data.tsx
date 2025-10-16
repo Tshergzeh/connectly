@@ -56,11 +56,6 @@ export function getHeaderData(user?: {
     });
   }
 
-  links.push({
-    label: 'Contact',
-    href: '/contact',
-  });
-
   const actions = user?.loggedIn
     ? [
         {
