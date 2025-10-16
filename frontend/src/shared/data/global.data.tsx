@@ -32,13 +32,13 @@ export function getHeaderData(user?: {
       label: 'Home',
       href: '/',
     },
+    {
+      label: 'Services',
+      href: '/services',
+    },
   ];
 
   if (user?.isCustomer) {
-    links.push({
-      label: 'Services',
-      href: '/services',
-    });
     links.push({
       label: 'My Bookings',
       href: '/bookings',
