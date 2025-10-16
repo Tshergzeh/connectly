@@ -415,3 +415,8 @@ type Booking = {
     email: string;
   };
 };
+
+type AuthFormProps = {
+  type: 'login' | 'signup';
+  onSubmit: (data: any) => void;
+};
