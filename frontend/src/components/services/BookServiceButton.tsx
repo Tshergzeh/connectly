@@ -21,7 +21,8 @@ export default function BookServiceButton({
       const token = sessionStorage.getItem('token');
 
       if (!token) {
-        router.push('/auth/login');
+        const currentPath = `/services/${serviceId}`;
+        router.push(`/auth/login?redirect=${encodeURIComponent(currentPath)}`);
         return;
       }
 

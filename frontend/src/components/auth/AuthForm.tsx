@@ -125,7 +125,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
           <>
             Don't have an account?{' '}
             <Link
-              href="/auth/signup"
+              href={`/auth/signup${searchParams.get('redirect') ? `?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : ''}`}
               className="text-indigo-600 hover:underline dark:text-indigo-400"
             >
               Sign Up
@@ -135,7 +135,7 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
           <>
             Already have an account?{' '}
             <Link
-              href="/auth/login"
+              href={`/auth/login${searchParams.get('redirect') ? `?redirect=${encodeURIComponent(searchParams.get('redirect')!)}` : ''}`}
               className="text-indigo-600 hover:underline dark:text-indigo-400"
             >
               Log in

@@ -59,23 +59,6 @@ export async function signupUser(
   return res.json();
 }
 
-export async function fetchServices(cursor?: string) {
-  try {
-    const url = cursor
-      ? `${process.env.NEXT_PUBLIC_API_URL}/services?cursor=${cursor}`
-      : `${process.env.NEXT_PUBLIC_API_URL}/services`;
-
-    const res = await fetch(url, { next: { revalidate: 60 } });
-
-    if (!res.ok) throw new Error('Failed to fetch services');
-
-    return res.json();
-  } catch (error) {
-    console.error('Error fetching services:', error);
-    return { data: [] };
-  }
-}
-
 export async function fetchServiceById(id: string) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/${id}`, {
