@@ -25,7 +25,7 @@ export async function loginUser(email: string, password: string) {
 }
 
 export async function refreshToken() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`, {
     method: 'POST',
     credentials: 'include',
   });
