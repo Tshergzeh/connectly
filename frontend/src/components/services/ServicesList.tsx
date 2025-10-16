@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import { Service, ServicesResponse } from '~/shared/types';
@@ -18,6 +18,23 @@ export default function ServicesList({
   const [nextCursor, setNextCursor] = useState<string | null>(initialData.nextCursor);
   const [limit, setLimit] = useState(initialLimit);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const { data, nextCursor: newCursor } = await clientFetchServices(undefined, limit);
+        setServices(data);
+        setNextCursor(newCursor);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [limit]);
 
   const loadMore = async () => {
     if (!nextCursor) return;
