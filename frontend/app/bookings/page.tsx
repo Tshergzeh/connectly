@@ -133,7 +133,7 @@ export default function BookingsPage() {
                     {booking.service.description}
                   </p>
                   <p className="font-medium text-indigo-600 dark:text-indigo-400 mb-2">
-                    &#8358;{booking.service.price}
+                    &#8358;{Number(booking.service.price).toLocaleString()}
                   </p>
                   <StatusBadge status={booking.status} />
 
