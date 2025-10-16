@@ -14,8 +14,17 @@ export default function LoginPage() {
       const { accessToken, user } = await loginUser(email, password);
       sessionStorage.setItem('token', accessToken);
       sessionStorage.setItem('user', JSON.stringify(user));
+
       window.dispatchEvent(new Event('auth-change'));
-      router.push('/');
+
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectUrl = searchParams.get('redirect');
+
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        router.push('/');
+      }
     } catch (error: any) {
       console.error('Login failed', error.message);
       throw error;
