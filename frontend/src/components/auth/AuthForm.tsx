@@ -1,13 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-
-interface AuthFormProps {
-  type: 'login' | 'signup';
-  onSubmit: (data: any) => void;
-}
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { AuthFormProps } from '~/shared/types';
 
 export default function AuthForm({ type, onSubmit }: AuthFormProps) {
+  const searchParams = useSearchParams();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +13,15 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
   const [isProvider, setIsProvider] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const role = searchParams.get('role');
+
+    if (role == 'provider') {
+      setIsProvider(true);
+      setIsCustomer(false);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
