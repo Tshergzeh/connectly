@@ -23,7 +23,7 @@ export default function LoginPage() {
       if (redirectUrl) {
         router.push(redirectUrl);
       } else {
-        router.push('/'); 
+        router.push('/');
       }
     } catch (error: any) {
       console.error('Login failed', error.message);
