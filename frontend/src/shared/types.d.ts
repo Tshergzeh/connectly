@@ -360,3 +360,58 @@ type HeaderProps = {
   showRssFeed?: boolean;
   position?: 'center' | 'right' | 'left';
 };
+
+type Service = {
+  id: string;
+  provider_id: string;
+  title: string;
+  description: string;
+  price: string;
+  category: string;
+  image: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  average_rating: string;
+  review_count: string;
+};
+
+type ServicesResponse = {
+  data: Service[];
+  nextCursor: string | null;
+};
+
+type ServicePageProps = {
+  params: { id: string };
+};
+
+type Review = {
+  id: string;
+  rating: number;
+  comment: string;
+  customer_name: string;
+  created_at: string;
+};
+
+type ReviewsSectionProps = {
+  serviceId: string;
+};
+
+type BookingStatus = 'Paid' | 'Completed' | 'Pending' | 'Cancelled';
+
+type Booking = {
+  id: string;
+  status: BookingStatus;
+  payment_id: string;
+  created_at: string;
+  service: {
+    id: string;
+    title: string;
+    price: string;
+  };
+  customer: {
+    id: string;
+    name: string;
+    email: string;
+  };
+};
