@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+
 import { AuthFormProps } from '~/shared/types';
 
 export default function AuthForm({ type, onSubmit }: AuthFormProps) {
@@ -117,6 +119,30 @@ export default function AuthForm({ type, onSubmit }: AuthFormProps) {
       >
         {loading ? 'Processing...' : type === 'login' ? 'Login' : 'Sign Up'}
       </button>
+
+      <p className="text-sm text-center text-gray-600 dark:text-gray-400">
+        {type === 'login' ? (
+          <>
+            Don't have an account?{' '}
+            <Link
+              href="/auth/signup"
+              className="text-indigo-600 hover:underline dark:text-indigo-400"
+            >
+              Sign Up
+            </Link>
+          </>
+        ) : (
+          <>
+            Already have an account?{' '}
+            <Link
+              href="/auth/login"
+              className="text-indigo-600 hover:underline dark:text-indigo-400"
+            >
+              Log in
+            </Link>
+          </>
+        )}
+      </p>
     </form>
   );
 }
