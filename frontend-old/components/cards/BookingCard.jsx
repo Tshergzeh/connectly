@@ -26,7 +26,7 @@ export default function BookingCard({ booking, onStatusChange }) {
         <span>Customer: {booking.customer.name || 'N/A'}</span>
         <span className="truncate">Email: {booking.customer.email || 'N/A'}</span>
       </div>
-      <p className="text-indigo-600 font-bold mt-1">&#8358;{booking.service.price}</p>
+      <p className="text-indigo-600 font-bold mt-1">&#8358;{Number(booking.service.price).toLocaleString()}</p>
       <p className="text-gray-500 text-sm mt-1">
         Status:
         <span className="font-semibold text-gray-500 text-sm"> {booking.status}</span>

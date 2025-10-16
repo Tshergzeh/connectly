@@ -86,7 +86,7 @@ export default function ServiceDetailView() {
         <h2 className="text-2xl text-gray-800 font-bold">{service.title}</h2>
         <p className="text-gray-600">{service.description}</p>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <span className="text-indigo-600 font-bold text-xl">&#8358;{service.price}</span>
+          <span className="text-indigo-600 font-bold text-xl">&#8358;{Number(service.price).toLocaleString()}</span>
           <ReviewStars rating={service.average_rating} />
         </div>
         <Button className="w-full sm:w-auto sm:px-8" onClick={handleBooking} disabled={loading}>

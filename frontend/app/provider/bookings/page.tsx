@@ -100,7 +100,9 @@ export default function ProviderDashboard() {
                       <p className="text-xs text-gray-500">{booking.customer.email}</p>
                     </div>
                   </td>
-                  <td className="px-4 py-3">&#8358;{booking.service.price}</td>
+                  <td className="px-4 py-3">
+                    &#8358;{Number(booking.service.price).toLocaleString()}
+                  </td>
                   <td className="px-4 py-3">{booking.payment_id}</td>
                   <td className="px-4 py-3">
                     <StatusBadge status={booking.status} />

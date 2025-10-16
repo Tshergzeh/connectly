@@ -58,7 +58,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
             <div className="flex items-center mb-6">
               <span className="text-2xl font-semibold text-primary-600 dark:text-primary-400 mr-2">
-                &#8358;{price}
+                &#8358;{Number(price).toLocaleString()}
               </span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 ({Number(average_rating).toFixed(2)} ⭐ from {review_count} reviews)
