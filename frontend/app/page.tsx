@@ -11,12 +11,12 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main className="flex flex-col">
-      <section className="relative flex flex-col-reverse lg:flex-row items-center justify-between px-6 lg:px-16 py-20 bg-gradient-to-b from-gray-50 to-white">
+      <section className="relative flex flex-col-reverse lg:flex-row items-center justify-between px-6 lg:px-16 py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950 transition-colors duration-300">
         <div className="max-w-xl text-center lg:text-left space-y-6">
-          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900">
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
             Find Trusted Professionals for Your Next Project
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 dark:text-gray-300 text-lg transition-colors duration-300">
             Connect with skilled service providers and get your tasks done efficiently. Whatever you
             need: from construction to design and more.
           </p>
@@ -29,7 +29,7 @@ export default function Page() {
             </Link>
             <Link
               href="/auth/signup?role=provider"
-              className="border border-gray-300 px-6 py-3 rounded-md font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+              className="border border-gray-300 dark:border-gray-600 px-6 py-3 rounded-md font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300"
             >
               Become a Service Provider
             </Link>
@@ -47,13 +47,15 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="py-20 bg-white px-6 lg:px-16 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-10">How It Works</h2>
+      <section className="py-20 bg-white dark:bg-gray-900 px-6 lg:px-16 text-center transition-colors duration-300">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-10 transition-colors duration-300">
+          How It Works
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div className="space-y-3">
             <div className="text-blue-600 text-4xl font-bold">1</div>
             <h3 className="text-xl font-semibold">Find a Service</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
               Browse through a wide range of verified service providers suited to your needs.
             </p>
           </div>
@@ -61,7 +63,7 @@ export default function Page() {
           <div className="space-y-3">
             <div className="text-blue-600 text-4xl font-bold">2</div>
             <h3 className="text-xl font-semibold">Book with Ease</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
               Book your preferred service directly from our platform with just a few clicks.
             </p>
           </div>
@@ -69,16 +71,18 @@ export default function Page() {
           <div className="space-y-3">
             <div className="text-blue-600 text-4xl font-bold">3</div>
             <h3 className="text-xl font-semibold">Get It Done</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300 transition-colors duration-300">
               Relax while professionals handle your task efficiently and on-time.
             </p>
           </div>
         </div>
       </section>
 
-      <div className="py-20 bg-blue-600 text-white text-center">
-        <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-        <p className="text-lg mb-8 max-w-2xl mx-auto">
+      <div className="py-20 bg-blue-600 dark:bg-blue-700 text-white text-center transition-colors duration-300">
+        <h2 className="text-3xl font-bold mb-6 text-white dark:text-gray-100">
+          Ready to Get Started?
+        </h2>
+        <p className="text-lg mb-8 max-w-2xl mx-auto text-white dark:text-gray-100">
           Join thousands of satisfied customers and providers using our platform to connect and
           collaborate.
         </p>
