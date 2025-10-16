@@ -83,8 +83,8 @@ export default function ServicesList({
           <>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {services.map((service: any) => (
-                <Link href={`/services/${service.id}`}>
-                  <ServiceCard key={service.id} service={service} />
+                <Link key={service.id} href={`/services/${service.id}`}>
+                  <ServiceCard service={service} />
                 </Link>
               ))}
             </div>
