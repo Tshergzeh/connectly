@@ -1,4 +1,4 @@
-import { fetchServices } from '~/lib/api';
+import { fetchServices } from '~/lib/api/services';
 import ServicesList from '~/components/services/ServicesList';
 
 export default async function ServicesPage() {
