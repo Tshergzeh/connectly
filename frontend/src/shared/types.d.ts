@@ -398,3 +398,20 @@ type ReviewsSectionProps = {
 };
 
 type BookingStatus = 'Paid' | 'Completed' | 'Pending' | 'Cancelled';
+
+type Booking = {
+  id: string;
+  status: BookingStatus;
+  payment_id: string;
+  created_at: string;
+  service: {
+    id: string;
+    title: string;
+    price: string;
+  };
+  customer: {
+    id: string;
+    name: string;
+    email: string;
+  };
+};
