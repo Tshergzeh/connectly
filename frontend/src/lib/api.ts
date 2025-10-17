@@ -109,7 +109,7 @@ export async function initialisePayment(bookingId: string, amount: number, token
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ bookingId, amount }),
+    body: { bookingId, amount },
   });
 
   if (!res.ok) throw new Error('Failed to initialise payment');
