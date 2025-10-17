@@ -1,12 +1,12 @@
 import { fetchWithAuth } from '../fetchWithAuth';
 
-export async function fetchProviderBookings(cursor?: string, status?: string) {
+export async function fetchProviderBookings(cursor?: string, status?: string, limit?: number) {
   try {
     const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/bookings/provider`);
 
     if (cursor) url.searchParams.append('cursor', cursor);
-
     if (status) url.searchParams.append('status', status);
+    if (limit) url.searchParams.append('limit', limit.toString());
 
     const res = await fetchWithAuth(url.toString());
 
@@ -14,6 +14,7 @@ export async function fetchProviderBookings(cursor?: string, status?: string) {
 
     return res.json();
   } catch (error) {
+    console.error('Error fetching provider bookings:', error);
     return { data: [] };
   }
 }
