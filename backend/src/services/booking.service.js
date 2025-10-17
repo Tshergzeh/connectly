@@ -37,17 +37,16 @@ class BookingService {
       throw new AppError('Missing customer ID', 400);
     }
 
-    const bookings = await BookingModel.getBookingsByCustomer({
+    const rows = await BookingModel.getBookingsByCustomer({
       customerId,
       limit,
       cursor,
     });
 
-    if (bookings.length === 0) {
-      throw new AppError('No bookings found', 404);
-    }
+    if (!rows || rows.length === 0) return { bookings: [], nextCursor: null };
 
-    return bookings.map((booking) => ({
+    const hasNext = rows.length > limit;
+    const bookings = rows.slice(0, limit).map((booking) => ({
       id: booking.booking_id,
       status: booking.status,
       created_at: booking.created_at,
@@ -68,6 +67,11 @@ class BookingService {
           }
         : null,
     }));
+
+    const nextCursor = hasNext ? bookings[bookings.length - 1].created_at : null;
+
+    const result = { bookings, nextCursor };
+    return result;
   }
 
   static async getBookingById({ bookingId, customerId }) {

@@ -25,14 +25,14 @@ exports.getBookingsByCustomer = async (req, res, next) => {
   try {
     const { limit = 10, cursor } = req.query;
 
-    const bookings = await BookingService.getBookingsByCustomer({
+    const { bookings, nextCursor } = await BookingService.getBookingsByCustomer({
       customerId: req.user.id,
       limit: parseInt(limit, 10),
       cursor: cursor || null,
     });
     res.json({
       data: bookings,
-      nextCursor: bookings.length > 0 ? bookings[bookings.length - 1].created_at : null,
+      nextCursor,
     });
   } catch (error) {
     next(error);
