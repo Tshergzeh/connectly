@@ -166,21 +166,18 @@ class BookingService {
     }
 
     const user = await UserModel.findUserById(providerId);
-    if (!user.is_provider) {
-      throw new AppError('Not authorized as provider', 403);
-    }
+    if (!user.is_provider) throw new AppError('Not authorized as provider', 403);
 
-    const bookings = await BookingModel.getBookingsByProvider({
+    const rows = await BookingModel.getBookingsByProvider({
       providerId,
       limit,
       cursor,
     });
 
-    if (bookings.length === 0) {
-      throw new AppError('No bookings found', 404);
-    }
+    if (!rows || rows.length === 0) return { bookings: [], nextCursor: null };
 
-    return bookings.map((booking) => ({
+    const hasNext = rows.length > limit;
+    const bookings = rows.slice(0, limit).map((booking) => ({
       id: booking.id,
       status: booking.status,
       payment_id: booking.payment_id,
@@ -198,6 +195,10 @@ class BookingService {
         email: booking.email,
       },
     }));
+
+    const nextCursor = hasNext ? bookings[bookings.length - 1].created_at : null;
+
+    return { bookings, nextCursor };
   }
 
   static async getBookingsByProviderAndStatus({ providerId, status, limit, cursor }) {
