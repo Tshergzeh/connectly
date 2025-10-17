@@ -18,6 +18,27 @@ export default function ServicesList({
   const [nextCursor, setNextCursor] = useState<string | null>(initialData.nextCursor);
   const [limit, setLimit] = useState(initialLimit);
   const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState({
+    keyword: '',
+    category: '',
+    priceMin: undefined as number | undefined,
+    priceMax: undefined as number | undefined,
+    ratingMin: undefined as number | undefined,
+  });
+
+  const handleFilterApply = async () => {
+    setLoading(true);
+
+    try {
+      const { data, nextCursor: newCursor } = await clientFetchServices(undefined, limit, filters);
+      setServices(data);
+      setNextCursor(newCursor);
+    } catch (error) {
+      console.error('Error applying filters:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,10 +75,82 @@ export default function ServicesList({
   return (
     <section className="py-12 sm:py-16 lg:py-20">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-            Available Services
-          </h1>
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-4 mb-8 w-full">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Available Services</h1>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <input
+              type="text"
+              placeholder="Search services.."
+              value={filters.keyword}
+              onChange={e => setFilters({ ...filters, keyword: e.target.value })}
+              className="border border-gray-300 rounded-md px-3 py-2 dark:bg-gray-700 dark:text-gray-100 w-full sm:w-64"
+            />
+
+            <select
+              value={filters.category}
+              onChange={e => setFilters({ ...filters, category: e.target.value })}
+              className="border border-gray-300 rounded-md px-3 py-2 dark:bg-gray-700 dark:text-gray-100"
+            >
+              <option value="">All</option>
+              <option value="home">Home</option>
+              <option value="fitness">Fitness</option>
+              <option value="education">Education</option>
+              <option value="tech">Tech</option>
+            </select>
+
+            <input
+              type="number"
+              placeholder="Min price"
+              value={filters.priceMin || ''}
+              onChange={e =>
+                setFilters({
+                  ...filters,
+                  priceMin: e.target.value ? Number(e.target.value) : undefined,
+                })
+              }
+              className="border border-gray-300 rounded-md px-3 py-2 dark:bg-gray-700 dark:text-gray-100 w-28"
+            />
+
+            <input
+              type="number"
+              placeholder="Max price"
+              value={filters.priceMax || ''}
+              onChange={e =>
+                setFilters({
+                  ...filters,
+                  priceMax: e.target.value ? Number(e.target.value) : undefined,
+                })
+              }
+              className="border border-gray-300 rounded-md px-3 py-2 dark:bg-gray-700 dark:text-gray-100 w-28"
+            />
+
+            <select
+              value={filters.ratingMin || ''}
+              onChange={e =>
+                setFilters({
+                  ...filters,
+                  ratingMin: e.target.value ? Number(e.target.value) : undefined,
+                })
+              }
+              className="border border-gray-300 rounded-md px-3 py-2 dark:bg-gray-700 dark:text-gray-100"
+            >
+              <option value="">Min Rating</option>
+              {[1, 2, 3, 4, 5].map(rating => (
+                <option value={rating} key={rating}>
+                  {rating}+
+                </option>
+              ))}
+            </select>
+
+            <button
+              onClick={handleFilterApply}
+              disabled={loading}
+              className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50"
+            >
+              {loading ? 'Filtering...' : 'Apply'}
+            </button>
+          </div>
 
           <div className="mt-4 sm:mt-0">
             <label className="text-gray-700 dark:text-gray-300 mr-2">Per page:</label>
