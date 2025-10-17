@@ -3,7 +3,7 @@ import { fetchWithAuth } from '../fetchWithAuth';
 export async function fetchProviderBookings(cursor?: string, status?: string, limit?: number) {
   try {
     const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/bookings/provider`;
-    const url = new URL(status ? `${baseUrl}/${status}`: baseUrl);
+    const url = new URL(status ? `${baseUrl}/${status}` : baseUrl);
 
     if (cursor) url.searchParams.append('cursor', cursor);
     if (limit) url.searchParams.append('limit', limit.toString());

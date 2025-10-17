@@ -130,24 +130,24 @@ export default function ProviderDashboard() {
                     <StatusBadge status={booking.status} />
                   </td>
                   <td className="px-4 py-3">{new Date(booking.created_at).toLocaleDateString()}</td>
-                  <td className="px-4 py-3 text-right space-x-2">
+                  <td className="px-4 py-3 text-right">
                     {booking.status === 'Paid' && (
-                      <>
+                      <div className="flex flex-col sm:flex-row sm:justify-end gap-2">
                         <button
                           onClick={() => handleStatusChange(booking.id, 'Completed')}
                           disabled={updatingId === booking.id}
-                          className="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-md disabled-opacity-50"
+                          className="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-md disabled-opacity-50 w-full sm:w-auto"
                         >
                           {updatingId === booking.id ? 'Updating...' : 'Mark Completed'}
                         </button>
                         <button
                           onClick={() => handleStatusChange(booking.id, 'Cancelled')}
                           disabled={updatingId === booking.id}
-                          className="px-3 py-1.5 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md disabled-opacity-50"
+                          className="px-3 py-1.5 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md disabled-opacity-50 w-full sm:w-auto"
                         >
                           Cancel
                         </button>
-                      </>
+                      </div>
                     )}
                   </td>
                 </tr>
