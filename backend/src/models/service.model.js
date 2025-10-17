@@ -39,7 +39,7 @@ class ServiceModel {
     }
 
     if (filters.category) {
-      conditions.push(`s.category == $${params.length + 1}`);
+      conditions.push(`s.category = $${params.length + 1}`);
       params.push(filters.category);
     }
 
