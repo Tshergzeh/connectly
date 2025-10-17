@@ -202,36 +202,25 @@ class BookingService {
   }
 
   static async getBookingsByProviderAndStatus({ providerId, status, limit, cursor }) {
-    if (!providerId || !status) {
-      throw new AppError('Missing required fields', 400);
-    }
+    if (!providerId || !status) throw new AppError('Missing required fields', 400);
 
     const user = await UserModel.findUserById(providerId);
-    if (!user.is_provider) {
-      throw new AppError('Not authorized as provider', 403);
-    }
+    if (!user.is_provider) throw new AppError('Not authorized as provider', 403);
 
-    if (
-      status !== 'Pending' &&
-      status !== 'Paid' &&
-      status !== 'Completed' &&
-      status !== 'Cancelled'
-    ) {
-      throw new AppError('Invalid status', 400);
-    }
+    const validStatuses = ['Pending', 'Paid', 'Completed', 'Cancelled'];
+    if (!validStatuses.includes(status)) throw new AppError('Invalid status', 400);
 
-    const bookings = await BookingModel.getBookingsByProviderAndStatus({
+    const rows = await BookingModel.getBookingsByProviderAndStatus({
       providerId,
       status,
       limit,
       cursor,
     });
 
-    if (bookings.length === 0) {
-      throw new AppError('No bookings found', 404);
-    }
+    if (!rows || rows.length === 0) return { bookings: [], nextCursor: null };
 
-    return bookings.map((booking) => ({
+    const hasNext = rows.length > limit;
+    const bookings = rows.slice(0, limit).map((booking) => ({
       id: booking.id,
       status: booking.status,
       payment_id: booking.payment_id,
@@ -249,6 +238,10 @@ class BookingService {
         email: booking.email,
       },
     }));
+
+    const nextCursor = hasNext ? bookings[bookings.length - 1].created_at : null;
+
+    return { bookings, nextCursor };
   }
 
   static async deletePendingBookingById({ bookingId, user }) {

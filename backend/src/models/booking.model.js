@@ -139,7 +139,7 @@ class BookingModel {
     }
 
     query += ` ORDER BY bookings.created_at DESC LIMIT $${params.length + 1};`;
-    params.push(limit);
+    params.push(limit + 1);
 
     const result = await pool.query(query, params);
     return result.rows;
