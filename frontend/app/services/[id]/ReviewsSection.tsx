@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import { fetchServiceReviews } from '~/lib/api';
 import { Review, ReviewsSectionProps } from '~/shared/types';
 
@@ -21,7 +22,9 @@ export default function ReviewsSection({ serviceId }: ReviewsSectionProps) {
 
   if (loading) {
     return (
-      <div className="mt-10 text-center text-gray-500 dark:text-gray-400">Loading reviews...</div>
+      <div className="flex justify-center py-20">
+        <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
+      </div>
     );
   }
 
