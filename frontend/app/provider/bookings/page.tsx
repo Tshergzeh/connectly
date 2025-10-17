@@ -23,9 +23,9 @@ export default function ProviderDashboard() {
 
     try {
       const data = await fetchProviderBookings(
-        loadMore ? nextCursor : undefined, 
+        loadMore ? nextCursor : undefined,
         statusFilter,
-        limit
+        limit,
       );
 
       if (loadMore) {
@@ -83,13 +83,13 @@ export default function ProviderDashboard() {
               value={limit}
               onChange={e => setLimit(Number(e.target.value))}
               className="border border-gray-300 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-              >
-                {[5, 10, 15, 20, 25].map(size => (
-                  <option value={size} key={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
+            >
+              {[5, 10, 15, 20, 25].map(size => (
+                <option value={size} key={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
