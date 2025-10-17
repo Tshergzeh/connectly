@@ -79,11 +79,13 @@ function PaymentCallbackContent() {
 
 export default function PaymentCallbackPage() {
   return (
-    <Suspense fallback={
-      <div className="flex justify-center py-20">
-        <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-20">
+          <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
+        </div>
+      }
+    >
       <PaymentCallbackContent />
     </Suspense>
   );
