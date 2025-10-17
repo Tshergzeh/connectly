@@ -28,13 +28,13 @@ class ServiceService {
     });
   }
 
-  static async listServices({ limit, cursor }) {
-    const redisKey = `servicesService:list:cursor:${cursor || 'NULL'}:limit:${limit}`;
+  static async listServices({ limit, cursor, filters = {} }) {
+    const redisKey = `servicesService:list:cursor:${cursor || 'NULL'}:limit:${limit}:filters:${JSON.stringify(filters)}`;
     let cached = await redis.get(redisKey);
 
     if (cached) return JSON.parse(cached);
 
-    const rows = await ServiceModel.getAllServices({ limit, cursor });
+    const rows = await ServiceModel.getAllServices({ limit, cursor, filters });
 
     const hasNext = rows.length > limit;
     const services = rows.slice(0, limit);
