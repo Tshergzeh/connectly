@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 export default function LogoutPage() {
   const router = useRouter();
@@ -13,8 +14,8 @@ export default function LogoutPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-gray-700 dark:text-gray-100">
-      Logging out...
+    <div className="flex justify-center py-20">
+      <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
     </div>
   );
 }
