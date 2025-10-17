@@ -2,6 +2,7 @@
 
 import { Suspense } from 'react';
 import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 import AuthForm from '~/components/auth/AuthForm';
 import { loginUser } from '~/lib/api';
@@ -32,7 +33,11 @@ export default function LoginPage() {
   };
 
   return (
-    <Suspense fallback={<div className="text-center py-20">Loading form...</div>}>
+    <Suspense fallback={
+      <div className="flex justify-center py-20">
+        <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
+      </div>
+    }>
       <div className="min-h-screen flex items-center justify-center bg-grey-50">
         <AuthForm type="login" onSubmit={handleLogin} />
       </div>
