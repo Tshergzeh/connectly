@@ -43,8 +43,8 @@ function PaymentCallbackContent() {
       } catch (error) {
         console.error('Payment verification failed:', error);
         setStatus('failed');
-        toast.error('Payment verification failed');
-        setTimeout(() => router.push('/success'), 2000);
+
+        setTimeout(() => router.push('/services'), 1500);
       }
     };
 
