@@ -28,18 +28,36 @@ class ServiceService {
     });
   }
 
-  static async listServices({ limit, cursor }) {
-    let services = [];
-    const redisKey = `servicesService:list:cursor:${cursor || 'NULL'}:limit:${limit}`;
+  static async listServices({ limit, cursor, filters = {} }) {
+    const redisKey = `servicesService:list:cursor:${cursor || 'NULL'}:limit:${limit}:filters:${JSON.stringify(filters)}`;
     let cached = await redis.get(redisKey);
-    if (cached) {
-      services = JSON.parse(cached);
-    } else {
-      services = await ServiceModel.getAllServices({ limit, cursor });
-      await redis.set(redisKey, JSON.stringify(services));
-      await redis.expire(redisKey, 60);
-    }
-    return services;
+
+    if (cached) return JSON.parse(cached);
+
+    const rows = await ServiceModel.getAllServices({ limit, cursor, filters });
+
+    const hasNext = rows.length > limit;
+    const services = rows.slice(0, limit);
+    const nextCursor = hasNext ? services[services.length - 1].created_at : null;
+
+    const result = { services, nextCursor };
+
+    await redis.set(redisKey, JSON.stringify(result));
+    await redis.expire(redisKey, 60);
+
+    return result;
+  }
+
+  static async listServicesByProvider({ providerId, limit, cursor, filters = {} }) {
+    const rows = await ServiceModel.getServicesByProvider({ providerId, limit, cursor, filters });
+
+    const hasNext = rows.length > limit;
+    const services = rows.slice(0, limit);
+    const nextCursor = hasNext ? services[services.length - 1].created_at : null;
+
+    const result = { services, nextCursor };
+
+    return result;
   }
 
   static async getService(id) {

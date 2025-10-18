@@ -15,9 +15,9 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     body:
       options.body instanceof FormData
         ? options.body
-        : options.body
+        : typeof options.body === 'object' && options.body !== null
           ? JSON.stringify(options.body)
-          : undefined,
+          : options.body,
     credentials: 'include',
   });
 

@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { Loader2 } from 'lucide-react';
 
 function PaymentCallbackContent() {
   const router = useRouter();
@@ -43,8 +44,8 @@ function PaymentCallbackContent() {
       } catch (error) {
         console.error('Payment verification failed:', error);
         setStatus('failed');
-        toast.error('Payment verification failed');
-        setTimeout(() => router.push('/success'), 2000);
+
+        setTimeout(() => router.push('/services'), 1500);
       }
     };
 
@@ -54,10 +55,9 @@ function PaymentCallbackContent() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen-bg-gray-50 dark:bg-gray-900 px-4">
       {status === 'loading' && (
-        <>
-          <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-gray-700 dark:text-gray-300 text-lg">Verifying your payment...</p>
-        </>
+        <div className="flex justify-center py-20">
+          <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
+        </div>
       )}
 
       {status === 'success' && (
@@ -79,7 +79,13 @@ function PaymentCallbackContent() {
 
 export default function PaymentCallbackPage() {
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center py-20">
+          <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
+        </div>
+      }
+    >
       <PaymentCallbackContent />
     </Suspense>
   );

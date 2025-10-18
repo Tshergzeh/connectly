@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
+import { Loader2 } from 'lucide-react';
 
 import { fetchBookings, deleteBooking, createReview } from '~/lib/api';
 import StatusBadge from '~/components/bookings/StatusBadge';
@@ -95,8 +96,8 @@ export default function BookingsPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen text-gray-500 dark:text-gray-400">
-        Loading bookings...
+      <div className="flex justify-center py-20">
+        <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
       </div>
     );
   }

@@ -1,5 +1,4 @@
 const ServiceService = require('../services/service.service');
-const redis = require('../config/redis');
 const logger = require('../utils/logger');
 
 exports.createService = async (req, res, next) => {
@@ -25,26 +24,53 @@ exports.createService = async (req, res, next) => {
 
 exports.listServices = async (req, res, next) => {
   try {
-    const { limit = 10, cursor } = req.query;
+    const { limit = 10, cursor, keyword, category, priceMin, priceMax, ratingMin } = req.query;
 
-    let services = [];
+    const filters = {
+      keyword,
+      category,
+      priceMin: priceMin ? parseFloat(priceMin) : undefined,
+      priceMax: priceMax ? parseFloat(priceMax) : undefined,
+      ratingMin: ratingMin ? parseFloat(ratingMin) : undefined,
+    };
 
-    const redisKey = `servicesController:list:cursor:${cursor || 'NULL'}:limit:${limit}`;
-    let cached = await redis.get(redisKey);
-    if (cached) {
-      services = JSON.parse(cached);
-    } else {
-      services = await ServiceService.listServices({
-        limit: parseInt(limit, 10),
-        cursor: cursor || null,
-      });
-      await redis.set(redisKey, JSON.stringify(services));
-      await redis.expire(redisKey, 60);
-    }
+    const { services, nextCursor } = await ServiceService.listServices({
+      limit: parseInt(limit, 10),
+      cursor: cursor || null,
+      filters,
+    });
 
     res.json({
       data: services,
-      nextCursor: services.length > 0 ? services[services.length - 1].created_at : null,
+      nextCursor,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.listServicesByProvider = async (req, res, next) => {
+  try {
+    const { limit = 10, cursor, keyword, category, priceMin, priceMax, ratingMin } = req.query;
+
+    const filters = {
+      keyword,
+      category,
+      priceMin: priceMin ? parseFloat(priceMin) : undefined,
+      priceMax: priceMax ? parseFloat(priceMax) : undefined,
+      ratingMin: ratingMin ? parseFloat(ratingMin) : undefined,
+    };
+
+    const { services, nextCursor } = await ServiceService.listServicesByProvider({
+      providerId: req.user.id,
+      limit: parseInt(limit, 10),
+      cursor: cursor || null,
+      filters,
+    });
+
+    res.json({
+      data: services,
+      nextCursor,
     });
   } catch (error) {
     next(error);

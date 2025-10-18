@@ -4,24 +4,29 @@ import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { fetchProviderBookings, updateBookingStatus } from '~/lib/api/bookings';
 import StatusBadge from '~/components/bookings/StatusBadge';
-import { Booking, BookingStatus } from '~/shared/types';
+import { Booking } from '~/shared/types';
 
 export default function ProviderDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('');
-  const [cursor, setCursor] = useState<string | null>(null);
   const [nextCursor, setNextCursor] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [limit, setLimit] = useState<number>(10);
 
   useEffect(() => {
     loadBookings();
-  }, [statusFilter]);
+  }, [statusFilter, limit]);
 
   async function loadBookings(loadMore = false) {
     setLoading(true);
+
     try {
-      const data = await fetchProviderBookings(loadMore ? nextCursor : undefined, statusFilter);
+      const data = await fetchProviderBookings(
+        loadMore ? nextCursor : undefined,
+        statusFilter,
+        limit,
+      );
 
       if (loadMore) {
         setBookings(prev => [...prev, ...data.data]);
@@ -56,20 +61,37 @@ export default function ProviderDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
         <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">Provider Dashboard</h1>
 
-        <select
-          value={statusFilter}
-          onChange={e => setStatusFilter(e.target.value)}
-          className="border border-gray-300 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-        >
-          <option value="">All Bookings</option>
-          <option value="Pending">Pending</option>
-          <option value="Paid">Paid</option>
-          <option value="Completed">Completed</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
+        <div className="flex items-center space-x-3">
+          <select
+            value={statusFilter}
+            onChange={e => setStatusFilter(e.target.value)}
+            className="border border-gray-300 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+          >
+            <option value="">All Bookings</option>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+
+          <div className="flex items-center space-x-2">
+            <label className="text-gray-700 dark:text-gray-300 text-sm">Per page:</label>
+            <select
+              value={limit}
+              onChange={e => setLimit(Number(e.target.value))}
+              className="border border-gray-300 dark:border-gray-700 rounded-md px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            >
+              {[5, 10, 15, 20, 25].map(size => (
+                <option value={size} key={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
       {loading && !bookings.length ? (
@@ -108,24 +130,24 @@ export default function ProviderDashboard() {
                     <StatusBadge status={booking.status} />
                   </td>
                   <td className="px-4 py-3">{new Date(booking.created_at).toLocaleDateString()}</td>
-                  <td className="px-4 py-3 text-right space-x-2">
+                  <td className="px-4 py-3 text-right">
                     {booking.status === 'Paid' && (
-                      <>
+                      <div className="flex flex-col sm:flex-row sm:justify-end gap-2">
                         <button
                           onClick={() => handleStatusChange(booking.id, 'Completed')}
                           disabled={updatingId === booking.id}
-                          className="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-md disabled-opacity-50"
+                          className="px-3 py-1.5 text-xs bg-green-600 hover:bg-green-700 text-white rounded-md disabled-opacity-50 w-full sm:w-auto"
                         >
                           {updatingId === booking.id ? 'Updating...' : 'Mark Completed'}
                         </button>
                         <button
                           onClick={() => handleStatusChange(booking.id, 'Cancelled')}
                           disabled={updatingId === booking.id}
-                          className="px-3 py-1.5 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md disabled-opacity-50"
+                          className="px-3 py-1.5 text-xs bg-red-600 hover:bg-red-700 text-white rounded-md disabled-opacity-50 w-full sm:w-auto"
                         >
                           Cancel
                         </button>
-                      </>
+                      </div>
                     )}
                   </td>
                 </tr>
