@@ -54,6 +54,38 @@ export default function ServicesList({
     }
   };
 
+  const handleFilterClear = async () => {
+    setFilters({
+      keyword: '',
+      category: '',
+      priceMin: undefined,
+      priceMax: undefined,
+      ratingMin: undefined,
+    });
+    updateQueryParams(
+      {
+        keyword: '',
+        category: '',
+        priceMin: undefined,
+        priceMax: undefined,
+        ratingMin: undefined,
+      },
+      limit,
+    );
+
+    setLoading(true);
+
+    try {
+      const { data, nextCursor: newCursor } = await clientFetchServices(undefined, limit);
+      setServices(data);
+      setNextCursor(newCursor);
+    } catch (error) {
+      console.error('Error clearing filters:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -165,6 +197,14 @@ export default function ServicesList({
               className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50"
             >
               {loading ? 'Filtering...' : 'Apply'}
+            </button>
+
+            <button
+              onClick={handleFilterClear}
+              disabled={loading}
+              className="px-4 py-2 bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-100 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 disabled:opacity-50"
+            >
+              Clear
             </button>
           </div>
 
