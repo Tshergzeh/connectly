@@ -11,9 +11,11 @@ import { clientFetchServices } from '~/lib/client-api';
 export default function ServicesList({
   initialData,
   initialLimit = 10,
+  customFetcher,
 }: {
   initialData: ServicesResponse;
   initialLimit?: number;
+  customFetcher?: typeof clientFetchServices;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -44,7 +46,11 @@ export default function ServicesList({
     setLoading(true);
 
     try {
-      const { data, nextCursor: newCursor } = await clientFetchServices(undefined, limit, filters);
+      const { data, nextCursor: newCursor } = await (customFetcher || clientFetchServices)(
+        undefined,
+        limit,
+        filters,
+      );
       setServices(data);
       setNextCursor(newCursor);
     } catch (error) {
@@ -76,7 +82,10 @@ export default function ServicesList({
     setLoading(true);
 
     try {
-      const { data, nextCursor: newCursor } = await clientFetchServices(undefined, limit);
+      const { data, nextCursor: newCursor } = await (customFetcher || clientFetchServices)(
+        undefined,
+        limit,
+      );
       setServices(data);
       setNextCursor(newCursor);
     } catch (error) {
@@ -91,7 +100,10 @@ export default function ServicesList({
       setLoading(true);
 
       try {
-        const { data, nextCursor: newCursor } = await clientFetchServices(undefined, limit);
+        const { data, nextCursor: newCursor } = await (customFetcher || clientFetchServices)(
+          undefined,
+          limit,
+        );
         setServices(data);
         setNextCursor(newCursor);
       } catch (error) {
@@ -108,7 +120,10 @@ export default function ServicesList({
     setLoading(true);
 
     try {
-      const { data, nextCursor: newCursor } = await clientFetchServices(nextCursor, limit);
+      const { data, nextCursor: newCursor } = await (customFetcher || clientFetchServices)(
+        nextCursor,
+        limit,
+      );
       setServices((prev: Service[]) => [...prev, ...data]);
       setNextCursor(newCursor);
     } catch (error) {
@@ -123,7 +138,7 @@ export default function ServicesList({
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-4 mb-8 w-full">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white text-center sm:text-left">
-            Available Services
+            {customFetcher ? 'My Services' : 'Available Services'}
           </h1>
 
           <div className="flex flex-wrap items-center justify-start gap-3">
@@ -230,7 +245,9 @@ export default function ServicesList({
 
         {services.length === 0 && !loading ? (
           <p className="text-center text-gray-500 dark:text-gray-400">
-            No services available at the moment.
+            {customFetcher
+              ? 'You have not created any services.'
+              : 'No services available at the moment.'}
           </p>
         ) : (
           <>
