@@ -6,6 +6,7 @@ const upload = require('../config/multer');
 
 router.post('/', authenticate, upload.single('image'), serviceController.createService);
 router.get('/', serviceController.listServices);
+router.get('/provider', authenticate, serviceController.listServicesByProvider);
 router.get('/:id', serviceController.getService);
 router.put('/:id', authenticate, upload.single('image'), serviceController.updateService);
 router.delete('/:id', authenticate, serviceController.deleteService);
