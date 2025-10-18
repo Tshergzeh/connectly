@@ -16,7 +16,7 @@ export async function clientFetchServices(
   if (filters?.keyword) url.searchParams.append('keyword', filters.keyword);
   if (filters?.category) url.searchParams.append('category', filters.category);
   if (filters?.priceMin) url.searchParams.append('priceMin', filters.priceMin.toString());
-  if (filters?.priceMax) url.searchParams.append('priceMin', filters.priceMax.toString());
+  if (filters?.priceMax) url.searchParams.append('priceMax', filters.priceMax.toString());
   if (filters?.ratingMin) url.searchParams.append('ratingMin', filters.ratingMin.toString());
 
   const res = await fetch(url.toString());

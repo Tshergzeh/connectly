@@ -19,7 +19,7 @@ export async function fetchServices(
     if (filters?.keyword) params.append('keyword', filters.keyword);
     if (filters?.category) params.append('category', filters.category);
     if (filters?.priceMin) params.append('priceMin', filters.priceMin.toString());
-    if (filters?.priceMax) params.append('priceMin', filters.priceMax.toString());
+    if (filters?.priceMax) params.append('priceMax', filters.priceMax.toString());
     if (filters?.ratingMin) params.append('ratingMin', filters.ratingMin.toString());
 
     const url = `${process.env.NEXT_PUBLIC_API_URL}/services${params.toString() ? `?${params}` : ''}`;
