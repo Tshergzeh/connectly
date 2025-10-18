@@ -48,6 +48,18 @@ class ServiceService {
     return result;
   }
 
+  static async listServicesByProvider({ providerId, limit, cursor }) {
+    const rows = await ServiceModel.getServicesByProvider({ providerId, limit, cursor });
+
+    const hasNext = rows.length > limit;
+    const services = rows.slice(0, limit);
+    const nextCursor = hasNext ? services[services.length - 1].created_at : null;
+
+    const result = { services, nextCursor };
+
+    return result;
+  }
+
   static async getService(id) {
     if (!id) {
       throw new AppError('Missing service ID', 400);

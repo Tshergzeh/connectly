@@ -49,6 +49,25 @@ exports.listServices = async (req, res, next) => {
   }
 };
 
+exports.listServicesByProvider = async (req, res, next) => {
+  try {
+    const { limit = 10, cursor } = req.query;
+
+    const { services, nextCursor } = await ServiceService.listServicesByProvider({
+      providerId: req.user.id,
+      limit: parseInt(limit, 10),
+      cursor: cursor || null,
+    });
+
+    res.json({
+      data: services,
+      nextCursor,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getService = async (req, res, next) => {
   try {
     const service = await ServiceService.getService(req.params.id);

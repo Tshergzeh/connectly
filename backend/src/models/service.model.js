@@ -69,6 +69,34 @@ class ServiceModel {
     return result.rows;
   }
 
+  static async getServicesByProvider({ providerId, limit = 10, cursor = null }) {
+    let query = `
+      SELECT 
+        s.*,
+        COALESCE(AVG(r.rating), 0) AS average_rating,
+        COUNT(r.id) AS review_count
+      FROM services s
+      LEFT JOIN bookings b ON b.service_id = s.id
+      LEFT JOIN reviews r ON r.booking_id = b.id
+      WHERE s.provider_id = $1
+    `;
+
+    const params = [providerId];
+
+    if (cursor) {
+      query += ` AND s.created_at < $2`;
+      params.push(cursor);
+    }
+
+    query += ` GROUP BY s.id`;
+
+    query += ` ORDER BY s.created_at DESC LIMIT $${params.length + 1};`;
+    params.push(limit + 1);
+
+    const result = await pool.query(query, params);
+    return result.rows;
+  }
+
   static async getServiceById(id) {
     const result = await pool.query(
       `SELECT 
