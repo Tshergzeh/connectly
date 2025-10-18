@@ -51,6 +51,10 @@ export function getHeaderData(user?: {
       href: '/provider/services/new',
     });
     links.push({
+      label: 'My Services',
+      href: '/provider/services',
+    });
+    links.push({
       label: 'Provider Dashboard',
       href: '/provider/bookings',
     });
