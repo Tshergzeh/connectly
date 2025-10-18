@@ -51,12 +51,21 @@ exports.listServices = async (req, res, next) => {
 
 exports.listServicesByProvider = async (req, res, next) => {
   try {
-    const { limit = 10, cursor } = req.query;
+    const { limit = 10, cursor, keyword, category, priceMin, priceMax, ratingMin } = req.query;
+
+    const filters = {
+      keyword,
+      category,
+      priceMin: priceMin ? parseFloat(priceMin) : undefined,
+      priceMax: priceMax ? parseFloat(priceMax) : undefined,
+      ratingMin: ratingMin ? parseFloat(ratingMin) : undefined,
+    };
 
     const { services, nextCursor } = await ServiceService.listServicesByProvider({
       providerId: req.user.id,
       limit: parseInt(limit, 10),
       cursor: cursor || null,
+      filters,
     });
 
     res.json({

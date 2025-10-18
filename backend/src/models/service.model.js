@@ -69,7 +69,7 @@ class ServiceModel {
     return result.rows;
   }
 
-  static async getServicesByProvider({ providerId, limit = 10, cursor = null }) {
+  static async getServicesByProvider({ providerId, limit = 10, cursor = null, filters = {} }) {
     let query = `
       SELECT 
         s.*,
@@ -78,17 +78,49 @@ class ServiceModel {
       FROM services s
       LEFT JOIN bookings b ON b.service_id = s.id
       LEFT JOIN reviews r ON r.booking_id = b.id
-      WHERE s.provider_id = $1
     `;
 
-    const params = [providerId];
+    const conditions = [];
+    const params = [];
+
+    conditions.push(`s.provider_id = $${params.length + 1}`);
+    params.push(providerId);
 
     if (cursor) {
-      query += ` AND s.created_at < $2`;
+      conditions.push(`s.created_at < $${params.length + 1}`);
       params.push(cursor);
     }
 
+    if (filters.keyword) {
+      conditions.push(
+        `(s.title ILIKE $${params.length + 1} OR s.description ILIKE $${params.length + 1})`
+      );
+      params.push(`%${filters.keyword}%`);
+    }
+
+    if (filters.category) {
+      conditions.push(`s.category = $${params.length + 1}`);
+      params.push(filters.category);
+    }
+
+    if (filters.priceMin !== undefined) {
+      conditions.push(`s.price >= $${params.length + 1}`);
+      params.push(filters.priceMin);
+    }
+
+    if (filters.priceMax !== undefined) {
+      conditions.push(`s.price <= $${params.length + 1}`);
+      params.push(filters.priceMax);
+    }
+
+    query += conditions.length ? ` WHERE ${conditions.join(' AND ')}` : '';
+
     query += ` GROUP BY s.id`;
+
+    if (filters.ratingMin !== undefined) {
+      query += ` HAVING COALESCE(AVG(r.rating), 0) >= $${params.length + 1}`;
+      params.push(filters.ratingMin);
+    }
 
     query += ` ORDER BY s.created_at DESC LIMIT $${params.length + 1};`;
     params.push(limit + 1);

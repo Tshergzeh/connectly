@@ -48,8 +48,8 @@ class ServiceService {
     return result;
   }
 
-  static async listServicesByProvider({ providerId, limit, cursor }) {
-    const rows = await ServiceModel.getServicesByProvider({ providerId, limit, cursor });
+  static async listServicesByProvider({ providerId, limit, cursor, filters = {} }) {
+    const rows = await ServiceModel.getServicesByProvider({ providerId, limit, cursor, filters });
 
     const hasNext = rows.length > limit;
     const services = rows.slice(0, limit);
