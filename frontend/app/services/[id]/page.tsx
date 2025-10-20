@@ -1,10 +1,33 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
 import { fetchServiceById } from '~/lib/api';
+import { SITE } from '~/config';
 import { ServicePageProps } from '~/shared/types';
 import ReviewsSection from './ReviewsSection';
 import BookServiceButton from '~/components/services/BookServiceButton';
+
+export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+  const service = await fetchServiceById(params.id);
+
+  if (!service) {
+    return {
+      title: `Service Not Found | ${SITE.title}`,
+      description: `The requested service could not found on ${SITE.title}`,
+    };
+  }
+
+  return {
+    title: `${service.title} | ${SITE.title}`,
+    description: service.description || `Learn more about ${service.title} on ${SITE.title}.`,
+    openGraph: {
+      title: `${service.title} | ${SITE.title}`,
+      description: service.description || `Learn more about ${service.title} on ${SITE.title}.`,
+      images: [{ url: service.image, alt: service.title }],
+    },
+  };
+}
 
 export default async function ServicePage({ params }: ServicePageProps) {
   const service = await fetchServiceById(params.id);
