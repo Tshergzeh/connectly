@@ -20,7 +20,7 @@ export interface LayoutProps {
 
 export const metadata: Metadata = {
   title: {
-    template: `%s — ${SITE.name}`,
+    template: `%s`,
     default: SITE.title,
   },
   description: SITE.description,
